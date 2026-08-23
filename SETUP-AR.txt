@@ -1,0 +1,19 @@
+مشروع Al-Howail Tyres Sales Dashboard — النسخة المربوطة
+
+تم ضبط رابط Web App داخل utils.js:
+https://script.google.com/macros/s/AKfycbwghN8KEWLQqDBxGhR3PRqs4SkGSJIZkIpPohSxGnkvWKTtZxmqWdkX39OUy-gsMkIs/exec
+
+أسماء تبويبات Google Sheets المطلوبة حرفيًا:
+1) Target
+2) Invoices
+3) Payment's collections
+4) Due $ Overdue
+5) User
+
+تشغيل الموقع:
+- افتح index.html باستخدام Live Server في VS Code.
+- بيانات الدخول تؤخذ من تبويب User.
+
+عند تعديل Code.gs لاحقًا:
+- Deploy > Manage deployments > Edit > New version > Deploy.
+- لا تغيّر رابط API في utils.js ما دمت تعدّل نفس Deployment.
