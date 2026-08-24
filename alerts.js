@@ -343,12 +343,14 @@ window.DashboardAlerts = (() => {
                  * Sum the invoices for every individual code instead of
                  * looking for the combined text as a single invoice code.
                  */
-                const sales = getSalesmanCodes(row)
-                    .reduce(
-                        (total, individualCode) =>
-                            total + (salesBySalesman.get(individualCode) || 0),
-                        0
-                    );
+                const sales =
+                    (salesBySalesman.get(code) || 0) ||
+                    getSalesmanCodes(row)
+                        .reduce(
+                            (total, individualCode) =>
+                                total + (salesBySalesman.get(individualCode) || 0),
+                            0
+                        );
 
                 const achievement = target > 0 ? (sales / target) * 100 : 0;
 

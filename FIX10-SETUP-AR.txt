@@ -1,0 +1,44 @@
+Al-Howail Tyres Dashboard - FIX10
+
+التعديلات الجديدة:
+1) تحصيلات قادمة خلال 7 أو 10 أيام قبل أن تتحول إلى متأخرات.
+2) شيت New Customers + شيت Reactivated Customers وربطهما بالداشبورد.
+3) توحيد معالجة الأكواد المدمجة على مستوى السيرفر لكل أقسام الداشبورد.
+
+أولا: Google Apps Script
+- افتح Code.gs في Apps Script.
+- استبدله بملف Code.gs الموجود في هذه النسخة.
+- احفظ.
+- من قائمة الدوال شغل مرة واحدة الدالة:
+  setupCustomerActivitySheets
+- سيتم إنشاء شيتين تلقائيا:
+  New Customers
+  Reactivated Customers
+
+أعمدة الشيتين بالترتيب:
+Date | Salesman Code | Customer Code | Customer Name | Branch | Notes
+
+مثال:
+2026-08-24 | 801 | 80555 | CUSTOMER NAME | Hail | New account
+
+ملاحظة الأكواد المدمجة:
+يمكن إدخال الكود الفردي مثل 801 أو 802، وسيتم ربطه تلقائيا بالكود المدمج 801 + 802 الموجود في Target.
+ونفس النظام يعمل على 991 + 992 و401 + 402 وأي أكواد مدمجة أخرى في Target.
+
+ثانيا: تحديث Web App
+- Deploy > Manage deployments
+- Edit
+- اختر New version
+- Deploy
+- يفضل الاحتفاظ بنفس رابط /exec المستخدم حاليا في utils.js.
+
+ثالثا: GitHub
+- لا ترفع Code.gs إلى GitHub Pages.
+- ارفع ملفات الواجهة فقط الموجودة في المجلد (index.html / js / css / logo) إلى نفس مكان الموقع الحالي.
+- بعد الرفع انتظر دقيقة أو دقيقتين ثم اعمل Ctrl+F5.
+
+طريقة عمل المؤشرات:
+- New Customers وReactivated Customers في الداشبورد يتأثران بالفترة والفرع والمندوب المختارين.
+- داخل Salesman Profile يظهر عدد العملاء الجدد والمعاد تنشيطهم للمندوب خلال الفترة المختارة.
+- إجمالي Due / Overdue في Salesman Profile يظل لجميع الفترات كما كان في FIX5.
+- Upcoming Collections لا يتأثر بفلتر التاريخ، لأنه يعرض الاستحقاقات الفعلية القادمة من اليوم، لكنه يتأثر بفلتر الفرع والمندوب.

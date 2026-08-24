@@ -709,7 +709,11 @@ window.DashboardTargets = (() => {
                         quarter
                     );
 
+                const directSales =
+                    salesBySalesman.get(row.salesmanCode) || 0;
+
                 const sales =
+                    directSales ||
                     getSalesmanCodes(row)
                         .reduce(
                             (total, code) =>

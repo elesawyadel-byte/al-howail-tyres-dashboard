@@ -3179,3 +3179,49 @@ html[dir="rtl"] #salesIntelligencePage .intelligence-card .card-header::before {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== FIX10: Upcoming collections & customer activity ===== */
+.upcoming-collections-card {
+    margin-top: 20px;
+}
+
+.upcoming-summary {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.upcoming-summary > span {
+    background: var(--surface-soft, #f4f8fb);
+    border: 1px solid var(--border-color, #dfe7ef);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-weight: 700;
+}
+
+.upcoming-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 74px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.upcoming-status.normal {
+    background: #e8f6ff;
+    color: #0b6e99;
+}
+
+.upcoming-status.warning {
+    background: #fff4d6;
+    color: #9a6400;
+}
+
+.upcoming-status.critical {
+    background: #ffe4e4;
+    color: #b42318;
+}

@@ -423,6 +423,21 @@ window.DashboardAPI = (() => {
                     response?.dueOverdue
                 )
                     ? response.dueOverdue
+                    : [],
+
+            newCustomers:
+                Array.isArray(response?.newCustomers)
+                    ? response.newCustomers
+                    : [],
+
+            reactivatedCustomers:
+                Array.isArray(response?.reactivatedCustomers)
+                    ? response.reactivatedCustomers
+                    : [],
+
+            upcomingDue:
+                Array.isArray(response?.upcomingDue)
+                    ? response.upcomingDue
                     : []
         };
     }

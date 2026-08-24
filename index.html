@@ -380,6 +380,15 @@
                 <button
                     class="navigation-item"
                     type="button"
+                    data-page="upcomingCollections"
+                >
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span data-i18n="navigation.upcomingCollections">Upcoming Collections</span>
+                </button>
+
+                <button
+                    class="navigation-item"
+                    type="button"
                     data-page="dueOverdue"
                 >
                     <i class="fa-solid fa-clock-rotate-left"></i>
@@ -938,7 +947,28 @@
 
                         </article>
 
+                        <article class="kpi-card">
+                            <div class="kpi-card-header">
+                                <span data-i18n="dashboard.newCustomers">العملاء الجدد</span>
+                                <div class="kpi-icon"><i class="fa-solid fa-user-plus"></i></div>
+                            </div>
+                            <strong class="kpi-value" id="newCustomersKpi">0</strong>
+                            <small data-i18n="dashboard.selectedPeriod">خلال الفترة المختارة</small>
+                        </article>
+
+                        <article class="kpi-card">
+                            <div class="kpi-card-header">
+                                <span data-i18n="dashboard.reactivatedCustomers">العملاء المعاد تنشيطهم</span>
+                                <div class="kpi-icon"><i class="fa-solid fa-user-check"></i></div>
+                            </div>
+                            <strong class="kpi-value" id="reactivatedCustomersKpi">0</strong>
+                            <small data-i18n="dashboard.selectedPeriod">خلال الفترة المختارة</small>
+                        </article>
+
                     </div>
+
+
+
 
 
                     <div class="dashboard-grid">
@@ -1014,6 +1044,8 @@
                         </article>
 
                     </div>
+
+
 
 
                     <div class="dashboard-tables">
@@ -1391,6 +1423,27 @@
 
                 </section>
 
+
+                <!-- Upcoming Collections -->
+                <section class="page-section hidden" id="upcomingCollectionsPage" data-page-section="upcomingCollections">
+                    <article class="content-card">
+                        <div class="card-header page-card-header">
+                            <div><h3>Upcoming Collections</h3><p>Invoices to collect before they become overdue</p></div>
+                            <div class="table-actions">
+                                <select id="upcomingPageDays"><option value="0">Today</option><option value="7">Next 7 Days</option><option value="10" selected>Next 10 Days</option></select>
+                                <button class="secondary-button" id="exportUpcomingExcelButton"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                                <button class="primary-button" id="printUpcomingButton"><i class="fa-solid fa-print"></i> Print / PDF</button>
+                            </div>
+                        </div>
+                        <div class="summary-grid upcoming-page-summary">
+                            <article class="summary-card"><span>Invoices</span><strong id="upcomingPageCount">0</strong></article>
+                            <article class="summary-card"><span>Total Balance Due</span><strong id="upcomingPageAmount">SAR 0.00</strong></article>
+                        </div>
+                        <div class="table-wrapper"><table><thead><tr>
+                            <th>Invoice Number</th><th>Customer Name</th><th>Salesman</th><th>Due Date</th><th>Balance Due</th><th>Days Remaining</th><th>Status</th>
+                        </tr></thead><tbody id="upcomingPageTableBody"></tbody></table></div>
+                    </article>
+                </section>
 
                 <!-- =====================================
                      Due & Overdue
@@ -1851,6 +1904,16 @@
                                 </span>
                                 <strong id="profileCompanyOutstandingValue">0.00 ر.س</strong>
                             </article>
+
+                            <article class="profile-kpi-card">
+                                <span data-i18n="salesmanProfiles.newCustomers">العملاء الجدد</span>
+                                <strong id="profileCompanyNewCustomersValue">0</strong>
+                            </article>
+
+                            <article class="profile-kpi-card">
+                                <span data-i18n="salesmanProfiles.reactivatedCustomers">العملاء المعاد تنشيطهم</span>
+                                <strong id="profileCompanyReactivatedCustomersValue">0</strong>
+                            </article>
                         </div>
                     </article>
 
@@ -2010,6 +2073,17 @@
                                 <strong id="profileCustomerCount">
                                     0
                                 </strong>
+                            </article>
+
+
+                            <article class="profile-kpi-card">
+                                <span data-i18n="salesmanProfiles.newCustomers">العملاء الجدد</span>
+                                <strong id="profileNewCustomerCount">0</strong>
+                            </article>
+
+                            <article class="profile-kpi-card">
+                                <span data-i18n="salesmanProfiles.reactivatedCustomers">العملاء المعاد تنشيطهم</span>
+                                <strong id="profileReactivatedCustomerCount">0</strong>
                             </article>
 
                         </div>
@@ -2329,6 +2403,18 @@
                                 </span>
                             </button>
 
+                            <button
+                                class="report-card"
+                                type="button"
+                                data-report="upcoming"
+                            >
+                                <i class="fa-solid fa-calendar-check"></i>
+
+                                <span data-i18n="reports.upcomingCollectionsReport">
+                                    تقرير التحصيلات القادمة
+                                </span>
+                            </button>
+
                         </div>
 
                     </article>
@@ -2580,6 +2666,7 @@
 <script src="products.js"></script>
 <script src="collections.js"></script>
 <script src="due.js"></script>
+<script src="upcoming.js"></script>
 <script src="targets.js"></script>
 <script src="profiles.js"></script>
 <script src="customerProfile.js"></script>

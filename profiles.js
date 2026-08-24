@@ -19,6 +19,8 @@ window.DashboardProfiles = (() => {
     let collectionRows = [];
     let dueRows = [];
     let companyDueRows = [];
+    let newCustomerRows = [];
+    let reactivatedCustomerRows = [];
     let eventsBound = false;
 
     function normalizeCode(value) {
@@ -91,7 +93,9 @@ window.DashboardProfiles = (() => {
             )
         );
 
-        return codes.includes(rowCode);
+        const rowCodes = splitSalesmanCodes(rowCode);
+        return rowCodes.some(code => codes.includes(code)) ||
+            codes.includes(rowCode);
     }
 
     function getSalesmanName(row) {
@@ -333,6 +337,14 @@ window.DashboardProfiles = (() => {
             ? data.companyDueOverdue
             : dueRows;
 
+        newCustomerRows = Array.isArray(data.newCustomers)
+            ? data.newCustomers
+            : [];
+
+        reactivatedCustomerRows = Array.isArray(data.reactivatedCustomers)
+            ? data.reactivatedCustomers
+            : [];
+
         populateSalesmen();
         render();
     }
@@ -507,6 +519,17 @@ window.DashboardProfiles = (() => {
         );
     }
 
+    function uniqueActivityCustomerCount(rows) {
+        const keys = new Set();
+        (Array.isArray(rows) ? rows : []).forEach(row => {
+            const code = getCustomerCode(row);
+            const name = getCustomerName(row);
+            const key = code || utils.normalizeText(name);
+            if (key) keys.add(key);
+        });
+        return keys.size;
+    }
+
     function buildProfile(code) {
         const selectedCode = normalizeCode(code);
         const targetRow =
@@ -544,6 +567,16 @@ window.DashboardProfiles = (() => {
                     row,
                     profileCodes
                 )
+            );
+
+        const newCustomers =
+            newCustomerRows.filter(row =>
+                rowBelongsToCodes(row, profileCodes)
+            );
+
+        const reactivatedCustomers =
+            reactivatedCustomerRows.filter(row =>
+                rowBelongsToCodes(row, profileCodes)
             );
 
         const sales = utils.sumBy(
@@ -615,6 +648,14 @@ window.DashboardProfiles = (() => {
             achievement,
             invoiceCount:
                 invoices.length,
+            newCustomerCount:
+                uniqueActivityCustomerCount(newCustomers),
+            reactivatedCustomerCount:
+                uniqueActivityCustomerCount(reactivatedCustomers),
+            newCustomers:
+                newCustomers,
+            reactivatedCustomers:
+                reactivatedCustomers,
 
             customers:
                 buildCustomers(
@@ -839,6 +880,16 @@ window.DashboardProfiles = (() => {
                 companyDue + companyOverdue
             )
         );
+
+        utils.setText(
+            "profileCompanyNewCustomersValue",
+            utils.formatNumber(uniqueActivityCustomerCount(newCustomerRows), 0)
+        );
+
+        utils.setText(
+            "profileCompanyReactivatedCustomersValue",
+            utils.formatNumber(uniqueActivityCustomerCount(reactivatedCustomerRows), 0)
+        );
     }
 
     function setProfileValues(profile) {
@@ -911,6 +962,16 @@ window.DashboardProfiles = (() => {
             utils.formatNumber(
                 profile.customers.length
             )
+        );
+
+        utils.setText(
+            "profileNewCustomerCount",
+            utils.formatNumber(profile.newCustomerCount, 0)
+        );
+
+        utils.setText(
+            "profileReactivatedCustomerCount",
+            utils.formatNumber(profile.reactivatedCustomerCount, 0)
         );
     }
 
@@ -1129,6 +1190,22 @@ window.DashboardProfiles = (() => {
             .map(createCustomerRow)
             .join("");
 
+        const createActivityRows = activityRows =>
+            (Array.isArray(activityRows) ? activityRows : [])
+                .map(row => `
+                    <tr>
+                        <td>${utils.escapeHTML(getCustomerCode(row) || "--")}</td>
+                        <td>${utils.escapeHTML(getCustomerName(row) || "--")}</td>
+                        <td>${utils.escapeHTML(utils.formatDate(getValue(row, ["activityDate", "date"], "")))}</td>
+                    </tr>
+                `)
+                .join("");
+
+        const newCustomerPrintRows =
+            createActivityRows(profile.newCustomers);
+        const reactivatedCustomerPrintRows =
+            createActivityRows(profile.reactivatedCustomers);
+
         const companyLogoUrl = new URL(
             "al-howail-logo.png",
             window.location.href
@@ -1327,8 +1404,19 @@ window.DashboardProfiles = (() => {
                                 .length
                         )}
                     </div>
+
+                    <div>
+                        New Customers:
+                        ${utils.formatNumber(profile.newCustomerCount, 0)}
+                    </div>
+
+                    <div>
+                        Reactivated Customers:
+                        ${utils.formatNumber(profile.reactivatedCustomerCount, 0)}
+                    </div>
                 </div>
 
+                <h2 style="margin:22px 0 10px;font-size:18px;">Customers List</h2>
                 <table>
                     <thead>
                         <tr>
@@ -1347,6 +1435,34 @@ window.DashboardProfiles = (() => {
 
                     <tbody>
                         ${bodyRows}
+                    </tbody>
+                </table>
+
+                <h2 style="margin:26px 0 10px;font-size:18px;">New Customers (${utils.formatNumber(profile.newCustomerCount, 0)})</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer Code</th>
+                            <th>Customer Name</th>
+                            <th>Date Added</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${newCustomerPrintRows || '<tr><td colspan="3">No new customers in the selected period</td></tr>'}
+                    </tbody>
+                </table>
+
+                <h2 style="margin:26px 0 10px;font-size:18px;">Reactivated Customers (${utils.formatNumber(profile.reactivatedCustomerCount, 0)})</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer Code</th>
+                            <th>Customer Name</th>
+                            <th>Date Reactivated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${reactivatedCustomerPrintRows || '<tr><td colspan="3">No reactivated customers in the selected period</td></tr>'}
                     </tbody>
                 </table>
             </body>

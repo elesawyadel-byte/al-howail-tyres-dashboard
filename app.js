@@ -35,6 +35,9 @@ window.DashboardApp = (() => {
             invoices: [],
             collections: [],
             dueOverdue: [],
+            newCustomers: [],
+            reactivatedCustomers: [],
+            upcomingDue: [],
             updatedAt: ""
         },
 
@@ -46,6 +49,9 @@ window.DashboardApp = (() => {
             invoices: [],
             collections: [],
             dueOverdue: [],
+            newCustomers: [],
+            reactivatedCustomers: [],
+            upcomingDue: [],
             updatedAt: ""
         }
     };
@@ -486,6 +492,35 @@ window.DashboardApp = (() => {
                     )
             );
 
+        const newCustomers =
+            state.rawData.newCustomers.filter(row =>
+                rowMatchesFilters(
+                    row,
+                    filters,
+                    ["activityDate", "Date", "date"]
+                )
+            );
+
+        const reactivatedCustomers =
+            state.rawData.reactivatedCustomers.filter(row =>
+                rowMatchesFilters(
+                    row,
+                    filters,
+                    ["activityDate", "Date", "date"]
+                )
+            );
+
+        const upcomingFilters = {
+            ...filters,
+            dateFrom: "",
+            dateTo: ""
+        };
+
+        const upcomingDue =
+            state.rawData.upcomingDue.filter(row =>
+                rowMatchesFilters(row, upcomingFilters)
+            );
+
         state.filteredData = {
             summary: {},
             counts: {
@@ -499,7 +534,10 @@ window.DashboardApp = (() => {
                     collections.length,
 
                 dueOverdue:
-                    dueOverdue.length
+                    dueOverdue.length,
+                newCustomers: newCustomers.length,
+                reactivatedCustomers: reactivatedCustomers.length,
+                upcomingDue: upcomingDue.length
             },
 
             filters,
@@ -507,6 +545,9 @@ window.DashboardApp = (() => {
             invoices,
             collections,
             dueOverdue,
+            newCustomers,
+            reactivatedCustomers,
+            upcomingDue,
 
             updatedAt:
                 state.rawData.updatedAt
@@ -557,6 +598,12 @@ window.DashboardApp = (() => {
             window.DashboardDue,
             "setData",
             data.dueOverdue
+        );
+
+        callModule(
+            window.DashboardUpcoming,
+            "setData",
+            data.upcomingDue
         );
 
         /*
@@ -1100,6 +1147,21 @@ window.DashboardApp = (() => {
                         ? response.dueOverdue
                         : [],
 
+                newCustomers:
+                    Array.isArray(response.newCustomers)
+                        ? response.newCustomers
+                        : [],
+
+                reactivatedCustomers:
+                    Array.isArray(response.reactivatedCustomers)
+                        ? response.reactivatedCustomers
+                        : [],
+
+                upcomingDue:
+                    Array.isArray(response.upcomingDue)
+                        ? response.upcomingDue
+                        : [],
+
                 updatedAt:
                     response.updatedAt ||
                     ""
@@ -1200,6 +1262,11 @@ window.DashboardApp = (() => {
 
             subtitle:
                 "dueOverdue.subtitle"
+        },
+
+        upcomingCollections: {
+            title: "dashboard.upcomingCollections",
+            subtitle: "dashboard.upcomingCollectionsSubtitle"
         },
 
         targets: {

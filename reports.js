@@ -21,6 +21,7 @@ window.DashboardReports = (() => {
         invoices: [],
         collections: [],
         dueOverdue: [],
+        upcomingDue: [],
         updatedAt: ""
     };
 
@@ -223,6 +224,7 @@ window.DashboardReports = (() => {
             invoices: safeArray(data.invoices),
             collections: safeArray(data.collections),
             dueOverdue: safeArray(data.dueOverdue),
+            upcomingDue: safeArray(data.upcomingDue),
             updatedAt: data.updatedAt || ""
         };
     }
@@ -254,7 +256,8 @@ window.DashboardReports = (() => {
                 "reports.salesmanReport",
                 "تقرير المندوب"
             ),
-            branch: utils.t("reports.branchReport", "تقرير الفرع")
+            branch: utils.t("reports.branchReport", "تقرير الفرع"),
+            upcoming: utils.t("reports.upcomingCollectionsReport", "تقرير التحصيلات القادمة")
         };
 
         return titles[type] || utils.t("reports.title", "التقارير");
@@ -448,6 +451,44 @@ window.DashboardReports = (() => {
         };
     }
 
+
+    function buildUpcomingCollectionsReport() {
+        const rows = currentData.upcomingDue
+            .filter(row => {
+                const remaining = number(row, ["daysRemainingToCollect", "daysUntilDue"], 0);
+                return balance(row) > 0 && remaining >= 0 && remaining <= 10;
+            })
+            .sort((a, b) => {
+                const da = number(a, ["daysRemainingToCollect", "daysUntilDue"], 0);
+                const db = number(b, ["daysRemainingToCollect", "daysUntilDue"], 0);
+                return da - db || balance(b) - balance(a);
+            })
+            .map(row => {
+                const remaining = number(row, ["daysRemainingToCollect", "daysUntilDue"], 0);
+                return {
+                    "Invoice Number": invoiceNumber(row),
+                    "Customer Code": customerCode(row),
+                    "Customer Name": customerName(row),
+                    "Salesman Code": canonicalSalesman(row).code,
+                    "Salesman Name": canonicalSalesman(row).name,
+                    "Branch": canonicalSalesman(row).branch || branch(row),
+                    "Due Date": formatDate(value(row, ["dueDate"], "")),
+                    "Balance Due": balance(row),
+                    "Days Remaining": remaining,
+                    "Status": remaining === 0
+                        ? utils.t("reports.dueToday", "مستحق اليوم")
+                        : utils.t("reports.dueInDays", "مستحق خلال") + ` ${remaining} ` + utils.t("common.day", "يوم")
+                };
+            });
+
+        return {
+            type: "upcoming",
+            title: reportTitle("upcoming"),
+            rows,
+            currencyColumns: ["Balance Due"]
+        };
+    }
+
     function getReport(type) {
         const builders = {
             sales: buildSalesReport,
@@ -455,7 +496,8 @@ window.DashboardReports = (() => {
             overdue: buildOverdueReport,
             target: buildTargetReport,
             salesman: buildSalesmanReport,
-            branch: buildBranchReport
+            branch: buildBranchReport,
+            upcoming: buildUpcomingCollectionsReport
         };
 
         return builders[type]?.() || null;
@@ -478,6 +520,38 @@ window.DashboardReports = (() => {
             (sum, row) => sum + utils.toNumber(row["Overdue"] || row["Overdue Amount"]),
             0
         );
+
+        const totalBalanceDue = rows.reduce(
+            (sum, row) => sum + utils.toNumber(row["Balance Due"]),
+            0
+        );
+
+        if (report?.type === "upcoming") {
+            const dueTodayCount = rows.filter(row => utils.toNumber(row["Days Remaining"]) === 0).length;
+            const nextSevenCount = rows.filter(row => {
+                const days = utils.toNumber(row["Days Remaining"]);
+                return days >= 0 && days <= 7;
+            }).length;
+
+            return [
+                {
+                    label: utils.t("common.records", "عدد السجلات"),
+                    value: utils.formatNumber(rows.length)
+                },
+                {
+                    label: utils.t("reports.totalBalanceDue", "إجمالي المبالغ المطلوب تحصيلها"),
+                    value: utils.formatCurrency(totalBalanceDue)
+                },
+                {
+                    label: utils.t("reports.dueTodayCount", "مستحق اليوم"),
+                    value: utils.formatNumber(dueTodayCount)
+                },
+                {
+                    label: utils.t("reports.next7DaysCount", "خلال 7 أيام"),
+                    value: utils.formatNumber(nextSevenCount)
+                }
+            ];
+        }
 
         return [
             {

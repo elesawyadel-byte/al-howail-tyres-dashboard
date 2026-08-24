@@ -29,7 +29,10 @@ window.DashboardDashboard = (() => {
         target: [],
         invoices: [],
         collections: [],
-        dueOverdue: []
+        dueOverdue: [],
+        newCustomers: [],
+        reactivatedCustomers: [],
+        upcomingDue: []
     };
 
     /* =====================================================
@@ -77,6 +80,15 @@ window.DashboardDashboard = (() => {
 
             dueOverdue:
                 safeArray(data.dueOverdue),
+
+            newCustomers:
+                safeArray(data.newCustomers),
+
+            reactivatedCustomers:
+                safeArray(data.reactivatedCustomers),
+
+            upcomingDue:
+                safeArray(data.upcomingDue),
 
             updatedAt:
                 data.updatedAt || ""
@@ -1069,6 +1081,80 @@ window.DashboardDashboard = (() => {
        عرض الرسوم
     ===================================================== */
 
+    function uniqueCustomerCount(rows) {
+        const keys = new Set();
+        safeArray(rows).forEach(row => {
+            const code = utils.normalizeCode(
+                utils.firstValue(row, ["customerCode", "Customer Code"], "")
+            );
+            const name = utils.normalizeText(
+                utils.firstValue(row, ["customerName", "Customer Name"], "")
+            );
+            const key = code || name;
+            if (key) keys.add(key);
+        });
+        return keys.size;
+    }
+
+    function renderCustomerActivityKPIs() {
+        utils.setText(
+            "newCustomersKpi",
+            utils.formatNumber(uniqueCustomerCount(currentData.newCustomers), 0)
+        );
+        utils.setText(
+            "reactivatedCustomersKpi",
+            utils.formatNumber(uniqueCustomerCount(currentData.reactivatedCustomers), 0)
+        );
+    }
+
+    function renderUpcomingCollections() {
+        const body = utils.byId("upcomingCollectionsTableBody");
+        const amountEl = utils.byId("upcomingCollectionsAmount");
+        const countEl = utils.byId("upcomingCollectionsCount");
+        if (!body) return;
+
+        const selectedDays = Math.max(1, utils.toNumber(utils.byId("upcomingDaysFilter")?.value || 10));
+        const rows = safeArray(currentData.upcomingDue)
+            .filter(row => utils.toNumber(row.daysUntilDue) <= selectedDays)
+            .slice()
+            .sort((a, b) =>
+                utils.toNumber(a.daysUntilDue) - utils.toNumber(b.daysUntilDue) ||
+                utils.toNumber(b.invoiceBalance) - utils.toNumber(a.invoiceBalance)
+            );
+
+        const total = utils.sumBy(rows, row =>
+            utils.firstValue(row, ["invoiceBalance", "balance", "Inv Balance"], 0)
+        );
+
+        if (amountEl) amountEl.textContent = utils.formatCurrency(total);
+        if (countEl) countEl.textContent = utils.formatNumber(rows.length, 0);
+
+        if (!rows.length) {
+            body.innerHTML = `
+                <tr>
+                    <td colspan="7" class="empty-cell">
+                        ${utils.escapeHTML(selectedDays === 7 ? utils.t("dashboard.noUpcomingCollections7", "لا توجد فواتير مستحقة خلال السبعة أيام القادمة") : utils.t("dashboard.noUpcomingCollections", "لا توجد فواتير مستحقة خلال العشرة أيام القادمة"))}
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        body.innerHTML = rows.map(row => {
+            const days = utils.toNumber(row.daysUntilDue);
+            const urgency = days <= 3 ? "critical" : days <= 7 ? "warning" : "normal";
+            return `
+                <tr>
+                    <td>${utils.escapeHTML(row.invoiceNo || "--")}</td>
+                    <td>${utils.escapeHTML(row.customerName || "--")}</td>
+                    <td>${utils.escapeHTML(row.salesmanName || row.salesmanCode || "--")}</td>
+                    <td>${utils.escapeHTML(utils.formatDate(row.dueDate) || row.dueDate || "--")}</td>
+                    <td>${utils.formatCurrency(row.invoiceBalance)}</td>
+                    <td>${utils.formatNumber(days, 0)}</td>
+                    <td><span class="upcoming-status ${urgency}">${utils.escapeHTML(days === 0 ? utils.t("dashboard.dueToday", "اليوم") : `${days} ${utils.t("common.day", "يوم")}`)}</span></td>
+                </tr>`;
+        }).join("");
+    }
+
     function renderCharts(summary) {
         const monthly =
             buildMonthlySeries();
@@ -1147,6 +1233,8 @@ window.DashboardDashboard = (() => {
             );
 
         renderKPIs(summary);
+        renderCustomerActivityKPIs();
+        renderUpcomingCollections();
         renderRecentInvoices();
         renderTopOverdue();
         renderCharts(summary);
