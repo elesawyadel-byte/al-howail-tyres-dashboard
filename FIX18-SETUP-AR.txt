@@ -1,0 +1,12 @@
+FIX18 - Customer Credit/Cash Master Link
+
+1) ارفع Code.gs الموجود في هذه النسخة إلى Google Apps Script بالكامل.
+2) احفظ ثم Deploy > Manage deployments > Edit > New version > Deploy.
+3) استبدل ملفات المشروع على GitHub بهذه النسخة ثم Commit + Push origin.
+4) اعمل Refresh قوي للمتصفح Ctrl+F5.
+
+التعديل:
+- مصدر Credit Limit أصبح شيت Customers info Credit&Cash مباشرة.
+- الربط الأساسي Customer Number.
+- لا يعتمد Credit Limit على وجود العميل في Due & Overdue.
+- CR Limit فارغ/صفر = Cash، وقيمة أكبر من صفر = Credit.

@@ -37,6 +37,7 @@ window.DashboardApp = (() => {
             dueOverdue: [],
             newCustomers: [],
             reactivatedCustomers: [],
+            customerInfo: [],
             upcomingDue: [],
             updatedAt: ""
         },
@@ -51,6 +52,7 @@ window.DashboardApp = (() => {
             dueOverdue: [],
             newCustomers: [],
             reactivatedCustomers: [],
+            customerInfo: [],
             upcomingDue: [],
             updatedAt: ""
         }
@@ -547,6 +549,7 @@ window.DashboardApp = (() => {
             dueOverdue,
             newCustomers,
             reactivatedCustomers,
+            customerInfo: state.rawData.customerInfo,
             upcomingDue,
 
             updatedAt:
@@ -1155,6 +1158,11 @@ window.DashboardApp = (() => {
                 reactivatedCustomers:
                     Array.isArray(response.reactivatedCustomers)
                         ? response.reactivatedCustomers
+                        : [],
+
+                customerInfo:
+                    Array.isArray(response.customerInfo)
+                        ? response.customerInfo
                         : [],
 
                 upcomingDue:

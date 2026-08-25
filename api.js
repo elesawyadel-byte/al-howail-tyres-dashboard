@@ -435,6 +435,11 @@ window.DashboardAPI = (() => {
                     ? response.reactivatedCustomers
                     : [],
 
+            customerInfo:
+                Array.isArray(response?.customerInfo)
+                    ? response.customerInfo
+                    : [],
+
             upcomingDue:
                 Array.isArray(response?.upcomingDue)
                     ? response.upcomingDue
