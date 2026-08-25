@@ -21,6 +21,7 @@ window.DashboardProfiles = (() => {
     let companyDueRows = [];
     let newCustomerRows = [];
     let reactivatedCustomerRows = [];
+    let customerInfoRows = [];
     let eventsBound = false;
 
     function normalizeCode(value) {
@@ -264,6 +265,45 @@ window.DashboardProfiles = (() => {
         );
     }
 
+    function getPaymentType(row) {
+        const value = utils.normalizeText(
+            getValue(row, ["paymentType", "Payment Type"], "")
+        );
+
+        if (value === "cash" || value === "credit") {
+            return value;
+        }
+
+        return getCreditLimit(row) > 0 ? "credit" : "cash";
+    }
+
+    function getAccountStatus(row) {
+        return utils.normalizeText(
+            getValue(row, ["accountStatus", "sheetStatus", "Status"], "")
+        );
+    }
+
+    function formatCustomerCredit(customer) {
+        if (customer && customer.paymentType === "cash" && !customer.creditLimit) {
+            return "Cash";
+        }
+
+        return utils.formatCurrency(customer?.creditLimit || 0);
+    }
+
+    function getCustomerDisplayStatus(customer) {
+        if (customer.overdue > 0) {
+            return "Overdue";
+        }
+
+        const accountStatus = utils.normalizeText(customer.accountStatus || "");
+        if (accountStatus === "inactive") {
+            return "Inactive";
+        }
+
+        return "Active";
+    }
+
     function getInvoiceDate(row) {
         return getValue(
             row,
@@ -343,6 +383,10 @@ window.DashboardProfiles = (() => {
 
         reactivatedCustomerRows = Array.isArray(data.reactivatedCustomers)
             ? data.reactivatedCustomers
+            : [];
+
+        customerInfoRows = Array.isArray(data.customerInfo)
+            ? data.customerInfo
             : [];
 
         populateSalesmen();
@@ -579,6 +623,11 @@ window.DashboardProfiles = (() => {
                 rowBelongsToCodes(row, profileCodes)
             );
 
+        const customerInfo =
+            customerInfoRows.filter(row =>
+                rowBelongsToCodes(row, profileCodes)
+            );
+
         const sales = utils.sumBy(
             invoices,
             getInvoiceSales
@@ -661,7 +710,8 @@ window.DashboardProfiles = (() => {
                 buildCustomers(
                     invoices,
                     collections,
-                    balances
+                    balances,
+                    customerInfo
                 )
         };
     }
@@ -669,7 +719,8 @@ window.DashboardProfiles = (() => {
     function buildCustomers(
         invoices,
         collections,
-        balances
+        balances,
+        customerInfo
     ) {
         const customerMap = new Map();
 
@@ -697,7 +748,9 @@ window.DashboardProfiles = (() => {
                     due: 0,
                     overdue: 0,
                     overdueDays: 0,
-                    creditLimit: 0
+                    creditLimit: 0,
+                    paymentType: "",
+                    accountStatus: ""
                 });
             }
 
@@ -799,11 +852,38 @@ window.DashboardProfiles = (() => {
                     getOverdueDays(row)
                 );
 
+            // Temporary fallback only. The customer master sheet below is authoritative.
             customer.creditLimit =
                 Math.max(
                     customer.creditLimit,
                     getCreditLimit(row)
                 );
+        });
+
+        const infoByCode = new Map();
+        const infoByName = new Map();
+
+        (Array.isArray(customerInfo) ? customerInfo : []).forEach(row => {
+            const code = getCustomerCode(row);
+            const name = utils.normalizeText(getCustomerName(row));
+            if (code) infoByCode.set(code, row);
+            if (name) infoByName.set(name, row);
+        });
+
+        customerMap.forEach(customer => {
+            const info =
+                (customer.customerCode && infoByCode.get(customer.customerCode)) ||
+                infoByName.get(utils.normalizeText(customer.customerName || "")) ||
+                null;
+
+            if (!info) {
+                return;
+            }
+
+            // Customer master sheet is the source of truth for credit/cash settings.
+            customer.creditLimit = getCreditLimit(info);
+            customer.paymentType = getPaymentType(info);
+            customer.accountStatus = getAccountStatus(info);
         });
 
         return Array.from(
@@ -976,8 +1056,9 @@ window.DashboardProfiles = (() => {
     }
 
     function createCustomerRow(customer) {
-        const hasOverdue =
-            customer.overdue > 0;
+        const displayStatus = getCustomerDisplayStatus(customer);
+        const hasOverdue = displayStatus === "Overdue";
+        const isInactive = displayStatus === "Inactive";
 
         return `
             <tr>
@@ -1032,28 +1113,18 @@ window.DashboardProfiles = (() => {
                 </td>
 
                 <td>
-                    ${utils.formatCurrency(
-                        customer.creditLimit
+                    ${utils.escapeHTML(
+                        formatCustomerCredit(customer)
                     )}
                 </td>
 
                 <td>
                     <span class="status-badge ${
-                        hasOverdue
+                        hasOverdue || isInactive
                             ? "status-warning"
                             : "status-success"
                     }">
-                        ${utils.escapeHTML(
-                            hasOverdue
-                                ? utils.t(
-                                      "salesmanProfiles.overdueCustomer",
-                                      "متأخر"
-                                  )
-                                : utils.t(
-                                      "salesmanProfiles.active",
-                                      "نشط"
-                                  )
-                        )}
+                        ${utils.escapeHTML(displayStatus)}
                     </span>
                 </td>
             </tr>
@@ -1146,12 +1217,10 @@ window.DashboardProfiles = (() => {
                     customer.overdueDays,
 
                 "Credit Limit":
-                    customer.creditLimit,
+                    formatCustomerCredit(customer),
 
                 Status:
-                    customer.overdue > 0
-                        ? "Overdue"
-                        : "Active"
+                    getCustomerDisplayStatus(customer)
             })
         );
     }
