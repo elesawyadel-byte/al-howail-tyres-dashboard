@@ -1339,12 +1339,12 @@ html[dir="rtl"] .navigation-item.active {
 
 .chart-container {
     position: relative;
-    height: 285px;
+    height: 340px;
     padding: 14px 18px 20px;
 }
 
 .chart-container-small {
-    height: 285px;
+    height: 340px;
 }
 
 .dashboard-tables {
@@ -1752,6 +1752,93 @@ tbody tr:last-child td {
 /* =========================================================
    Alerts
 ========================================================= */
+
+/* =========================================================
+   Salesman Comprehensive Report
+========================================================= */
+
+.salesman-report-grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.comparison-grid {
+    padding: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.comparison-card {
+    padding: 14px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.comparison-card-title {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.comparison-card-value {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.comparison-card-previous {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.comparison-growth {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.comparison-growth-up {
+    color: #166534;
+    background: var(--success-light, #dcfce7);
+}
+
+.comparison-growth-down {
+    color: #991b1b;
+    background: var(--danger-light, #fee2e2);
+}
+
+.comparison-growth-flat {
+    color: var(--text-secondary);
+    background: var(--surface-soft);
+}
+
+.chart-container-label {
+    padding: 0 18px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 1100px) {
+    .salesman-report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 .alerts-list {
     padding: 16px;
@@ -2633,6 +2720,27 @@ body.dark-mode input[type="date"] {
     justify-content: flex-end;
     gap: 9px;
     border-bottom: 1px solid var(--border);
+}
+
+.report-period-badge {
+    margin: 0 22px 12px;
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-primary);
+    background: var(--surface-soft);
+}
+
+.report-preview-chart {
+    margin: 0 22px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    height: 420px;
+    position: relative;
 }
 
 .report-preview-summary {
@@ -5924,6 +6032,86 @@ html[dir="rtl"] .dashboard-tables .content-card .card-header::before {
 
                         </div>
 
+                        <div class="salesman-report-grid">
+                            <article class="content-card">
+                                <div class="card-header page-card-header">
+                                    <div>
+                                        <h3 data-i18n="salesmanProfiles.comprehensiveReport">
+                                            التقرير الشامل
+                                        </h3>
+                                        <p data-i18n="salesmanProfiles.comprehensiveReportSubtitle">
+                                            مقارنة الأداء الشهري واتجاه المبيعات
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="comparison-grid">
+                                    <article class="comparison-card">
+                                        <span class="comparison-card-title" data-i18n="salesmanProfiles.salesComparison">
+                                            المبيعات
+                                        </span>
+                                        <strong class="comparison-card-value" id="profileSalesCurrentValue">
+                                            0.00 ر.س
+                                        </strong>
+                                        <span class="comparison-card-previous">
+                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span id="profileSalesPreviousValue">0.00 ر.س</span>
+                                        </span>
+                                        <span class="comparison-growth comparison-growth-flat" id="profileSalesGrowthBadge">0%</span>
+                                    </article>
+
+                                    <article class="comparison-card">
+                                        <span class="comparison-card-title" data-i18n="salesmanProfiles.collectionsComparison">
+                                            التحصيلات
+                                        </span>
+                                        <strong class="comparison-card-value" id="profileCollectionsCurrentValue">
+                                            0.00 ر.س
+                                        </strong>
+                                        <span class="comparison-card-previous">
+                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span id="profileCollectionsPreviousValue">0.00 ر.س</span>
+                                        </span>
+                                        <span class="comparison-growth comparison-growth-flat" id="profileCollectionsGrowthBadge">0%</span>
+                                    </article>
+
+                                    <article class="comparison-card">
+                                        <span class="comparison-card-title" data-i18n="salesmanProfiles.invoiceCountComparison">
+                                            عدد الفواتير
+                                        </span>
+                                        <strong class="comparison-card-value" id="profileInvoiceCountCurrentValue">
+                                            0
+                                        </strong>
+                                        <span class="comparison-card-previous">
+                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span id="profileInvoiceCountPreviousValue">0</span>
+                                        </span>
+                                        <span class="comparison-growth comparison-growth-flat" id="profileInvoiceCountGrowthBadge">0%</span>
+                                    </article>
+                                </div>
+
+                                <div class="chart-container">
+                                    <div class="chart-container-label" data-i18n="salesmanProfiles.monthlySalesTrend">
+                                        اتجاه المبيعات الشهري
+                                    </div>
+                                    <canvas id="salesmanTrendChart"></canvas>
+                                </div>
+                            </article>
+
+                            <article class="content-card">
+                                <div class="card-header page-card-header">
+                                    <div>
+                                        <h3 data-i18n="salesmanProfiles.salesmanAlerts">
+                                            تنبيهات المندوب
+                                        </h3>
+                                        <p data-i18n="salesmanProfiles.salesmanAlertsSubtitle">
+                                            العملاء المتأخرون وتجاوز الحد الائتماني
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div id="salesmanProfileAlertsList" class="alerts-list"></div>
+                            </article>
+                        </div>
 
                         <article class="content-card">
 
@@ -9309,7 +9497,10 @@ window.DashboardCharts = (() => {
         salesCollections: null,
         dueOverdue: null,
         salesmanPerformance: null,
-        branchPerformance: null
+        branchPerformance: null,
+        salesmanTrend: null,
+        salesmanReportChart: null,
+        branchReportChart: null
     };
 
     /* =====================================================
@@ -9376,6 +9567,16 @@ window.DashboardCharts = (() => {
             responsive: true,
             maintainAspectRatio: false,
 
+            /*
+             * دقة أعلى للرسم على الشاشات ذات الكثافة
+             * العادية، لضمان وضوح الخطوط والنصوص عند
+             * تصدير الرسم كصورة للطباعة.
+             */
+            devicePixelRatio: Math.max(
+                2,
+                window.devicePixelRatio || 1
+            ),
+
             interaction: {
                 intersect: false,
                 mode: "index"
@@ -9422,18 +9623,19 @@ window.DashboardCharts = (() => {
         return {
             beginAtZero: true,
 
+            /*
+             * مساحة إضافية أعلى المحور حتى لا تُقطع
+             * تسميات القيم فوق الأعمدة عند اقتراب
+             * القيمة من أعلى حد في الرسم.
+             */
+            grace: "10%",
+
             ticks: {
                 color: getTextColor(),
 
                 callback(value) {
-                    return new Intl.NumberFormat(
-                        utils.getLocale(),
-                        {
-                            notation: "compact",
-                            maximumFractionDigits: 1
-                        }
-                    ).format(
-                        utils.toNumber(value)
+                    return formatCompactNumber(
+                        value
                     );
                 }
             },
@@ -9441,6 +9643,140 @@ window.DashboardCharts = (() => {
             grid: {
                 color: getGridColor(),
                 drawBorder: false
+            }
+        };
+    }
+
+    /* =====================================================
+       تنسيق مختصر للأرقام (مثل 400K، 1.2M)
+       يُستخدم في محاور الرسوم وفي تسميات القيم
+    ===================================================== */
+
+    function formatCompactNumber(value) {
+        return new Intl.NumberFormat(
+            utils.getLocale(),
+            {
+                notation: "compact",
+                maximumFractionDigits: 1
+            }
+        ).format(utils.toNumber(value));
+    }
+
+    /* =====================================================
+       إضافة (Plugin) لعرض القيمة فوق كل عمود في الرسوم
+       البيانية العمودية، أو بجانب كل عمود في الرسوم الأفقية
+    ===================================================== */
+
+    function createValueLabelsPlugin(
+        formatValue
+    ) {
+        return {
+            id: `valueLabels-${Math.random()
+                .toString(36)
+                .slice(2)}`,
+
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+
+                const isHorizontal =
+                    chart.options
+                        .indexAxis === "y";
+
+                ctx.save();
+
+                ctx.font = `800 12px ${getDefaultFontFamily()}`;
+
+                ctx.fillStyle =
+                    getTextColor();
+
+                chart.data.datasets.forEach(
+                    (
+                        dataset,
+                        datasetIndex
+                    ) => {
+                        const meta =
+                            chart.getDatasetMeta(
+                                datasetIndex
+                            );
+
+                        if (
+                            meta.hidden ||
+                            !meta.data
+                        ) {
+                            return;
+                        }
+
+                        meta.data.forEach(
+                            (
+                                element,
+                                index
+                            ) => {
+                                const rawValue =
+                                    dataset
+                                        .data[
+                                        index
+                                    ];
+
+                                if (
+                                    rawValue ===
+                                        null ||
+                                    rawValue ===
+                                        undefined ||
+                                    utils.toNumber(
+                                        rawValue
+                                    ) === 0
+                                ) {
+                                    return;
+                                }
+
+                                const label =
+                                    formatValue(
+                                        rawValue,
+                                        dataset,
+                                        datasetIndex
+                                    );
+
+                                if (!label) {
+                                    return;
+                                }
+
+                                const position =
+                                    typeof element.tooltipPosition ===
+                                    "function"
+                                        ? element.tooltipPosition()
+                                        : element.getCenterPoint();
+
+                                if (
+                                    isHorizontal
+                                ) {
+                                    ctx.textAlign =
+                                        "start";
+                                    ctx.textBaseline =
+                                        "middle";
+                                    ctx.fillText(
+                                        label,
+                                        position.x +
+                                            8,
+                                        position.y
+                                    );
+                                } else {
+                                    ctx.textAlign =
+                                        "center";
+                                    ctx.textBaseline =
+                                        "bottom";
+                                    ctx.fillText(
+                                        label,
+                                        position.x,
+                                        position.y -
+                                            8
+                                    );
+                                }
+                            }
+                        );
+                    }
+                );
+
+                ctx.restore();
             }
         };
     }
@@ -9730,9 +10066,16 @@ window.DashboardCharts = (() => {
         const colors = getColors();
         const baseOptions = getBaseOptions();
 
+        const valueLabelsPlugin =
+            createValueLabelsPlugin(value =>
+                formatCompactNumber(value)
+            );
+
         chartInstances.salesmanPerformance =
             new window.Chart(canvas, {
                 type: "bar",
+
+                plugins: [valueLabelsPlugin],
 
                 data: {
                     labels,
@@ -9851,9 +10194,16 @@ window.DashboardCharts = (() => {
         const colors = getColors();
         const baseOptions = getBaseOptions();
 
+        const valueLabelsPlugin =
+            createValueLabelsPlugin(value =>
+                formatCompactNumber(value)
+            );
+
         chartInstances.branchPerformance =
             new window.Chart(canvas, {
                 type: "bar",
+
+                plugins: [valueLabelsPlugin],
 
                 data: {
                     labels,
@@ -9928,6 +10278,215 @@ window.DashboardCharts = (() => {
     }
 
     /* =====================================================
+       اتجاه أداء المندوب من يناير حتى الشهر المختار
+       (مبيعات - تحصيلات - عدد فواتير)
+    ===================================================== */
+
+    function renderSalesmanTrend({
+        labels = [],
+        sales = [],
+        collections = [],
+        invoiceCounts = []
+    } = {}) {
+        if (!isAvailable()) {
+            return null;
+        }
+
+        const canvas = utils.byId(
+            "salesmanTrendChart"
+        );
+
+        if (!canvas) {
+            return null;
+        }
+
+        destroy("salesmanTrend");
+
+        const colors = getColors();
+        const baseOptions = getBaseOptions();
+
+        const valueLabelsPlugin =
+            createValueLabelsPlugin(
+                (value, dataset) =>
+                    dataset.yAxisID === "y1"
+                        ? utils.formatNumber(
+                              value
+                          )
+                        : formatCompactNumber(
+                              value
+                          )
+            );
+
+        chartInstances.salesmanTrend =
+            new window.Chart(canvas, {
+                type: "bar",
+
+                plugins: [valueLabelsPlugin],
+
+                data: {
+                    labels,
+
+                    datasets: [
+                        {
+                            label: utils.t(
+                                "salesmanProfiles.sales",
+                                "المبيعات"
+                            ),
+
+                            data: sales,
+
+                            backgroundColor:
+                                "rgba(23, 107, 135, 0.78)",
+
+                            borderColor:
+                                colors.primary,
+
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            maxBarThickness: 26,
+                            yAxisID: "y"
+                        },
+
+                        {
+                            label: utils.t(
+                                "salesmanProfiles.collections",
+                                "التحصيلات"
+                            ),
+
+                            data: collections,
+
+                            backgroundColor:
+                                "rgba(22, 163, 74, 0.78)",
+
+                            borderColor:
+                                colors.success,
+
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            maxBarThickness: 26,
+                            yAxisID: "y"
+                        },
+
+                        {
+                            label: utils.t(
+                                "salesmanProfiles.invoiceCount",
+                                "عدد الفواتير"
+                            ),
+
+                            data: invoiceCounts,
+
+                            backgroundColor:
+                                "rgba(124, 58, 237, 0.78)",
+
+                            borderColor:
+                                colors.purple,
+
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            maxBarThickness: 26,
+                            yAxisID: "y1"
+                        }
+                    ]
+                },
+
+                options: {
+                    ...baseOptions,
+
+                    /*
+                     * تعطيل التحريك في هذا الرسم تحديدًا
+                     * لضمان رسمه فورًا على الـ canvas؛
+                     * هذا ضروري حتى تنجح عملية تحويله
+                     * إلى صورة عند الطباعة (toDataURL)
+                     * دون التقاط لوحة رسم فارغة.
+                     */
+                    animation: false,
+
+                    plugins: {
+                        ...baseOptions.plugins,
+
+                        tooltip: {
+                            ...baseOptions.plugins.tooltip,
+
+                            callbacks: {
+                                label(context) {
+                                    if (
+                                        context
+                                            .dataset
+                                            .yAxisID ===
+                                        "y1"
+                                    ) {
+                                        return (
+                                            `${context.dataset.label}: ` +
+                                            utils.formatNumber(
+                                                context.raw
+                                            )
+                                        );
+                                    }
+
+                                    return (
+                                        `${context.dataset.label}: ` +
+                                        utils.formatCurrency(
+                                            context.raw
+                                        )
+                                    );
+                                }
+                            }
+                        }
+                    },
+
+                    scales: {
+                        x: {
+                            ticks: {
+                                color:
+                                    getTextColor()
+                            },
+
+                            grid: {
+                                color:
+                                    getGridColor(),
+                                display: false
+                            }
+                        },
+
+                        y: {
+                            ...getCurrencyScaleOptions(),
+
+                            position:
+                                utils.getLanguage() ===
+                                "ar"
+                                    ? "right"
+                                    : "left"
+                        },
+
+                        y1: {
+                            beginAtZero: true,
+                            grace: "15%",
+
+                            position:
+                                utils.getLanguage() ===
+                                "ar"
+                                    ? "left"
+                                    : "right",
+
+                            ticks: {
+                                color:
+                                    getTextColor(),
+
+                                precision: 0
+                            },
+
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+
+        return chartInstances.salesmanTrend;
+    }
+
+    /* =====================================================
        تحديث ألوان الرسوم عند تغيير الوضع
     ===================================================== */
 
@@ -9984,8 +10543,271 @@ window.DashboardCharts = (() => {
                     getGridColor();
             }
 
+            if (
+                chart.options?.scales?.y1
+                    ?.ticks
+            ) {
+                chart.options.scales
+                    .y1.ticks.color =
+                    getTextColor();
+            }
+
             chart.update();
         });
+    }
+
+    /* =====================================================
+       رسم بياني: المبيعات والتحصيلات لكل مندوب
+       (يُستخدم في تقرير المندوب بصفحة التقارير)
+    ===================================================== */
+
+    function renderSalesmanReportChart({
+        labels = [],
+        sales = [],
+        collections = []
+    } = {}) {
+        if (!isAvailable()) {
+            return null;
+        }
+
+        const canvas = utils.byId(
+            "reportPreviewChart"
+        );
+
+        if (!canvas) {
+            return null;
+        }
+
+        destroy("salesmanReportChart");
+
+        const colors = getColors();
+        const baseOptions = getBaseOptions();
+
+        const valueLabelsPlugin =
+            createValueLabelsPlugin(value =>
+                formatCompactNumber(value)
+            );
+
+        chartInstances.salesmanReportChart =
+            new window.Chart(canvas, {
+                type: "bar",
+
+                plugins: [valueLabelsPlugin],
+
+                data: {
+                    labels,
+
+                    datasets: [
+                        {
+                            label: utils.t(
+                                "targets.sales",
+                                "المبيعات"
+                            ),
+
+                            data: sales,
+
+                            backgroundColor:
+                                "rgba(23, 107, 135, 0.78)",
+
+                            borderColor:
+                                colors.primary,
+
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            maxBarThickness: 32
+                        },
+
+                        {
+                            label: utils.t(
+                                "dashboard.collections",
+                                "التحصيلات"
+                            ),
+
+                            data: collections,
+
+                            backgroundColor:
+                                "rgba(22, 163, 74, 0.78)",
+
+                            borderColor:
+                                colors.success,
+
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            maxBarThickness: 32
+                        }
+                    ]
+                },
+
+                options: {
+                    ...baseOptions,
+
+                    animation: false,
+
+                    plugins: {
+                        ...baseOptions.plugins,
+
+                        tooltip: {
+                            ...baseOptions.plugins.tooltip,
+
+                            callbacks: {
+                                label(context) {
+                                    return (
+                                        `${context.dataset.label}: ` +
+                                        utils.formatCurrency(
+                                            context.raw
+                                        )
+                                    );
+                                }
+                            }
+                        }
+                    },
+
+                    scales: {
+                        x: {
+                            ticks: {
+                                color:
+                                    getTextColor(),
+                                maxRotation: 35,
+                                minRotation: 0
+                            },
+
+                            grid: {
+                                display: false
+                            }
+                        },
+
+                        y: getCurrencyScaleOptions()
+                    }
+                }
+            });
+
+        return chartInstances.salesmanReportChart;
+    }
+
+    /* =====================================================
+       رسم بياني: المبيعات والتحصيلات لكل فرع
+       (يُستخدم في تقرير الفرع بصفحة التقارير)
+    ===================================================== */
+
+    function renderBranchReportChart({
+        labels = [],
+        sales = [],
+        collections = []
+    } = {}) {
+        if (!isAvailable()) {
+            return null;
+        }
+
+        const canvas = utils.byId(
+            "reportPreviewChart"
+        );
+
+        if (!canvas) {
+            return null;
+        }
+
+        destroy("branchReportChart");
+
+        const colors = getColors();
+        const baseOptions = getBaseOptions();
+
+        const valueLabelsPlugin =
+            createValueLabelsPlugin(value =>
+                formatCompactNumber(value)
+            );
+
+        chartInstances.branchReportChart =
+            new window.Chart(canvas, {
+                type: "bar",
+
+                plugins: [valueLabelsPlugin],
+
+                data: {
+                    labels,
+
+                    datasets: [
+                        {
+                            label: utils.t(
+                                "targets.sales",
+                                "المبيعات"
+                            ),
+
+                            data: sales,
+
+                            backgroundColor:
+                                "rgba(23, 107, 135, 0.78)",
+
+                            borderColor:
+                                colors.primary,
+
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            maxBarThickness: 36
+                        },
+
+                        {
+                            label: utils.t(
+                                "dashboard.collections",
+                                "التحصيلات"
+                            ),
+
+                            data: collections,
+
+                            backgroundColor:
+                                "rgba(22, 163, 74, 0.78)",
+
+                            borderColor:
+                                colors.success,
+
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            maxBarThickness: 36
+                        }
+                    ]
+                },
+
+                options: {
+                    ...baseOptions,
+
+                    animation: false,
+
+                    plugins: {
+                        ...baseOptions.plugins,
+
+                        tooltip: {
+                            ...baseOptions.plugins.tooltip,
+
+                            callbacks: {
+                                label(context) {
+                                    return (
+                                        `${context.dataset.label}: ` +
+                                        utils.formatCurrency(
+                                            context.raw
+                                        )
+                                    );
+                                }
+                            }
+                        }
+                    },
+
+                    scales: {
+                        x: {
+                            ticks: {
+                                color:
+                                    getTextColor()
+                            },
+
+                            grid: {
+                                display: false
+                            }
+                        },
+
+                        y: getCurrencyScaleOptions()
+                    }
+                }
+            });
+
+        return chartInstances.branchReportChart;
     }
 
     /* =====================================================
@@ -9999,6 +10821,9 @@ window.DashboardCharts = (() => {
         renderDueOverdue,
         renderSalesmanPerformance,
         renderBranchPerformance,
+        renderSalesmanTrend,
+        renderSalesmanReportChart,
+        renderBranchReportChart,
 
         destroy,
         destroyAll,
@@ -16592,6 +17417,14 @@ window.DashboardProfiles = (() => {
     let customerInfoRows = [];
     let eventsBound = false;
 
+    /*
+     * نسخة كاملة غير مفلترة بفترة لوحة التحكم، تُستخدم
+     * لإجراء مقارنة الأداء الشهري وإنشاء رسم الاتجاه
+     * السنوي بشكل مستقل عن فلتر الفترة الحالي.
+     */
+    let rawInvoiceRows = [];
+    let rawCollectionRows = [];
+
     function normalizeCode(value) {
         return utils.normalizeCode(value);
     }
@@ -16845,6 +17678,19 @@ window.DashboardProfiles = (() => {
         );
     }
 
+    function getCollectionDate(row) {
+        return getValue(
+            row,
+            [
+                "collectionDate",
+                "Collection Date",
+                "paymentDate",
+                "date"
+            ],
+            ""
+        );
+    }
+
     function getCurrentMonthlyTarget(targetRow) {
         if (!targetRow) {
             return 0;
@@ -16919,6 +17765,18 @@ window.DashboardProfiles = (() => {
             : [];
 
         populateSalesmen();
+        render();
+    }
+
+    function setRawData(data = {}) {
+        rawInvoiceRows = Array.isArray(data.invoices)
+            ? data.invoices
+            : [];
+
+        rawCollectionRows = Array.isArray(data.collections)
+            ? data.collections
+            : [];
+
         render();
     }
 
@@ -17103,6 +17961,258 @@ window.DashboardProfiles = (() => {
         return keys.size;
     }
 
+    /* =========================================================
+       التقرير الشامل: مقارنة شهرية، اتجاه سنوي، وتنبيهات
+       خاصة بالمندوب
+    ========================================================= */
+
+    function getReferenceDate() {
+        if (
+            targetsModule &&
+            typeof targetsModule.getReferenceDate ===
+                "function"
+        ) {
+            const referenceDate =
+                targetsModule.getReferenceDate();
+
+            if (
+                referenceDate instanceof Date &&
+                !Number.isNaN(referenceDate.getTime())
+            ) {
+                return referenceDate;
+            }
+        }
+
+        return new Date();
+    }
+
+    function getMonthBounds(year, monthIndex) {
+        return {
+            start: new Date(year, monthIndex, 1),
+            end: new Date(year, monthIndex + 1, 1)
+        };
+    }
+
+    function isDateWithinBounds(dateValue, bounds) {
+        const parsed = utils.parseDate(dateValue);
+
+        if (!(parsed instanceof Date) || Number.isNaN(parsed.getTime())) {
+            return false;
+        }
+
+        return parsed >= bounds.start && parsed < bounds.end;
+    }
+
+    function calculateGrowth(current, previous) {
+        if (!previous) {
+            return current > 0 ? 100 : 0;
+        }
+
+        return ((current - previous) / previous) * 100;
+    }
+
+    function buildMonthlyComparison(profileCodes, referenceDate) {
+        const currentBounds = getMonthBounds(
+            referenceDate.getFullYear(),
+            referenceDate.getMonth()
+        );
+
+        const previousDate = new Date(
+            referenceDate.getFullYear(),
+            referenceDate.getMonth() - 1,
+            1
+        );
+
+        const previousBounds = getMonthBounds(
+            previousDate.getFullYear(),
+            previousDate.getMonth()
+        );
+
+        const codeInvoices = rawInvoiceRows.filter(row =>
+            rowBelongsToCodes(row, profileCodes)
+        );
+
+        const codeCollections = rawCollectionRows.filter(row =>
+            rowBelongsToCodes(row, profileCodes)
+        );
+
+        const currentInvoices = codeInvoices.filter(row =>
+            isDateWithinBounds(getInvoiceDate(row), currentBounds)
+        );
+
+        const previousInvoices = codeInvoices.filter(row =>
+            isDateWithinBounds(getInvoiceDate(row), previousBounds)
+        );
+
+        const currentCollections = codeCollections.filter(row =>
+            isDateWithinBounds(getCollectionDate(row), currentBounds)
+        );
+
+        const previousCollections = codeCollections.filter(row =>
+            isDateWithinBounds(getCollectionDate(row), previousBounds)
+        );
+
+        const currentSales = utils.sumBy(currentInvoices, getInvoiceSales);
+        const previousSales = utils.sumBy(previousInvoices, getInvoiceSales);
+
+        const currentCollectionsTotal = utils.sumBy(
+            currentCollections,
+            getCollectionAmount
+        );
+
+        const previousCollectionsTotal = utils.sumBy(
+            previousCollections,
+            getCollectionAmount
+        );
+
+        return {
+            sales: {
+                current: currentSales,
+                previous: previousSales,
+                growth: calculateGrowth(currentSales, previousSales)
+            },
+            collections: {
+                current: currentCollectionsTotal,
+                previous: previousCollectionsTotal,
+                growth: calculateGrowth(
+                    currentCollectionsTotal,
+                    previousCollectionsTotal
+                )
+            },
+            invoiceCount: {
+                current: currentInvoices.length,
+                previous: previousInvoices.length,
+                growth: calculateGrowth(
+                    currentInvoices.length,
+                    previousInvoices.length
+                )
+            }
+        };
+    }
+
+    function buildYearToDateTrend(profileCodes, referenceDate) {
+        const year = referenceDate.getFullYear();
+        const lastMonthIndex = referenceDate.getMonth();
+
+        const codeInvoices = rawInvoiceRows.filter(row =>
+            rowBelongsToCodes(row, profileCodes)
+        );
+
+        const codeCollections = rawCollectionRows.filter(row =>
+            rowBelongsToCodes(row, profileCodes)
+        );
+
+        const labels = [];
+        const sales = [];
+        const collections = [];
+        const invoiceCounts = [];
+
+        for (
+            let monthIndex = 0;
+            monthIndex <= lastMonthIndex;
+            monthIndex += 1
+        ) {
+            const bounds = getMonthBounds(year, monthIndex);
+
+            const monthInvoices = codeInvoices.filter(row =>
+                isDateWithinBounds(getInvoiceDate(row), bounds)
+            );
+
+            const monthCollections = codeCollections.filter(row =>
+                isDateWithinBounds(getCollectionDate(row), bounds)
+            );
+
+            labels.push(
+                bounds.start.toLocaleDateString(
+                    utils.getLanguage() === "ar" ? "ar" : "en",
+                    { month: "short" }
+                )
+            );
+
+            sales.push(utils.sumBy(monthInvoices, getInvoiceSales));
+            collections.push(
+                utils.sumBy(monthCollections, getCollectionAmount)
+            );
+            invoiceCounts.push(monthInvoices.length);
+        }
+
+        return { labels, sales, collections, invoiceCounts };
+    }
+
+    function buildSalesmanAlerts(profile) {
+        const alerts = [];
+
+        (profile.customers || [])
+            .filter(customer => customer.overdue > 0)
+            .forEach(customer => {
+                if (customer.overdueDays > 90) {
+                    alerts.push({
+                        level: "critical",
+                        icon: "fa-triangle-exclamation",
+                        title: customer.customerName,
+                        text: `${utils.t(
+                            "salesmanProfiles.alertOverdue90",
+                            "متأخر أكثر من 90 يومًا"
+                        )} (${utils.formatCurrency(customer.overdue)})`
+                    });
+                } else if (customer.overdueDays > 30) {
+                    alerts.push({
+                        level: "warning",
+                        icon: "fa-circle-exclamation",
+                        title: customer.customerName,
+                        text: `${utils.t(
+                            "salesmanProfiles.alertOverdue30",
+                            "متأخر أكثر من 30 يومًا"
+                        )} (${utils.formatCurrency(customer.overdue)})`
+                    });
+                }
+
+                if (
+                    customer.creditLimit > 0 &&
+                    customer.due + customer.overdue > customer.creditLimit
+                ) {
+                    alerts.push({
+                        level: "critical",
+                        icon: "fa-ban",
+                        title: customer.customerName,
+                        text: utils.t(
+                            "salesmanProfiles.alertCreditExceeded",
+                            "تجاوز الحد الائتماني"
+                        )
+                    });
+                }
+            });
+
+        if (profile.target > 0 && profile.achievement < 50) {
+            alerts.push({
+                level: "warning",
+                icon: "fa-chart-line",
+                title: profile.name,
+                text: utils.t(
+                    "salesmanProfiles.alertLowAchievement",
+                    "نسبة تحقيق الهدف أقل من 50%"
+                )
+            });
+        }
+
+        if (!alerts.length) {
+            alerts.push({
+                level: "success",
+                icon: "fa-circle-check",
+                title: utils.t(
+                    "salesmanProfiles.noAlertsTitle",
+                    "لا توجد تنبيهات"
+                ),
+                text: utils.t(
+                    "salesmanProfiles.noAlerts",
+                    "لا توجد تنبيهات لهذا المندوب"
+                )
+            });
+        }
+
+        return alerts;
+    }
+
     function buildProfile(code) {
         const selectedCode = normalizeCode(code);
         const targetRow =
@@ -17236,6 +18346,18 @@ window.DashboardProfiles = (() => {
                     collections,
                     balances,
                     customerInfoRows
+                ),
+
+            monthly:
+                buildMonthlyComparison(
+                    profileCodes,
+                    getReferenceDate()
+                ),
+
+            trend:
+                buildYearToDateTrend(
+                    profileCodes,
+                    getReferenceDate()
                 )
         };
     }
@@ -17712,13 +18834,113 @@ window.DashboardProfiles = (() => {
         const profile =
             buildProfile(code);
 
+        profile.salesmanAlerts =
+            buildSalesmanAlerts(profile);
+
         setCompanyOutstandingValues();
         setProfileValues(profile);
         renderCustomers(
             profile.customers
         );
+        renderMonthlyComparison(profile.monthly);
+        renderTrendChart(profile.trend);
+        renderSalesmanAlerts(profile.salesmanAlerts);
 
         return profile;
+    }
+
+    function renderGrowthBadge(elementId, growthValue) {
+        const element = utils.byId(elementId);
+        if (!element) return;
+
+        const rounded = Math.round(growthValue || 0);
+        const sign = rounded > 0 ? "+" : "";
+
+        element.textContent = `${sign}${rounded}%`;
+        element.classList.remove(
+            "comparison-growth-up",
+            "comparison-growth-down",
+            "comparison-growth-flat"
+        );
+
+        if (rounded > 0) {
+            element.classList.add("comparison-growth-up");
+        } else if (rounded < 0) {
+            element.classList.add("comparison-growth-down");
+        } else {
+            element.classList.add("comparison-growth-flat");
+        }
+    }
+
+    function renderMonthlyComparison(monthly) {
+        if (!monthly) return;
+
+        utils.setText(
+            "profileSalesCurrentValue",
+            utils.formatCurrency(monthly.sales.current)
+        );
+        utils.setText(
+            "profileSalesPreviousValue",
+            utils.formatCurrency(monthly.sales.previous)
+        );
+        renderGrowthBadge(
+            "profileSalesGrowthBadge",
+            monthly.sales.growth
+        );
+
+        utils.setText(
+            "profileCollectionsCurrentValue",
+            utils.formatCurrency(monthly.collections.current)
+        );
+        utils.setText(
+            "profileCollectionsPreviousValue",
+            utils.formatCurrency(monthly.collections.previous)
+        );
+        renderGrowthBadge(
+            "profileCollectionsGrowthBadge",
+            monthly.collections.growth
+        );
+
+        utils.setText(
+            "profileInvoiceCountCurrentValue",
+            utils.formatNumber(monthly.invoiceCount.current, 0)
+        );
+        utils.setText(
+            "profileInvoiceCountPreviousValue",
+            utils.formatNumber(monthly.invoiceCount.previous, 0)
+        );
+        renderGrowthBadge(
+            "profileInvoiceCountGrowthBadge",
+            monthly.invoiceCount.growth
+        );
+    }
+
+    function renderTrendChart(trend) {
+        if (!trend) return;
+
+        window.DashboardCharts?.renderSalesmanTrend?.(trend);
+    }
+
+    function renderSalesmanAlerts(alerts) {
+        const container = utils.byId("salesmanProfileAlertsList");
+        if (!container) return;
+
+        container.innerHTML = (alerts || [])
+            .map(alert => `
+                <article class="alert-item alert-${utils.escapeHTML(alert.level)}">
+                    <div class="alert-icon">
+                        <i class="fa-solid ${utils.escapeHTML(alert.icon || "fa-circle-info")}"></i>
+                    </div>
+
+                    <div class="alert-content">
+                        <div class="alert-title-row">
+                            <strong>${utils.escapeHTML(alert.title || "")}</strong>
+                        </div>
+                        <p>${utils.escapeHTML(alert.text)}</p>
+                    </div>
+                </article>
+            `)
+            .join("");
     }
 
     function getExportRows() {
@@ -17884,6 +19106,38 @@ window.DashboardProfiles = (() => {
 
         const companyLogoUrl = window.__LOGO_DATA_URI__;
 
+        let trendChartImage = "";
+
+        try {
+            const trendCanvas = utils.byId("salesmanTrendChart");
+            trendChartImage = trendCanvas
+                ? trendCanvas.toDataURL("image/png")
+                : "";
+        } catch (error) {
+            trendChartImage = "";
+        }
+
+        const monthly = profile.monthly || {
+            sales: { current: 0, previous: 0, growth: 0 },
+            collections: { current: 0, previous: 0, growth: 0 },
+            invoiceCount: { current: 0, previous: 0, growth: 0 }
+        };
+
+        const formatGrowth = growthValue => {
+            const rounded = Math.round(growthValue || 0);
+            const sign = rounded > 0 ? "+" : "";
+            return `${sign}${rounded}%`;
+        };
+
+        const alertsPrintRows = (profile.salesmanAlerts || [])
+            .map(alert => `
+                <tr>
+                    <td>${utils.escapeHTML(alert.title || "")}</td>
+                    <td>${utils.escapeHTML(alert.text)}</td>
+                </tr>
+            `)
+            .join("");
+
         const printWindow =
             window.open(
                 "",
@@ -17964,6 +19218,51 @@ window.DashboardProfiles = (() => {
                         font-size: 14px;
                         font-weight: 700;
                         color: #0d3550;
+                    }
+
+                    .monthly-comparison-grid {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 12px;
+                        margin-bottom: 6px;
+                    }
+
+                    .comparison-box {
+                        padding: 12px 14px;
+                        border: 1px solid #dbe2ea;
+                        border-radius: 8px;
+                    }
+
+                    .comparison-box span {
+                        display: block;
+                        color: #66758a;
+                        font-size: 11px;
+                    }
+
+                    .comparison-box strong {
+                        display: block;
+                        margin-top: 4px;
+                        font-size: 17px;
+                        color: #0d3550;
+                    }
+
+                    .comparison-box small {
+                        display: block;
+                        margin-top: 4px;
+                        color: #66758a;
+                        font-size: 10px;
+                    }
+
+                    .trend-chart-image {
+                        display: block;
+                        width: 100%;
+                        max-width: 100%;
+                        height: 340px;
+                        object-fit: contain;
+                        border: 1px solid #dbe2ea;
+                        border-radius: 8px;
+                        padding: 10px;
+                        margin-bottom: 6px;
                     }
 
                     h1 {
@@ -18105,6 +19404,47 @@ window.DashboardProfiles = (() => {
                     </div>
                 </div>
 
+                <h2 style="margin:26px 0 10px;font-size:18px;">Monthly Performance Comparison</h2>
+                <div class="monthly-comparison-grid">
+                    <div class="comparison-box">
+                        <span>Sales</span>
+                        <strong>${utils.formatCurrency(monthly.sales.current)}</strong>
+                        <small>Previous month: ${utils.formatCurrency(monthly.sales.previous)} (${formatGrowth(monthly.sales.growth)})</small>
+                    </div>
+                    <div class="comparison-box">
+                        <span>Collections</span>
+                        <strong>${utils.formatCurrency(monthly.collections.current)}</strong>
+                        <small>Previous month: ${utils.formatCurrency(monthly.collections.previous)} (${formatGrowth(monthly.collections.growth)})</small>
+                    </div>
+                    <div class="comparison-box">
+                        <span>Invoice Count</span>
+                        <strong>${utils.formatNumber(monthly.invoiceCount.current, 0)}</strong>
+                        <small>Previous month: ${utils.formatNumber(monthly.invoiceCount.previous, 0)} (${formatGrowth(monthly.invoiceCount.growth)})</small>
+                    </div>
+                </div>
+
+                ${
+                    trendChartImage
+                        ? `
+                            <h2 style="margin:26px 0 10px;font-size:18px;">Monthly Sales Trend (Year to Date)</h2>
+                            <img class="trend-chart-image" src="${trendChartImage}">
+                        `
+                        : ""
+                }
+
+                <h2 style="margin:26px 0 10px;font-size:18px;">Salesman Alerts</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer / Item</th>
+                            <th>Alert</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${alertsPrintRows || '<tr><td colspan="2">No alerts</td></tr>'}
+                    </tbody>
+                </table>
+
                 <h2 style="margin:22px 0 10px;font-size:18px;">Customers List</h2>
                 <table>
                     <thead>
@@ -18230,6 +19570,7 @@ window.DashboardProfiles = (() => {
         bindEvents,
 
         setData,
+        setRawData,
         setTargets,
         setInvoices,
         setCollections,
@@ -22798,6 +24139,16 @@ window.DashboardReports = (() => {
         updatedAt: ""
     };
 
+    /*
+     * نسخة كاملة غير مفلترة بفترة/فلاتر لوحة التحكم،
+     * تُستخدم لحساب إجمالي المستحقات والمتأخرات الفعلي
+     * في تقارير المتأخرات والمندوبين والفروع، بنفس المنطق
+     * المستخدم بالفعل في صفحة ملفات المندوبين (Salesman
+     * Profiles)، حيث لا يجب أن يتأثر الرصيد القائم بفلتر
+     * الفترة الزمنية.
+     */
+    let rawDueOverdue = [];
+
     let eventsBound = false;
 
     function safeArray(value) {
@@ -23002,6 +24353,27 @@ window.DashboardReports = (() => {
         };
     }
 
+    function setRawData(data = {}) {
+        rawDueOverdue = safeArray(data.dueOverdue);
+    }
+
+    function reportPeriodLabel() {
+        const isArabic = utils.getLanguage() === "ar";
+        const dateFrom = currentData.filters?.dateFrom;
+        const dateTo = currentData.filters?.dateTo;
+
+        if (!dateFrom && !dateTo) {
+            return utils.t(
+                "common.allPeriods",
+                isArabic ? "كل الفترات" : "All Time"
+            );
+        }
+
+        return `${
+            dateFrom ? utils.formatDate(dateFrom) : "…"
+        } - ${dateTo ? utils.formatDate(dateTo) : "…"}`;
+    }
+
     function formatDate(value) {
         return value ? utils.formatDate(value) : "--";
     }
@@ -23077,10 +24449,19 @@ window.DashboardReports = (() => {
     }
 
     function buildOverdueReport() {
+        /*
+         * تقرير المتأخرات يجب أن يعرض الصورة الكاملة
+         * الفعلية للمتأخرات، بصرف النظر عن فلتر الفترة
+         * الحالي (نفس منطق ملفات المندوبين).
+         */
+        const source = rawDueOverdue.length
+            ? rawDueOverdue
+            : currentData.dueOverdue;
+
         return {
             type: "overdue",
             title: reportTitle("overdue"),
-            rows: currentData.dueOverdue
+            rows: source
                 .filter(isOverdue)
                 .sort((a, b) => overdueDays(b) - overdueDays(a))
                 .map(row => ({
@@ -23171,7 +24552,18 @@ window.DashboardReports = (() => {
             item.collections += collection(row);
         });
 
-        currentData.dueOverdue.forEach(row => {
+        /*
+         * المستحقات والمتأخرات هنا تُحسب دائمًا من
+         * البيانات الكاملة غير المفلترة بالفترة، لتعكس
+         * الرصيد الفعلي لكل مندوب/فرع (نفس منطق ملفات
+         * المندوبين)، بينما تظل المبيعات والتحصيلات
+         * مرتبطة بفلتر الفترة الحالي كما هي.
+         */
+        const dueOverdueSource = rawDueOverdue.length
+            ? rawDueOverdue
+            : currentData.dueOverdue;
+
+        dueOverdueSource.forEach(row => {
             const item = ensure(row);
             if (!item) return;
 
@@ -23326,11 +24718,117 @@ window.DashboardReports = (() => {
             ];
         }
 
+        /*
+         * كل نوع تقرير له أعمدة مختلفة، فبطاقات الملخص
+         * يجب أن تعرض فقط الإجماليات ذات المعنى لهذا
+         * النوع بالتحديد، بدلاً من عرض بطاقات بقيمة صفر
+         * وهمية لأعمدة غير موجودة أصلاً في التقرير.
+         */
+        function uniqueCount(column) {
+            const values = new Set(
+                rows
+                    .map(row => String(row[column] ?? "").trim())
+                    .filter(Boolean)
+            );
+
+            return values.size;
+        }
+
+        const recordsCard = {
+            label: utils.t("common.records", "عدد السجلات"),
+            value: utils.formatNumber(rows.length)
+        };
+
+        if (report?.type === "sales") {
+            return [
+                recordsCard,
+                {
+                    label: utils.t("dashboard.netSales", "صافي المبيعات"),
+                    value: utils.formatCurrency(totalSales)
+                },
+                {
+                    label: utils.t("reports.customersCount", "عدد العملاء"),
+                    value: utils.formatNumber(uniqueCount("Customer Code"))
+                },
+                {
+                    label: utils.t("reports.salesmenCount", "عدد المندوبين"),
+                    value: utils.formatNumber(uniqueCount("Salesman Code"))
+                }
+            ];
+        }
+
+        if (report?.type === "collections") {
+            return [
+                recordsCard,
+                {
+                    label: utils.t("dashboard.collections", "التحصيلات"),
+                    value: utils.formatCurrency(totalCollections)
+                },
+                {
+                    label: utils.t("reports.customersCount", "عدد العملاء"),
+                    value: utils.formatNumber(uniqueCount("Customer Code"))
+                },
+                {
+                    label: utils.t("reports.salesmenCount", "عدد المندوبين"),
+                    value: utils.formatNumber(uniqueCount("Salesman Code"))
+                }
+            ];
+        }
+
+        if (report?.type === "overdue") {
+            const averageDays = rows.length
+                ? rows.reduce(
+                      (sum, row) => sum + utils.toNumber(row["Overdue Days"]),
+                      0
+                  ) / rows.length
+                : 0;
+
+            return [
+                recordsCard,
+                {
+                    label: utils.t("dashboard.overdue", "المتأخرات"),
+                    value: utils.formatCurrency(totalOverdue)
+                },
+                {
+                    label: utils.t("reports.averageOverdueDays", "متوسط أيام التأخير"),
+                    value: utils.formatNumber(Math.round(averageDays))
+                },
+                {
+                    label: utils.t("reports.customersCount", "عدد العملاء"),
+                    value: utils.formatNumber(uniqueCount("Customer Code"))
+                }
+            ];
+        }
+
+        if (report?.type === "target") {
+            const totalTarget = rows.reduce(
+                (sum, row) => sum + utils.toNumber(row["Monthly Target"]),
+                0
+            );
+
+            const overallAchievement = totalTarget > 0
+                ? (totalSales / totalTarget) * 100
+                : 0;
+
+            return [
+                recordsCard,
+                {
+                    label: utils.t("targets.monthlyTarget", "الهدف الشهري"),
+                    value: utils.formatCurrency(totalTarget)
+                },
+                {
+                    label: utils.t("dashboard.netSales", "صافي المبيعات"),
+                    value: utils.formatCurrency(totalSales)
+                },
+                {
+                    label: utils.t("targets.achievement", "نسبة التحقيق"),
+                    value: utils.formatPercentage(overallAchievement)
+                }
+            ];
+        }
+
         return [
-            {
-                label: utils.t("common.records", "عدد السجلات"),
-                value: utils.formatNumber(rows.length)
-            },
+            recordsCard,
             {
                 label: utils.t("dashboard.netSales", "صافي المبيعات"),
                 value: utils.formatCurrency(totalSales)
@@ -23407,6 +24905,10 @@ window.DashboardReports = (() => {
 
         const summary = reportSummary(report);
 
+        const hasChart =
+            report.type === "salesman" ||
+            report.type === "branch";
+
         modal.innerHTML = `
             <section class="report-preview-card">
                 <header class="report-preview-header">
@@ -23455,6 +24957,12 @@ window.DashboardReports = (() => {
                     </button>
                 </div>
 
+                <div class="report-period-badge">
+                    ${utils.escapeHTML(
+                        utils.t("common.selectedPeriod", "الفترة المختارة")
+                    )}: ${utils.escapeHTML(reportPeriodLabel())}
+                </div>
+
                 <div class="report-preview-summary">
                     ${summary.map(item => `
                         <article>
@@ -23464,6 +24972,16 @@ window.DashboardReports = (() => {
                     `).join("")}
                 </div>
 
+                ${
+                    hasChart
+                        ? `
+                            <div class="report-preview-chart">
+                                <canvas id="reportPreviewChart"></canvas>
+                            </div>
+                        `
+                        : ""
+                }
+
                 <div class="report-preview-body" id="reportPreviewBody">
                     ${tableHTML(report)}
                 </div>
@@ -23472,13 +24990,31 @@ window.DashboardReports = (() => {
 
         document.body.appendChild(modal);
 
+        if (hasChart) {
+            renderReportChart(report);
+        }
+
+        function destroyPreviewCharts() {
+            window.DashboardCharts?.destroy?.(
+                "salesmanReportChart"
+            );
+
+            window.DashboardCharts?.destroy?.(
+                "branchReportChart"
+            );
+        }
+
         utils.byId("closeReportPreview")?.addEventListener(
             "click",
-            () => modal.remove()
+            () => {
+                destroyPreviewCharts();
+                modal.remove();
+            }
         );
 
         modal.addEventListener("click", event => {
             if (event.target === modal) {
+                destroyPreviewCharts();
                 modal.remove();
             }
         });
@@ -23494,6 +25030,42 @@ window.DashboardReports = (() => {
         );
 
         return modal;
+    }
+
+    function renderReportChart(report) {
+        if (!utils.byId("reportPreviewChart")) {
+            return;
+        }
+
+        if (report.type === "salesman") {
+            window.DashboardCharts?.renderSalesmanReportChart?.({
+                labels: report.rows.map(
+                    row => row["Salesman Name"]
+                ),
+                sales: report.rows.map(row =>
+                    utils.toNumber(row["Net Sales"])
+                ),
+                collections: report.rows.map(row =>
+                    utils.toNumber(row["Collections"])
+                )
+            });
+
+            return;
+        }
+
+        if (report.type === "branch") {
+            window.DashboardCharts?.renderBranchReportChart?.({
+                labels: report.rows.map(
+                    row => row["Branch"]
+                ),
+                sales: report.rows.map(row =>
+                    utils.toNumber(row["Net Sales"])
+                ),
+                collections: report.rows.map(row =>
+                    utils.toNumber(row["Collections"])
+                )
+            });
+        }
     }
 
     function exportExcel(report) {
@@ -23546,8 +25118,24 @@ window.DashboardReports = (() => {
         }
 
         const direction = document.documentElement.dir || "rtl";
+        const isArabic = utils.getLanguage() === "ar";
         const summary = reportSummary(report);
         const companyLogoUrl = window.__LOGO_DATA_URI__;
+        const periodLabel = reportPeriodLabel();
+
+        let chartImage = "";
+
+        try {
+            const chartCanvas = utils.byId(
+                "reportPreviewChart"
+            );
+
+            chartImage = chartCanvas
+                ? chartCanvas.toDataURL("image/png")
+                : "";
+        } catch (error) {
+            chartImage = "";
+        }
 
         printWindow.document.write(`
             <!DOCTYPE html>
@@ -23626,6 +25214,30 @@ window.DashboardReports = (() => {
                         font-size: 16px;
                     }
 
+                    .selected-period {
+                        display: inline-block;
+                        margin: 4px 0 4px;
+                        padding: 8px 12px;
+                        border: 1px solid #cbd8e2;
+                        border-radius: 7px;
+                        background: #f5f8fa;
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #0d3550;
+                    }
+
+                    .print-report-chart {
+                        display: block;
+                        width: 100%;
+                        max-width: 100%;
+                        height: 420px;
+                        object-fit: contain;
+                        border: 1px solid #dbe2ea;
+                        border-radius: 10px;
+                        padding: 12px;
+                        margin: 0 0 20px;
+                    }
+
                     table {
                         width: 100%;
                         border-collapse: collapse;
@@ -23681,6 +25293,14 @@ window.DashboardReports = (() => {
                     </div>
                 </header>
 
+                <div class="selected-period">
+                    ${
+                        isArabic
+                            ? "الفترة المختارة"
+                            : "Selected Period"
+                    }: ${periodLabel}
+                </div>
+
                 <section class="summary">
                     ${summary.map(item => `
                         <article>
@@ -23689,6 +25309,12 @@ window.DashboardReports = (() => {
                         </article>
                     `).join("")}
                 </section>
+
+                ${
+                    chartImage
+                        ? `<img class="print-report-chart" src="${chartImage}">`
+                        : ""
+                }
 
                 ${tableHTML(report)}
 
@@ -23746,6 +25372,7 @@ window.DashboardReports = (() => {
         initialize,
         bindEvents,
         setData,
+        setRawData,
         runReport,
         exportExcel,
         printReport
@@ -25984,10 +27611,34 @@ window.DashboardApp = (() => {
             }
         );
 
+        /*
+         * تقرير المندوب الشامل (المقارنة الشهرية والرسم البياني)
+         * يحتاج بيانات الفواتير والتحصيلات لكامل السنة، وليس فقط
+         * الفترة المفلترة حاليًا في أعلى الشاشة.
+         */
+        callModule(
+            window.DashboardProfiles,
+            "setRawData",
+            state.rawData
+        );
+
         callModule(
             window.DashboardReports,
             "setData",
             data
+        );
+
+        /*
+         * تقارير المتأخرات والمندوبين والفروع تحتاج
+         * أيضًا نسخة كاملة غير مفلترة بالفترة الزمنية من
+         * بيانات المستحقات/المتأخرات (مع احترام صلاحيات
+         * الفرع/المندوب)، بنفس المنطق المستخدم بالفعل في
+         * ملفات المندوبين أعلاه.
+         */
+        callModule(
+            window.DashboardReports,
+            "setRawData",
+            { dueOverdue: profileDueOverdue }
         );
 
         callModule(
