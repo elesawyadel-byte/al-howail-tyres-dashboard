@@ -1078,6 +1078,137 @@ html[dir="rtl"] .navigation-item.active {
 }
 
 /* =========================================================
+   Multi-select Filter Dropdown
+========================================================= */
+
+.multi-select-filter {
+    position: relative;
+}
+
+.multi-select-trigger {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--text-primary);
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: start;
+}
+
+.multi-select-trigger span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.multi-select-trigger:focus,
+.multi-select-trigger:hover:not(:disabled) {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(23, 107, 135, 0.10);
+}
+
+.multi-select-trigger:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.multi-select-trigger i {
+    font-size: 11px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.multi-select-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    inset-inline-start: 0;
+    z-index: 40;
+    width: max(100%, 260px);
+    max-height: 320px;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.multi-select-panel[hidden] {
+    display: none;
+}
+
+.multi-select-search-box {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.multi-select-search-box i {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.multi-select-search-box input {
+    flex: 1;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-soft);
+    color: var(--text-primary);
+    outline: none;
+    font-size: 12px;
+}
+
+.multi-select-option {
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-primary);
+}
+
+.multi-select-option:hover {
+    background: var(--surface-soft);
+}
+
+.multi-select-option input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.multi-select-all-option {
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+}
+
+.multi-select-options-list {
+    overflow-y: auto;
+}
+
+.multi-select-options-list .multi-select-option span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
    Main Content
 ========================================================= */
 
@@ -2739,7 +2870,14 @@ body.dark-mode input[type="date"] {
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 14px;
-    height: 420px;
+    height: 460px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+}
+
+.report-preview-chart-scroll {
+    height: 100%;
     position: relative;
 }
 
@@ -4589,9 +4727,9 @@ html[dir="rtl"] .dashboard-tables .content-card .card-header::before {
 
                 </div>
 
-                <div class="filter-control">
+                <div class="filter-control multi-select-filter" id="salesmanFilterControl">
 
-                    <label for="salesmanFilter">
+                    <label for="salesmanFilterTrigger">
                         <i class="fa-solid fa-user-tie"></i>
 
                         <span data-i18n="invoices.salesmanName">
@@ -4599,7 +4737,47 @@ html[dir="rtl"] .dashboard-tables .content-card .card-header::before {
                         </span>
                     </label>
 
-                    <select id="salesmanFilter">
+                    <button
+                        type="button"
+                        class="multi-select-trigger"
+                        id="salesmanFilterTrigger"
+                    >
+                        <span
+                            id="salesmanFilterTriggerLabel"
+                            data-i18n="common.allSalesmen"
+                        >
+                            جميع المندوبين
+                        </span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div
+                        class="multi-select-panel"
+                        id="salesmanFilterPanel"
+                        hidden
+                    >
+                        <div class="multi-select-search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input
+                                type="text"
+                                id="salesmanFilterSearchInput"
+                                data-i18n-placeholder="common.search"
+                                placeholder="بحث"
+                            >
+                        </div>
+
+                        <label class="multi-select-option multi-select-all-option">
+                            <input type="checkbox" id="salesmanFilterSelectAll">
+                            <span data-i18n="common.selectAll">تحديد الكل</span>
+                        </label>
+
+                        <div
+                            class="multi-select-options-list"
+                            id="salesmanFilterOptionsList"
+                        ></div>
+                    </div>
+
+                    <select id="salesmanFilter" multiple style="display:none;">
                         <option value="" data-i18n="common.allSalesmen">
                             جميع المندوبين
                         </option>
@@ -9289,7 +9467,18 @@ window.DashboardAuth = (() => {
             );
 
         if (salesmanFilter) {
-            if (management) {
+            if (
+                window.DashboardApp &&
+                typeof window.DashboardApp
+                    .setSalesmanFilterLock ===
+                    "function"
+            ) {
+                window.DashboardApp.setSalesmanFilterLock(
+                    management
+                        ? null
+                        : user?.salesmanCode || ""
+                );
+            } else if (management) {
                 salesmanFilter.disabled =
                     false;
             } else {
@@ -9684,7 +9873,7 @@ window.DashboardCharts = (() => {
 
                 ctx.save();
 
-                ctx.font = `800 12px ${getDefaultFontFamily()}`;
+                ctx.font = `800 13px ${getDefaultFontFamily()}`;
 
                 ctx.fillStyle =
                     getTextColor();
@@ -10561,6 +10750,24 @@ window.DashboardCharts = (() => {
        (يُستخدم في تقرير المندوب بصفحة التقارير)
     ===================================================== */
 
+    function sizeChartScrollWrapper(wrapperId, categoryCount, pxPerCategory) {
+        const wrapper = utils.byId(wrapperId);
+        if (!wrapper) return;
+
+        const parentWidth =
+            wrapper.parentElement?.clientWidth || 0;
+
+        const neededWidth =
+            categoryCount * pxPerCategory;
+
+        wrapper.style.width = `${Math.max(
+            parentWidth,
+            neededWidth
+        )}px`;
+
+        wrapper.style.height = "100%";
+    }
+
     function renderSalesmanReportChart({
         labels = [],
         sales = [],
@@ -10579,6 +10786,12 @@ window.DashboardCharts = (() => {
         }
 
         destroy("salesmanReportChart");
+
+        sizeChartScrollWrapper(
+            "reportPreviewChartScroll",
+            labels.length,
+            95
+        );
 
         const colors = getColors();
         const baseOptions = getBaseOptions();
@@ -10614,7 +10827,7 @@ window.DashboardCharts = (() => {
 
                             borderWidth: 1,
                             borderRadius: 6,
-                            maxBarThickness: 32
+                            maxBarThickness: 36
                         },
 
                         {
@@ -10633,7 +10846,7 @@ window.DashboardCharts = (() => {
 
                             borderWidth: 1,
                             borderRadius: 6,
-                            maxBarThickness: 32
+                            maxBarThickness: 36
                         }
                     ]
                 },
@@ -10667,8 +10880,13 @@ window.DashboardCharts = (() => {
                             ticks: {
                                 color:
                                     getTextColor(),
-                                maxRotation: 35,
-                                minRotation: 0
+                                font: {
+                                    size: 12,
+                                    weight: "600"
+                                },
+                                maxRotation: 40,
+                                minRotation: 20,
+                                autoSkip: false
                             },
 
                             grid: {
@@ -10707,6 +10925,12 @@ window.DashboardCharts = (() => {
         }
 
         destroy("branchReportChart");
+
+        sizeChartScrollWrapper(
+            "reportPreviewChartScroll",
+            labels.length,
+            140
+        );
 
         const colors = getColors();
         const baseOptions = getBaseOptions();
@@ -10794,7 +11018,11 @@ window.DashboardCharts = (() => {
                         x: {
                             ticks: {
                                 color:
-                                    getTextColor()
+                                    getTextColor(),
+                                font: {
+                                    size: 13,
+                                    weight: "600"
+                                }
                             },
 
                             grid: {
@@ -24976,7 +25204,9 @@ window.DashboardReports = (() => {
                     hasChart
                         ? `
                             <div class="report-preview-chart">
-                                <canvas id="reportPreviewChart"></canvas>
+                                <div class="report-preview-chart-scroll" id="reportPreviewChartScroll">
+                                    <canvas id="reportPreviewChart"></canvas>
+                                </div>
                             </div>
                         `
                         : ""
@@ -25230,7 +25460,7 @@ window.DashboardReports = (() => {
                         display: block;
                         width: 100%;
                         max-width: 100%;
-                        height: 420px;
+                        height: 460px;
                         object-fit: contain;
                         border: 1px solid #dbe2ea;
                         border-radius: 10px;
@@ -27210,6 +27440,243 @@ window.DashboardApp = (() => {
 
 
     /* =====================================================
+       قائمة اختيار المندوبين المتعددة (Multi-select)
+    ===================================================== */
+
+    let salesmanMultiSelectBound = false;
+    let salesmanFilterLockedCode = null;
+
+    function getSalesmanFilterCodes() {
+        const select = utils.byId("salesmanFilter");
+
+        if (!select) {
+            return [];
+        }
+
+        return Array.from(select.selectedOptions || [])
+            .map(option => option.value)
+            .filter(Boolean);
+    }
+
+    function syncSalesmanFilterUI() {
+        const select = utils.byId("salesmanFilter");
+        const list = utils.byId("salesmanFilterOptionsList");
+        const selectAllCheckbox = utils.byId("salesmanFilterSelectAll");
+        const triggerLabel = utils.byId("salesmanFilterTriggerLabel");
+
+        if (!select || !list) {
+            return;
+        }
+
+        const selectedCodes = getSalesmanFilterCodes();
+        const allOptions = Array.from(select.options);
+
+        list.querySelectorAll("input[type=checkbox]").forEach(checkbox => {
+            checkbox.checked = selectedCodes.includes(checkbox.value);
+        });
+
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked =
+                allOptions.length > 0 &&
+                selectedCodes.length === allOptions.length;
+
+            selectAllCheckbox.indeterminate =
+                selectedCodes.length > 0 &&
+                selectedCodes.length < allOptions.length;
+        }
+
+        if (triggerLabel) {
+            if (!selectedCodes.length) {
+                triggerLabel.textContent = utils.t(
+                    "common.allSalesmen",
+                    "جميع المندوبين"
+                );
+            } else if (selectedCodes.length === 1) {
+                const option = allOptions.find(
+                    item => item.value === selectedCodes[0]
+                );
+
+                triggerLabel.textContent = option
+                    ? option.textContent.trim()
+                    : selectedCodes[0];
+            } else {
+                triggerLabel.textContent = `${selectedCodes.length} ${utils.t(
+                    "common.selected",
+                    "محددين"
+                )}`;
+            }
+        }
+    }
+
+    function setSalesmanFilterCodes(codes) {
+        const select = utils.byId("salesmanFilter");
+
+        if (!select) {
+            return;
+        }
+
+        const codeSet = new Set(codes.filter(Boolean));
+
+        Array.from(select.options).forEach(option => {
+            option.selected = codeSet.has(option.value);
+        });
+
+        syncSalesmanFilterUI();
+    }
+
+    function renderSalesmanFilterOptions(salesmen) {
+        const select = utils.byId("salesmanFilter");
+        const list = utils.byId("salesmanFilterOptionsList");
+
+        if (!select || !list) {
+            return;
+        }
+
+        const previouslySelected = new Set(
+            getSalesmanFilterCodes()
+        );
+
+        select.innerHTML = salesmen
+            .map(
+                salesman => `
+                    <option value="${utils.escapeHTML(salesman.code)}">
+                        ${utils.escapeHTML(salesman.name || salesman.code)}
+                    </option>
+                `
+            )
+            .join("");
+
+        Array.from(select.options).forEach(option => {
+            option.selected = previouslySelected.has(option.value);
+        });
+
+        list.innerHTML = salesmen
+            .map(
+                salesman => `
+                    <label class="multi-select-option">
+                        <input
+                            type="checkbox"
+                            value="${utils.escapeHTML(salesman.code)}"
+                            ${
+                                previouslySelected.has(salesman.code)
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+                        <span>${utils.escapeHTML(
+                            salesman.name || salesman.code
+                        )}</span>
+                    </label>
+                `
+            )
+            .join("");
+
+        syncSalesmanFilterUI();
+
+        if (salesmanFilterLockedCode !== null) {
+            setSalesmanFilterLock(salesmanFilterLockedCode);
+        }
+    }
+
+    function setSalesmanFilterLock(code) {
+        salesmanFilterLockedCode = code;
+
+        const trigger = utils.byId("salesmanFilterTrigger");
+        const control = utils.byId("salesmanFilterControl");
+
+        if (code === null) {
+            if (trigger) trigger.disabled = false;
+            control?.classList.remove("multi-select-locked");
+            return;
+        }
+
+        setSalesmanFilterCodes(code ? [code] : []);
+
+        if (trigger) trigger.disabled = true;
+        control?.classList.add("multi-select-locked");
+
+        const panel = utils.byId("salesmanFilterPanel");
+        if (panel) panel.hidden = true;
+    }
+
+    function bindSalesmanMultiSelectEvents() {
+        if (salesmanMultiSelectBound) {
+            return;
+        }
+
+        const trigger = utils.byId("salesmanFilterTrigger");
+        const panel = utils.byId("salesmanFilterPanel");
+        const list = utils.byId("salesmanFilterOptionsList");
+        const selectAllCheckbox = utils.byId("salesmanFilterSelectAll");
+        const searchInput = utils.byId("salesmanFilterSearchInput");
+        const select = utils.byId("salesmanFilter");
+        const control = utils.byId("salesmanFilterControl");
+
+        trigger?.addEventListener("click", () => {
+            if (trigger.disabled || !panel) return;
+            panel.hidden = !panel.hidden;
+        });
+
+        document.addEventListener("click", event => {
+            if (!panel || panel.hidden) return;
+
+            if (control && !control.contains(event.target)) {
+                panel.hidden = true;
+            }
+        });
+
+        list?.addEventListener("change", event => {
+            const checkbox = event.target.closest(
+                "input[type=checkbox]"
+            );
+
+            if (!checkbox || !select) return;
+
+            const option = Array.from(select.options).find(
+                item => item.value === checkbox.value
+            );
+
+            if (option) {
+                option.selected = checkbox.checked;
+            }
+
+            syncSalesmanFilterUI();
+        });
+
+        selectAllCheckbox?.addEventListener("change", () => {
+            if (!select) return;
+
+            Array.from(select.options).forEach(option => {
+                option.selected = selectAllCheckbox.checked;
+            });
+
+            syncSalesmanFilterUI();
+        });
+
+        searchInput?.addEventListener("input", () => {
+            const term = utils.normalizeText(
+                searchInput.value || ""
+            );
+
+            list?.querySelectorAll(".multi-select-option").forEach(
+                label => {
+                    const text = utils.normalizeText(
+                        label.textContent || ""
+                    );
+
+                    label.style.display =
+                        !term || text.includes(term)
+                            ? ""
+                            : "none";
+                }
+            );
+        });
+
+        salesmanMultiSelectBound = true;
+    }
+
+
+    /* =====================================================
        قراءة الفلاتر
     ===================================================== */
 
@@ -27221,9 +27688,7 @@ window.DashboardApp = (() => {
                 )?.value || "",
 
             salesmanCode:
-                utils.byId(
-                    "salesmanFilter"
-                )?.value || "",
+                getSalesmanFilterCodes().join(","),
 
             dateFrom:
                 utils.byId(
@@ -27884,9 +28349,6 @@ window.DashboardApp = (() => {
         const oldBranch =
             branchSelect?.value || "";
 
-        const oldSalesman =
-            salesmanSelect?.value || "";
-
         const oldProfile =
             profileSelect?.value || "";
 
@@ -27987,29 +28449,7 @@ window.DashboardApp = (() => {
                 .join("");
 
         if (salesmanSelect) {
-            salesmanSelect.innerHTML = `
-                <option value="">
-                    ${utils.escapeHTML(
-                        utils.t(
-                            "common.allSalesmen",
-                            "جميع المندوبين"
-                        )
-                    )}
-                </option>
-
-                ${salesmanOptions}
-            `;
-
-            if (
-                salesmen.some(
-                    salesman =>
-                        salesman.code ===
-                        oldSalesman
-                )
-            ) {
-                salesmanSelect.value =
-                    oldSalesman;
-            }
+            renderSalesmanFilterOptions(salesmen);
         }
 
         if (profileSelect) {
@@ -28574,7 +29014,6 @@ window.DashboardApp = (() => {
     function resetFilters() {
         [
             "branchFilter",
-            "salesmanFilter",
             "fromDateFilter",
             "toDateFilter"
         ].forEach(id => {
@@ -28585,6 +29024,12 @@ window.DashboardApp = (() => {
                 element.value = "";
             }
         });
+
+        setSalesmanFilterCodes(
+            salesmanFilterLockedCode
+                ? [salesmanFilterLockedCode]
+                : []
+        );
 
         applyLocalFilters();
     }
@@ -28598,6 +29043,8 @@ window.DashboardApp = (() => {
         if (eventsBound) {
             return;
         }
+
+        bindSalesmanMultiSelectEvents();
 
         utils.byId(
             "loginForm"
@@ -28847,6 +29294,8 @@ window.DashboardApp = (() => {
         applyLocalFilters,
         populateFilters,
         distributeData,
+
+        setSalesmanFilterLock,
 
         showPage,
         openSidebar,
