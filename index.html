@@ -1961,6 +1961,23 @@ tbody tr:last-child td {
     color: var(--text-secondary);
 }
 
+.chart-container-scrollable {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container-scrollable .chart-container-label {
+    flex-shrink: 0;
+}
+
+.chart-scroll-inner {
+    flex: 1;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+}
+
 @media (max-width: 1100px) {
     .salesman-report-grid {
         grid-template-columns: 1fr;
@@ -6197,6 +6214,26 @@ html[dir="rtl"] .dashboard-tables .content-card .card-header::before {
                                 </strong>
                             </article>
 
+                            <article class="profile-kpi-card">
+                                <span data-i18n="salesmanProfiles.purchasingCustomerCount">
+                                    عدد العملاء اللي اشتروا
+                                </span>
+
+                                <strong id="profilePurchasingCustomerCount">
+                                    0
+                                </strong>
+                            </article>
+
+                            <article class="profile-kpi-card">
+                                <span data-i18n="salesmanProfiles.purchasingCustomerPercentage">
+                                    نسبة العملاء اللي اشتروا
+                                </span>
+
+                                <strong id="profilePurchasingCustomerPercentage">
+                                    0%
+                                </strong>
+                            </article>
+
 
                             <article class="profile-kpi-card">
                                 <span data-i18n="salesmanProfiles.newCustomers">العملاء الجدد</span>
@@ -6267,11 +6304,13 @@ html[dir="rtl"] .dashboard-tables .content-card .card-header::before {
                                     </article>
                                 </div>
 
-                                <div class="chart-container">
+                                <div class="chart-container chart-container-scrollable">
                                     <div class="chart-container-label" data-i18n="salesmanProfiles.monthlySalesTrend">
                                         اتجاه المبيعات الشهري
                                     </div>
-                                    <canvas id="salesmanTrendChart"></canvas>
+                                    <div class="chart-scroll-inner" id="salesmanTrendChartScroll">
+                                        <canvas id="salesmanTrendChart"></canvas>
+                                    </div>
                                 </div>
                             </article>
 
@@ -7119,6 +7158,8 @@ const TRANSLATIONS = {
             achievement: "تحقيق الهدف",
             invoiceCount: "عدد الفواتير",
             customerCount: "عدد العملاء",
+            purchasingCustomerCount: "عدد العملاء اللي اشتروا",
+            purchasingCustomerPercentage: "نسبة العملاء اللي اشتروا",
             newCustomers: "العملاء الجدد",
             reactivatedCustomers: "العملاء المعاد تنشيطهم",
             averageInvoice: "متوسط الفاتورة",
@@ -7469,6 +7510,8 @@ const TRANSLATIONS = {
             achievement: "Achievement",
             invoiceCount: "Invoice Count",
             customerCount: "Customer Count",
+            purchasingCustomerCount: "Purchasing Customers",
+            purchasingCustomerPercentage: "Purchasing %",
             newCustomers: "New Customers",
             reactivatedCustomers: "Reactivated Customers",
             averageInvoice: "Average Invoice",
@@ -10511,6 +10554,19 @@ window.DashboardCharts = (() => {
 
         destroy("salesmanTrend");
 
+        /*
+         * هذا الرسم يحتوي على 3 أعمدة لكل شهر (المبيعات،
+         * التحصيلات، عدد الفواتير)، فمع امتداد الفترة لعدة
+         * أشهر تصبح الأعمدة ضيقة جدًا وتتراكب الأرقام. نمنح
+         * كل شهر عرضًا كافيًا مع تفعيل التمرير الأفقي بدلاً
+         * من ضغط كل الأشهر في نفس العرض الثابت.
+         */
+        sizeChartScrollWrapper(
+            "salesmanTrendChartScroll",
+            labels.length,
+            150
+        );
+
         const colors = getColors();
         const baseOptions = getBaseOptions();
 
@@ -10552,7 +10608,7 @@ window.DashboardCharts = (() => {
 
                             borderWidth: 1,
                             borderRadius: 6,
-                            maxBarThickness: 26,
+                            maxBarThickness: 34,
                             yAxisID: "y"
                         },
 
@@ -10572,7 +10628,7 @@ window.DashboardCharts = (() => {
 
                             borderWidth: 1,
                             borderRadius: 6,
-                            maxBarThickness: 26,
+                            maxBarThickness: 34,
                             yAxisID: "y"
                         },
 
@@ -10592,7 +10648,7 @@ window.DashboardCharts = (() => {
 
                             borderWidth: 1,
                             borderRadius: 6,
-                            maxBarThickness: 26,
+                            maxBarThickness: 34,
                             yAxisID: "y1"
                         }
                     ]
@@ -10647,7 +10703,11 @@ window.DashboardCharts = (() => {
                         x: {
                             ticks: {
                                 color:
-                                    getTextColor()
+                                    getTextColor(),
+                                font: {
+                                    size: 13,
+                                    weight: "600"
+                                }
                             },
 
                             grid: {
@@ -18703,6 +18763,33 @@ window.DashboardProfiles = (() => {
                 ? (sales / target) * 100
                 : 0;
 
+        const customersList =
+            buildCustomers(
+                invoices,
+                collections,
+                balances,
+                customerInfoRows,
+                rawInvoicesForCustomer,
+                rawCollectionsForCustomer
+            );
+
+        /*
+         * عدد العملاء الذين اشتروا فعليًا خلال الفترة
+         * المختارة (sales > 0 لهذه الفترة تحديدًا)، ونسبتهم
+         * إلى إجمالي قائمة عملاء المندوب بالكامل.
+         */
+        const purchasingCustomerCount =
+            customersList.filter(
+                customer => customer.sales > 0
+            ).length;
+
+        const purchasingCustomerPercentage =
+            customersList.length > 0
+                ? (purchasingCustomerCount /
+                      customersList.length) *
+                  100
+                : 0;
+
         return {
             code: profileCode,
             name:
@@ -18744,14 +18831,10 @@ window.DashboardProfiles = (() => {
                 reactivatedCustomers,
 
             customers:
-                buildCustomers(
-                    invoices,
-                    collections,
-                    balances,
-                    customerInfoRows,
-                    rawInvoicesForCustomer,
-                    rawCollectionsForCustomer
-                ),
+                customersList,
+
+            purchasingCustomerCount,
+            purchasingCustomerPercentage,
 
             monthly:
                 buildMonthlyComparison(
@@ -19246,6 +19329,20 @@ window.DashboardProfiles = (() => {
             "profileCustomerCount",
             utils.formatNumber(
                 profile.customers.length
+            )
+        );
+
+        utils.setText(
+            "profilePurchasingCustomerCount",
+            utils.formatNumber(
+                profile.purchasingCustomerCount
+            )
+        );
+
+        utils.setText(
+            "profilePurchasingCustomerPercentage",
+            utils.formatPercentage(
+                profile.purchasingCustomerPercentage
             )
         );
 
@@ -20066,6 +20163,20 @@ window.DashboardProfiles = (() => {
                         ${utils.formatNumber(
                             profile.customers
                                 .length
+                        )}
+                    </div>
+
+                    <div>
+                        Purchasing Customers:
+                        ${utils.formatNumber(
+                            profile.purchasingCustomerCount
+                        )}
+                    </div>
+
+                    <div>
+                        Purchasing %:
+                        ${utils.formatPercentage(
+                            profile.purchasingCustomerPercentage
                         )}
                     </div>
 
