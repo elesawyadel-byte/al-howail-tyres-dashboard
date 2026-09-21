@@ -6352,8 +6352,16 @@ html[dir="rtl"] .dashboard-tables .content-card .card-header::before {
                                                 أيام التأخير
                                             </th>
 
+                                            <th data-i18n="salesmanProfiles.dueDays">
+                                                أيام الاستحقاق
+                                            </th>
+
                                             <th data-i18n="salesmanProfiles.creditLimit">
                                                 الحد الائتماني
+                                            </th>
+
+                                            <th data-i18n="salesmanProfiles.nextInvoice">
+                                                الفاتورة القادمة
                                             </th>
 
                                             <th data-i18n="salesmanProfiles.customerStatus">
@@ -7122,10 +7130,16 @@ const TRANSLATIONS = {
             customerDue: "المستحق",
             customerOverdue: "المتأخر",
             outstandingDays: "أيام التأخير",
+            dueDays: "أيام الاستحقاق",
             creditLimit: "الحد الائتماني",
+            invoiceNumbers: "أرقام الفواتير",
+            nextInvoice: "الفاتورة القادمة",
+            nextDueDate: "موعد التحصيل",
             customerStatus: "حالة العميل",
             active: "نشط",
+            dueActive: "مستحق ونشط",
             inactive: "غير نشط",
+            lostCustomer: "عميل مفقود",
             overdueCustomer: "متأخر",
             overCreditLimit: "متجاوز الحد الائتماني",
             viewProfile: "عرض الملف"
@@ -7466,10 +7480,16 @@ const TRANSLATIONS = {
             customerDue: "Due",
             customerOverdue: "Overdue",
             outstandingDays: "Outstanding Days",
+            dueDays: "Due Days",
             creditLimit: "Credit Limit",
+            invoiceNumbers: "Invoice Numbers",
+            nextInvoice: "Next Invoice",
+            nextDueDate: "Next Due Date",
             customerStatus: "Customer Status",
             active: "Active",
+            dueActive: "Due & Active",
             inactive: "Inactive",
+            lostCustomer: "Lost Customer",
             overdueCustomer: "Overdue",
             overCreditLimit: "Over Credit Limit",
             viewProfile: "View Profile"
@@ -17653,6 +17673,17 @@ window.DashboardProfiles = (() => {
     let rawInvoiceRows = [];
     let rawCollectionRows = [];
 
+    /*
+     * تغذية "المستحقات القادمة" (Upcoming Collections) تأتي
+     * من الخادم كمصدر منفصل تمامًا عن المستحقات/المتأخرات،
+     * وهي المصدر الوحيد الموثوق الذي يحمل تاريخ استحقاق
+     * فعلي حقيقي لكل فاتورة (dueDate)، بعكس بيانات
+     * المستحقات/المتأخرات التي لا تتضمن هذا الحقل. لذلك
+     * نستخدمها هنا لمطابقة رقم الفاتورة والحصول على تاريخ
+     * الاستحقاق الحقيقي كلما توفر.
+     */
+    let rawUpcomingDueByInvoice = new Map();
+
     function normalizeCode(value) {
         return utils.normalizeCode(value);
     }
@@ -17829,55 +17860,52 @@ window.DashboardProfiles = (() => {
         );
     }
 
-    function getStatus(row) {
-        const suppliedStatus = utils
-            .normalizeText(
-                getValue(
-                    row,
-                    ["status", "Status"],
-                    ""
-                )
-            )
-            .replace(/\s+/g, "");
-
-        const overdueDays = utils.toNumber(
+    /*
+     * "Days remaining to collect" هو المصدر الوحيد الموثوق
+     * لتصنيف المستحق/المتأخر ولحساب عدد الأيام، بناءً على
+     * تأكيد صريح من فريق العمل: قيمة سالبة تعني أن الفاتورة
+     * متأخرة بمقدار القيمة المطلقة أيامًا، وقيمة موجبة تعني
+     * عدد الأيام المتبقية حتى الاستحقاق. لا يُعتمد على أي
+     * حقل أو حساب آخر (لا status، ولا overdueDays، ولا عمر
+     * الفاتورة).
+     */
+    function getDaysRemainingToCollect(row) {
+        return utils.toNumber(
             getValue(
                 row,
                 [
-                    "overdueDays",
-                    "outstandingDays",
-                    "Overdue Days"
+                    "daysRemainingToCollect",
+                    "Days remaining to collect",
+                    "daysUntilDue",
+                    "Days Remaining"
                 ],
                 0
             )
         );
+    }
 
-        if (
-            suppliedStatus === "overdue" ||
-            suppliedStatus === "متأخر" ||
-            overdueDays > 0
-        ) {
-            return "overdue";
-        }
-
-        return "due";
+    function getStatus(row) {
+        return getDaysRemainingToCollect(row) < 0
+            ? "overdue"
+            : "due";
     }
 
     function getOverdueDays(row) {
-        return Math.max(
-            0,
-            utils.toNumber(
-                getValue(
-                    row,
-                    [
-                        "overdueDays",
-                        "outstandingDays",
-                        "Overdue Days"
-                    ],
-                    0
-                )
-            )
-        );
+        const remaining =
+            getDaysRemainingToCollect(row);
+
+        return remaining < 0
+            ? Math.abs(remaining)
+            : 0;
+    }
+
+    function getDueDays(row) {
+        const remaining =
+            getDaysRemainingToCollect(row);
+
+        return remaining >= 0
+            ? remaining
+            : 0;
     }
 
     function getCreditLimit(row) {
@@ -17892,6 +17920,97 @@ window.DashboardProfiles = (() => {
                 0
             )
         );
+    }
+
+    function getBalanceInvoiceNumber(row) {
+        return String(
+            getValue(
+                row,
+                [
+                    "invoiceNo",
+                    "invoiceNumber",
+                    "Invoice Number",
+                    "invoiceNumbers"
+                ],
+                ""
+            )
+        ).trim();
+    }
+
+    /*
+     * موعد التحصيل الفعلي لكل فاتورة يُحدَّد بالترتيب التالي:
+     *
+     * 1) مطابقة رقم الفاتورة مع بيانات "المستحقات القادمة"
+     *    (Upcoming Collections) القادمة من الخادم، وهي
+     *    المصدر الوحيد المؤكد أنه يحمل تاريخ استحقاق حقيقي.
+     *
+     * 2) إذا كانت الفاتورة متأخرة بالفعل (overdueDays > 0)،
+     *    فموعد الاستحقاق = اليوم الحالي ناقص عدد أيام
+     *    التأخير، وهو حساب موثوق لأن حقل أيام التأخير نفسه
+     *    مُستخدم ومعتمد عليه في باقي أجزاء النظام.
+     *
+     * 3) إذا توفر عدد أيام السماح (allowedDays) فعليًا في
+     *    الصف، فموعد الاستحقاق = تاريخ الفاتورة + عدد الأيام.
+     *
+     * 4) في حال عدم توفر أي من ذلك، لا يُعرض تاريخ تخمينيًا؛
+     *    بل تُترك القيمة فارغة لتجنّب عرض تاريخ غير صحيح.
+     */
+    function getBalanceDueDate(row) {
+        const invoiceNo = normalizeCode(
+            getBalanceInvoiceNumber(row)
+        );
+
+        if (
+            invoiceNo &&
+            rawUpcomingDueByInvoice.has(invoiceNo)
+        ) {
+            return rawUpcomingDueByInvoice.get(
+                invoiceNo
+            );
+        }
+
+        const overdueDays = getOverdueDays(row);
+
+        if (overdueDays > 0) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            today.setDate(
+                today.getDate() - overdueDays
+            );
+            return today;
+        }
+
+        const allowedDaysRaw = getValue(
+            row,
+            [
+                "allowedDays",
+                "allowedCreditDays",
+                "Allowed Days"
+            ],
+            null
+        );
+
+        const invoiceDateValue = utils.parseDate(
+            getInvoiceDate(row)
+        );
+
+        if (
+            invoiceDateValue &&
+            allowedDaysRaw !== null
+        ) {
+            const dueDate = new Date(
+                invoiceDateValue
+            );
+
+            dueDate.setDate(
+                dueDate.getDate() +
+                    utils.toNumber(allowedDaysRaw)
+            );
+
+            return dueDate;
+        }
+
+        return "";
     }
 
     function getInvoiceDate(row) {
@@ -18004,6 +18123,39 @@ window.DashboardProfiles = (() => {
         rawCollectionRows = Array.isArray(data.collections)
             ? data.collections
             : [];
+
+        rawUpcomingDueByInvoice = new Map();
+
+        (Array.isArray(data.upcomingDue) ? data.upcomingDue : []).forEach(
+            row => {
+                const invoiceNo = normalizeCode(
+                    getValue(
+                        row,
+                        [
+                            "invoiceNo",
+                            "invoiceNumber",
+                            "Invoice Number"
+                        ],
+                        ""
+                    )
+                );
+
+                const dueDateValue = utils.parseDate(
+                    getValue(
+                        row,
+                        ["dueDate", "Due Date"],
+                        ""
+                    )
+                );
+
+                if (invoiceNo && dueDateValue) {
+                    rawUpcomingDueByInvoice.set(
+                        invoiceNo,
+                        dueDateValue
+                    );
+                }
+            }
+        );
 
         render();
     }
@@ -18490,6 +18642,29 @@ window.DashboardProfiles = (() => {
                 rowBelongsToCodes(row, profileCodes)
             );
 
+        /*
+         * قائمة العملاء يجب أن تشمل كل عملاء المندوب (من
+         * فواتير وتحصيلات غير مفلترة بالفترة)، وليس فقط
+         * عملاء الفترة المختارة، بينما تظل قيم المبيعات
+         * والتحصيلات الظاهرة لكل عميل محسوبة من الفترة
+         * المختارة تحديدًا.
+         */
+        const rawInvoicesForCustomer =
+            rawInvoiceRows.filter(row =>
+                rowBelongsToCodes(
+                    row,
+                    profileCodes
+                )
+            );
+
+        const rawCollectionsForCustomer =
+            rawCollectionRows.filter(row =>
+                rowBelongsToCodes(
+                    row,
+                    profileCodes
+                )
+            );
+
         const sales = utils.sumBy(
             invoices,
             getInvoiceSales
@@ -18573,7 +18748,9 @@ window.DashboardProfiles = (() => {
                     invoices,
                     collections,
                     balances,
-                    customerInfoRows
+                    customerInfoRows,
+                    rawInvoicesForCustomer,
+                    rawCollectionsForCustomer
                 ),
 
             monthly:
@@ -18594,7 +18771,9 @@ window.DashboardProfiles = (() => {
         invoices,
         collections,
         balances,
-        customerInfo = []
+        customerInfo = [],
+        rawInvoices = [],
+        rawCollections = []
     ) {
         const customerMap = new Map();
 
@@ -18622,7 +18801,10 @@ window.DashboardProfiles = (() => {
                     due: 0,
                     overdue: 0,
                     overdueDays: 0,
-                    creditLimit: 0
+                    dueDaysMin: null,
+                    nextInvoiceNo: "",
+                    creditLimit: 0,
+                    outstandingInvoices: []
                 });
             }
 
@@ -18648,16 +18830,38 @@ window.DashboardProfiles = (() => {
             return customer;
         }
 
-        invoices.forEach(row => {
+        /*
+         * قائمة العملاء (الصفوف الظاهرة) تُبنى من بيانات
+         * كاملة غير مفلترة بالفترة (كل فواتير/تحصيلات
+         * المندوب + كل مستحقاته ومتأخراته)، حتى يظهر كل
+         * عملاء المندوب دائمًا. أما قيم "المبيعات"
+         * و"التحصيلات" الظاهرة لكل عميل فتُحسب من بيانات
+         * الفترة المختارة فقط (أدناه).
+         */
+        rawInvoices.forEach(row => {
+            ensureCustomer(row);
+        });
+
+        rawCollections.forEach(row => {
+            ensureCustomer(row);
+        });
+
+        balances.forEach(row => {
+            ensureCustomer(row);
+        });
+
+        /*
+         * "آخر عملية شراء" هي التاريخ الفعلي لآخر فاتورة
+         * للعميل عبر كل الفواتير المتاحة (غير مفلترة
+         * بالفترة)، وليست مقتصرة على الفترة المختارة.
+         */
+        rawInvoices.forEach(row => {
             const customer =
                 ensureCustomer(row);
 
             if (!customer) {
                 return;
             }
-
-            customer.sales +=
-                getInvoiceSales(row);
 
             const invoiceDate =
                 getInvoiceDate(row);
@@ -18684,6 +18888,22 @@ window.DashboardProfiles = (() => {
             }
         });
 
+        /*
+         * المبيعات والتحصيلات الظاهرة لكل عميل خاصة
+         * بالفترة المختارة فقط في فلتر لوحة التحكم.
+         */
+        invoices.forEach(row => {
+            const customer =
+                ensureCustomer(row);
+
+            if (!customer) {
+                return;
+            }
+
+            customer.sales +=
+                getInvoiceSales(row);
+        });
+
         collections.forEach(row => {
             const customer =
                 ensureCustomer(row);
@@ -18707,10 +18927,11 @@ window.DashboardProfiles = (() => {
             const balance =
                 getBalance(row);
 
-            if (
+            const rowIsOverdue =
                 getStatus(row) ===
-                "overdue"
-            ) {
+                "overdue";
+
+            if (rowIsOverdue) {
                 customer.overdue +=
                     balance;
             } else {
@@ -18724,11 +18945,54 @@ window.DashboardProfiles = (() => {
                     getOverdueDays(row)
                 );
 
+            /*
+             * "أيام الاستحقاق" = أقل عدد أيام موجب (أقرب
+             * فاتورة سيحين دورها في التحصيل)، من نفس حقل
+             * "Days remaining to collect" حصريًا. الفاتورة
+             * المطابقة لهذا الرقم هي نفسها التي تظهر في
+             * عمود "الفاتورة القادمة".
+             */
+            if (!rowIsOverdue && balance > 0) {
+                const remaining =
+                    getDueDays(row);
+
+                if (
+                    customer.dueDaysMin === null ||
+                    remaining < customer.dueDaysMin
+                ) {
+                    customer.dueDaysMin =
+                        remaining;
+
+                    customer.nextInvoiceNo =
+                        getBalanceInvoiceNumber(row) ||
+                        "--";
+                }
+            }
+
             customer.creditLimit =
                 Math.max(
                     customer.creditLimit,
                     getCreditLimit(row)
                 );
+
+            /*
+             * لكل فاتورة قائمة عليها مستحقات أو متأخرات،
+             * نحتفظ برقم الفاتورة وموعد استحقاق التحصيل
+             * الخاص بها، لتظهر في مراجعة المندوب الكاملة.
+             */
+            if (balance > 0) {
+                customer.outstandingInvoices.push({
+                    invoiceNo:
+                        getBalanceInvoiceNumber(row) ||
+                        "--",
+                    dueDate:
+                        getBalanceDueDate(row),
+                    invoiceDate:
+                        getInvoiceDate(row),
+                    balance,
+                    isOverdue: rowIsOverdue
+                });
+            }
         });
 
 
@@ -18757,7 +19021,18 @@ window.DashboardProfiles = (() => {
 
             customer.creditLimit = getCreditLimit(info);
             customer.maxDays = utils.toNumber(
-                getValue(info, ["maxDays", "Max Days"], 0)
+                getValue(
+                    info,
+                    [
+                        "maxDays",
+                        "Max Days",
+                        "noOfDaysAllowed",
+                        "No of DaysAllowed",
+                        "allowedDays",
+                        "Allowed Days"
+                    ],
+                    0
+                )
             );
             customer.paymentType = String(
                 getValue(info, ["paymentType", "Payment Type"], customer.creditLimit > 0 ? "Credit" : "Cash")
@@ -18765,6 +19040,55 @@ window.DashboardProfiles = (() => {
             customer.customerAccountStatus = String(
                 getValue(info, ["customerAccountStatus", "Status"], "")
             );
+
+            /*
+             * إذا لم يتوفر تاريخ استحقاق موثوق للفاتورة (لا
+             * من "المستحقات القادمة" ولا من حساب التأخير)،
+             * نستخدم مدة السماح الفعلية للعميل (maxDays) من
+             * بيانات العميل الرئيسية (Credit/Cash)، وهي نفس
+             * "No of DaysAllowed" الظاهرة في ملف البيانات
+             * الأصلي، بدلاً من الاعتماد على حقل داخل صف
+             * المستحق/المتأخر قد يكون غير موجود فعليًا.
+             */
+            if (customer.maxDays > 0) {
+                customer.outstandingInvoices.forEach(invoice => {
+                    if (invoice.dueDate) {
+                        return;
+                    }
+
+                    const invoiceDateValue = utils.parseDate(
+                        invoice.invoiceDate
+                    );
+
+                    if (!invoiceDateValue) {
+                        return;
+                    }
+
+                    const dueDate = new Date(
+                        invoiceDateValue
+                    );
+
+                    dueDate.setDate(
+                        dueDate.getDate() +
+                            customer.maxDays
+                    );
+
+                    invoice.dueDate = dueDate;
+                });
+            }
+        });
+
+        customerMap.forEach(customer => {
+            customer.outstandingInvoices.sort((first, second) => {
+                const firstDate = utils.parseDate(first.dueDate);
+                const secondDate = utils.parseDate(second.dueDate);
+
+                if (firstDate && secondDate) {
+                    return firstDate - secondDate;
+                }
+
+                return firstDate ? -1 : secondDate ? 1 : 0;
+            });
         });
 
         return Array.from(
@@ -18936,9 +19260,100 @@ window.DashboardProfiles = (() => {
         );
     }
 
+    function getDaysSinceLastPurchase(customer) {
+        const lastPurchaseDate = utils.parseDate(
+            customer.lastPurchase
+        );
+
+        if (!lastPurchaseDate) {
+            return null;
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        return Math.floor(
+            (today - lastPurchaseDate) / 86400000
+        );
+    }
+
+    /*
+     * تصنيف حالة العميل:
+     * - Overdue: عليه متأخرات (الأولوية القصوى)
+     * - Due & Active: عليه مستحقات (غير متأخرة) وما زال يشتري
+     * - Active: يشتري وليس عليه مستحقات أو متأخرات
+     * - Inactive: لم يشترِ منذ أكثر من شهرين
+     * - Lost Customer: لم يشترِ منذ أكثر من 3 أشهر (أو لا
+     *   يوجد سجل شراء له على الإطلاق)
+     */
+    function getCustomerStatusInfo(customer) {
+        if (customer.overdue > 0) {
+            return {
+                key: "overdue",
+                className: "status-danger",
+                label: utils.t(
+                    "salesmanProfiles.overdueCustomer",
+                    "متأخر"
+                )
+            };
+        }
+
+        const daysSincePurchase =
+            getDaysSinceLastPurchase(customer);
+
+        const isActive =
+            daysSincePurchase !== null &&
+            daysSincePurchase <= 60;
+
+        if (customer.due > 0 && isActive) {
+            return {
+                key: "dueActive",
+                className: "status-warning",
+                label: utils.t(
+                    "salesmanProfiles.dueActive",
+                    "مستحق ونشط"
+                )
+            };
+        }
+
+        if (isActive) {
+            return {
+                key: "active",
+                className: "status-success",
+                label: utils.t(
+                    "salesmanProfiles.active",
+                    "نشط"
+                )
+            };
+        }
+
+        if (
+            daysSincePurchase !== null &&
+            daysSincePurchase <= 90
+        ) {
+            return {
+                key: "inactive",
+                className: "status-info",
+                label: utils.t(
+                    "salesmanProfiles.inactive",
+                    "غير نشط"
+                )
+            };
+        }
+
+        return {
+            key: "lost",
+            className: "status-neutral",
+            label: utils.t(
+                "salesmanProfiles.lostCustomer",
+                "عميل مفقود"
+            )
+        };
+    }
+
     function createCustomerRow(customer) {
-        const hasOverdue =
-            customer.overdue > 0;
+        const statusInfo =
+            getCustomerStatusInfo(customer);
 
         return `
             <tr>
@@ -18987,9 +19402,24 @@ window.DashboardProfiles = (() => {
                 </td>
 
                 <td>
-                    ${utils.formatNumber(
-                        customer.overdueDays
-                    )}
+                    ${
+                        customer.overdue > 0
+                            ? utils.formatNumber(
+                                  customer.overdueDays
+                              )
+                            : "--"
+                    }
+                </td>
+
+                <td>
+                    ${
+                        customer.due > 0 &&
+                        customer.dueDaysMin !== null
+                            ? utils.formatNumber(
+                                  customer.dueDaysMin
+                              )
+                            : "--"
+                    }
                 </td>
 
                 <td>
@@ -18999,21 +19429,22 @@ window.DashboardProfiles = (() => {
                 </td>
 
                 <td>
+                    ${
+                        customer.due > 0 &&
+                        customer.nextInvoiceNo
+                            ? utils.escapeHTML(
+                                  customer.nextInvoiceNo
+                              )
+                            : "--"
+                    }
+                </td>
+
+                <td>
                     <span class="status-badge ${
-                        hasOverdue
-                            ? "status-warning"
-                            : "status-success"
+                        statusInfo.className
                     }">
                         ${utils.escapeHTML(
-                            hasOverdue
-                                ? utils.t(
-                                      "salesmanProfiles.overdueCustomer",
-                                      "متأخر"
-                                  )
-                                : utils.t(
-                                      "salesmanProfiles.active",
-                                      "نشط"
-                                  )
+                            statusInfo.label
                         )}
                     </span>
                 </td>
@@ -19043,7 +19474,7 @@ window.DashboardProfiles = (() => {
                       )
                       .join("")
                 : utils.emptyTableRow(
-                      10,
+                      12,
                       utils.t(
                           "common.noData",
                           "لا توجد بيانات متاحة"
@@ -19242,6 +19673,23 @@ window.DashboardProfiles = (() => {
             return false;
         }
 
+        /*
+         * render() أعلاه يعيد إنشاء الرسم البياني للاتجاه
+         * الشهري. تغيير حجم الرسم (responsive) يتم بشكل غير
+         * متزامن عبر المتصفح، فالتقاط الصورة (toDataURL)
+         * فورًا بعد render() قد يلتقط الرسم قبل اكتمال ضبط
+         * حجمه، مما يسبب تراكب الأرقام أحيانًا. لذلك نؤجل
+         * باقي عملية الطباعة قليلًا لضمان استقرار الرسم أولًا.
+         */
+        window.setTimeout(
+            () => printProfileDocument(profile),
+            120
+        );
+
+        return true;
+    }
+
+    function printProfileDocument(profile) {
         const rows =
             getFilteredCustomers(
                 profile.customers
@@ -19685,7 +20133,9 @@ window.DashboardProfiles = (() => {
                             <th>Due</th>
                             <th>Overdue</th>
                             <th>Overdue Days</th>
+                            <th>Due Days</th>
                             <th>Credit Limit</th>
+                            <th>Next Invoice</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -24705,7 +25155,171 @@ window.DashboardReports = (() => {
         };
     }
 
+    function getMonthsInRange(dateFromValue, dateToValue) {
+        const from = utils.parseDate(dateFromValue);
+        const to = utils.parseDate(dateToValue);
+
+        if (!from || !to) {
+            return [];
+        }
+
+        const months = [];
+
+        let cursor = new Date(
+            from.getFullYear(),
+            from.getMonth(),
+            1
+        );
+
+        const end = new Date(
+            to.getFullYear(),
+            to.getMonth(),
+            1
+        );
+
+        while (cursor <= end) {
+            months.push({
+                year: cursor.getFullYear(),
+                month: cursor.getMonth()
+            });
+
+            cursor = new Date(
+                cursor.getFullYear(),
+                cursor.getMonth() + 1,
+                1
+            );
+        }
+
+        return months;
+    }
+
+    function getQuarterForMonth(monthIndex) {
+        return Math.floor(monthIndex / 3) + 1;
+    }
+
+    function monthlyTargetForQuarter(row, quarter) {
+        return number(
+            row,
+            [
+                `monthlyTargetQ${quarter}`,
+                `monthlyTarget${quarter}`,
+                "monthlyTarget",
+                "target"
+            ],
+            0
+        );
+    }
+
+    function formatMonthLabel(year, monthIndex) {
+        const isArabic = utils.getLanguage() === "ar";
+
+        return new Date(year, monthIndex, 1).toLocaleDateString(
+            isArabic ? "ar" : "en",
+            { month: "long", year: "numeric" }
+        );
+    }
+
+    function buildMonthlySalesByCode(months) {
+        const bounds = months.map(({ year, month }) => ({
+            start: new Date(year, month, 1),
+            end: new Date(year, month + 1, 1)
+        }));
+
+        const map = new Map();
+
+        currentData.invoices.forEach(row => {
+            const code = canonicalSalesman(row).code;
+            if (!code) return;
+
+            const invoiceDateValue = utils.parseDate(
+                invoiceDate(row)
+            );
+
+            if (!invoiceDateValue) return;
+
+            for (let i = 0; i < bounds.length; i += 1) {
+                if (
+                    invoiceDateValue >= bounds[i].start &&
+                    invoiceDateValue < bounds[i].end
+                ) {
+                    if (!map.has(code)) {
+                        map.set(
+                            code,
+                            new Array(months.length).fill(0)
+                        );
+                    }
+
+                    map.get(code)[i] += sales(row);
+                    break;
+                }
+            }
+        });
+
+        return map;
+    }
+
     function buildTargetReport() {
+        const months = getMonthsInRange(
+            currentData.filters?.dateFrom,
+            currentData.filters?.dateTo
+        );
+
+        /*
+         * إذا كانت الفترة المحددة تمتد لأكثر من شهر واحد
+         * (مثال: من 1 يناير حتى تاريخ اليوم)، يُبنى التقرير
+         * كصف مستقل لكل مندوب في كل شهر، بحيث تتم مقارنة
+         * مبيعات كل شهر بهدف نفس الشهر (حسب الربع الزمني
+         * الذي يقع فيه)، بدلاً من مقارنة إجمالي المبيعات
+         * على امتداد عدة أشهر بهدف شهر واحد فقط.
+         */
+        if (months.length > 1) {
+            const salesByCode = buildMonthlySalesByCode(months);
+
+            const rows = [];
+
+            currentData.target.forEach(targetRow => {
+                const code = salesmanCode(targetRow);
+                if (!code) return;
+
+                const monthlySales =
+                    salesByCode.get(code) ||
+                    new Array(months.length).fill(0);
+
+                months.forEach(({ year, month }, index) => {
+                    const quarter = getQuarterForMonth(month);
+                    const target = monthlyTargetForQuarter(
+                        targetRow,
+                        quarter
+                    );
+
+                    const monthSales = monthlySales[index] || 0;
+
+                    const achievement = target > 0
+                        ? (monthSales / target) * 100
+                        : 0;
+
+                    rows.push({
+                        "Month": formatMonthLabel(year, month),
+                        "Salesman Code": code,
+                        "Salesman Name": salesmanName(targetRow),
+                        "Branch": branch(targetRow),
+                        "Monthly Target": target,
+                        "Net Sales": monthSales,
+                        "Achievement %": achievement,
+                        "Remaining": Math.max(0, target - monthSales)
+                    });
+                });
+            });
+
+            return {
+                type: "target",
+                title: reportTitle("target"),
+                rows,
+                currencyColumns: ["Monthly Target", "Net Sales", "Remaining"],
+                percentageColumns: ["Achievement %"]
+            };
+        }
+
         const salesMap = new Map();
 
         currentData.invoices.forEach(row => {
