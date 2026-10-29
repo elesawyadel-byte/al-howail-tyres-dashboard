@@ -1899,7 +1899,7 @@ tbody tr:last-child td {
 .comparison-grid {
     padding: 18px;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 14px;
 }
 
@@ -4682,6 +4682,9 @@ table.mix-table {
     }
 }
 </style>
+<style>
+body.cash-disabled [data-cash-feature]{display:none !important;}
+</style>
 </head>
 
 <body>
@@ -5477,8 +5480,8 @@ table.mix-table {
                         <article class="kpi-card kpi-collections">
 
                             <div class="kpi-card-header">
-                                <span data-i18n="dashboard.collections">
-                                    إجمالي التحصيلات
+                                <span data-i18n="dashboard.creditCollections">
+                                    تحصيل الكرديت
                                 </span>
 
                                 <div class="kpi-icon">
@@ -5494,6 +5497,31 @@ table.mix-table {
                             </strong>
 
                             <small id="collectionsNote">
+                                --
+                            </small>
+
+                        </article>
+
+                        <article class="kpi-card kpi-collections kpi-cash" data-cash-feature>
+
+                            <div class="kpi-card-header">
+                                <span data-i18n="dashboard.cashCollections">
+                                    التحصيل الكاش
+                                </span>
+
+                                <div class="kpi-icon">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+
+                            <strong
+                                class="kpi-value"
+                                id="cashCollectionsKpi"
+                            >
+                                0.00 ر.س
+                            </strong>
+
+                            <small id="cashCollectionsNote">
                                 --
                             </small>
 
@@ -6134,6 +6162,30 @@ table.mix-table {
                             id="collectionsTableFooter"
                         ></div>
 
+                    </article>
+
+                    <article class="content-card cash-summary-card" data-cash-feature style="margin-top:18px">
+                        <div class="card-header page-card-header">
+                            <div>
+                                <h3 data-i18n="collections.cashTitle">التحصيل الكاش</h3>
+                                <p data-i18n="collections.cashSubtitle">التحصيل الكاش لكل مندوب في الفترة المختارة (بيانات شهرية من شيت Cash collections)</p>
+                            </div>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="collections.branch">الفرع</th>
+                                        <th data-i18n="collections.salesmanCode">كود المندوب</th>
+                                        <th data-i18n="collections.salesmanName">اسم المندوب</th>
+                                        <th data-i18n="collections.cashMonths">الشهور</th>
+                                        <th data-i18n="collections.cashAmount">التحصيل الكاش</th>
+                                        <th data-i18n="collections.cashShare">النسبة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cashCollectionsTableBody"></tbody>
+                            </table>
+                        </div>
                     </article>
 
                 </section>
@@ -6780,11 +6832,21 @@ table.mix-table {
                             </article>
 
                             <article class="profile-kpi-card">
-                                <span data-i18n="salesmanProfiles.collections">
-                                    التحصيلات
+                                <span data-i18n="salesmanProfiles.creditCollections">
+                                    تحصيل الكرديت
                                 </span>
 
                                 <strong id="profileCollectionsValue">
+                                    0.00 ر.س
+                                </strong>
+                            </article>
+
+                            <article class="profile-kpi-card" data-cash-feature>
+                                <span data-i18n="salesmanProfiles.cashCollections">
+                                    التحصيل الكاش
+                                </span>
+
+                                <strong id="profileCashCollectionsValue">
                                     0.00 ر.س
                                 </strong>
                             </article>
@@ -6988,6 +7050,20 @@ table.mix-table {
                                             <span id="profileCollectionsPreviousValue">0.00 ر.س</span>
                                         </span>
                                         <span class="comparison-growth comparison-growth-flat" id="profileCollectionsGrowthBadge">0%</span>
+                                    </article>
+
+                                    <article class="comparison-card" data-cash-feature>
+                                        <span class="comparison-card-title" data-i18n="salesmanProfiles.cashComparison">
+                                            التحصيل الكاش
+                                        </span>
+                                        <strong class="comparison-card-value" id="profileCashCurrentValue">
+                                            0.00 ر.س
+                                        </strong>
+                                        <span class="comparison-card-previous">
+                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span id="profileCashPreviousValue">0.00 ر.س</span>
+                                        </span>
+                                        <span class="comparison-growth comparison-growth-flat" id="profileCashGrowthBadge">0%</span>
                                     </article>
 
                                     <article class="comparison-card">
@@ -7305,7 +7381,20 @@ table.mix-table {
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
 
                                 <span data-i18n="reports.collectionsReport">
-                                    تقرير التحصيلات
+                                    تقرير تحصيل الكرديت
+                                </span>
+                            </button>
+
+                            <button
+                                class="report-card"
+                                type="button"
+                                data-report="cash"
+                                data-cash-feature
+                            >
+                                <i class="fa-solid fa-money-bill-wave"></i>
+
+                                <span data-i18n="reports.cashReport">
+                                    تقرير التحصيل الكاش
                                 </span>
                             </button>
 
@@ -7318,6 +7407,18 @@ table.mix-table {
 
                                 <span data-i18n="reports.overdueReport">
                                     تقرير المتأخرات
+                                </span>
+                            </button>
+
+                            <button
+                                class="report-card"
+                                type="button"
+                                data-report="receivables"
+                            >
+                                <i class="fa-solid fa-scale-unbalanced"></i>
+
+                                <span data-i18n="reports.receivablesReport">
+                                    تقرير المستحقات والمتأخرات (مجمع)
                                 </span>
                             </button>
 
@@ -7936,6 +8037,11 @@ const TRANSLATIONS = {
 
             netSales: "صافي المبيعات",
             collections: "إجمالي التحصيلات",
+            creditCollections: "تحصيل الكرديت",
+            cashCollections: "التحصيل الكاش",
+            collectionsComparison: "تحصيل الكرديت",
+            cashComparison: "التحصيل الكاش",
+            totalAllCollections: "إجمالي التحصيل (كرديت + كاش)",
             due: "المستحقات",
             overdue: "المتأخرات",
             outstanding: "الرصيد القائم",
@@ -8016,7 +8122,12 @@ const TRANSLATIONS = {
         },
 
         collections: {
-            title: "بيانات التحصيلات",
+            cashTitle: "التحصيل الكاش",
+            cashSubtitle: "التحصيل الكاش لكل مندوب في الفترة المختارة (بيانات شهرية من شيت Cash collections)",
+            cashMonths: "الشهور",
+            cashAmount: "التحصيل الكاش",
+            cashShare: "النسبة",
+            title: "بيانات تحصيل الكرديت",
             subtitle: "متابعة المدفوعات والتحصيلات المستلمة",
             searchPlaceholder: "بحث في التحصيلات...",
             collectionDate: "تاريخ التحصيل",
@@ -8072,6 +8183,10 @@ const TRANSLATIONS = {
         },
 
         salesmanProfiles: {
+            creditCollections: "تحصيل الكرديت",
+            cashCollections: "التحصيل الكاش",
+            collectionsComparison: "تحصيل الكرديت",
+            cashComparison: "التحصيل الكاش",
             title: "ملفات المندوبين",
             subtitle: "عرض جميع بيانات المندوبين والعملاء التابعين لهم",
             selectSalesman: "اختر المندوب",
@@ -8175,7 +8290,9 @@ const TRANSLATIONS = {
             title: "التقارير",
             subtitle: "إعداد وطباعة تقارير الأداء",
             salesReport: "تقرير المبيعات",
-            collectionsReport: "تقرير التحصيلات",
+            collectionsReport: "تقرير تحصيل الكرديت",
+            cashReport: "تقرير التحصيل الكاش",
+            receivablesReport: "تقرير المستحقات والمتأخرات (مجمع)",
             overdueReport: "تقرير المتأخرات",
             targetReport: "تقرير تحقيق الأهداف",
             salesmanReport: "تقرير المندوب",
@@ -8353,6 +8470,11 @@ const TRANSLATIONS = {
 
             netSales: "Net Sales",
             collections: "Total Collections",
+            creditCollections: "Credit Collections",
+            cashCollections: "Cash Collections",
+            collectionsComparison: "Credit Collections",
+            cashComparison: "Cash Collections",
+            totalAllCollections: "Total collections (credit + cash)",
             due: "Due",
             overdue: "Overdue",
             outstanding: "Outstanding Balance",
@@ -8433,7 +8555,12 @@ const TRANSLATIONS = {
         },
 
         collections: {
-            title: "Collections Data",
+            cashTitle: "Cash Collections",
+            cashSubtitle: "Cash collections per salesman in the selected period (monthly data from the Cash collections sheet)",
+            cashMonths: "Months",
+            cashAmount: "Cash Collections",
+            cashShare: "Share",
+            title: "Credit Collections Data",
             subtitle: "Track received payments and collections",
             searchPlaceholder: "Search collections...",
             collectionDate: "Collection Date",
@@ -8489,6 +8616,10 @@ const TRANSLATIONS = {
         },
 
         salesmanProfiles: {
+            creditCollections: "Credit Collections",
+            cashCollections: "Cash Collections",
+            collectionsComparison: "Credit Collections",
+            cashComparison: "Cash Collections",
             title: "Salesman Profiles",
             subtitle: "View complete salesman and customer information",
             selectSalesman: "Select Salesman",
@@ -8592,7 +8723,9 @@ const TRANSLATIONS = {
             title: "Reports",
             subtitle: "Create and print performance reports",
             salesReport: "Sales Report",
-            collectionsReport: "Collections Report",
+            collectionsReport: "Credit Collections Report",
+            cashReport: "Cash Collections Report",
+            receivablesReport: "Due & Overdue Report (Consolidated)",
             overdueReport: "Overdue Report",
             targetReport: "Target Achievement Report",
             salesmanReport: "Salesman Report",
@@ -9953,6 +10086,11 @@ window.DashboardAPI = (() => {
                     ? response.upcomingDue
                     : [],
 
+            cashCollections:
+                Array.isArray(response?.cashCollections)
+                    ? response.cashCollections
+                    : [],
+
             visits: (() => {
                 const visits = Array.isArray(response?.visits)
                     ? response.visits
@@ -11296,7 +11434,8 @@ window.DashboardCharts = (() => {
     function renderSalesCollections({
         labels = [],
         sales = [],
-        collections = []
+        collections = [],
+        cash = null
     } = {}) {
         if (!isAvailable()) {
             return null;
@@ -11354,10 +11493,27 @@ window.DashboardCharts = (() => {
                             fill: true
                         },
 
+                        ...(Array.isArray(cash)
+                            ? [{
+                                label: utils.t("dashboard.cashCollections", "التحصيل الكاش"),
+                                data: cash,
+                                borderColor: "#d97706",
+                                backgroundColor: "rgba(217, 119, 6, 0.06)",
+                                pointBackgroundColor: "#d97706",
+                                pointBorderColor: "#d97706",
+                                pointRadius: 3,
+                                pointHoverRadius: 5,
+                                borderWidth: 3,
+                                borderDash: [6, 4],
+                                tension: 0.35,
+                                fill: false
+                            }]
+                            : []),
+
                         {
                             label: utils.t(
-                                "dashboard.collections",
-                                "إجمالي التحصيلات"
+                                "dashboard.creditCollections",
+                                "تحصيل الكرديت"
                             ),
 
                             data: collections,
@@ -12987,6 +13143,19 @@ window.DashboardDashboard = (() => {
             )
         );
 
+        // التحصيل الكاش (شهري من شيت Cash collections)
+        {
+            const cashRows = Array.isArray(window.DashboardCash) ? window.DashboardCash : [];
+            const cashTotal = utils.sumBy(cashRows, row => utils.toNumber(row.cashAmount));
+            utils.setText("cashCollectionsKpi", utils.formatCurrency(cashTotal));
+            utils.setText(
+                "cashCollectionsNote",
+                `${utils.t("dashboard.totalAllCollections", "إجمالي التحصيل (كرديت + كاش)")}: ${utils.formatCurrency(
+                    utils.toNumber(summary.totalCollections) + cashTotal
+                )}`
+            );
+        }
+
         utils.setText(
             "dueKpi",
             utils.formatCurrency(
@@ -13361,12 +13530,21 @@ window.DashboardDashboard = (() => {
             }
         );
 
+        const cashMap = {};
+
+        (Array.isArray(window.DashboardCash) ? window.DashboardCash : []).forEach(row => {
+            const key = String(row.month || "").slice(0, 7);
+            if (!key) return;
+            cashMap[key] = (cashMap[key] || 0) + utils.toNumber(row.cashAmount);
+        });
+
         const monthKeys =
             utils.uniqueValues([
                 ...Object.keys(salesMap),
                 ...Object.keys(
                     collectionsMap
-                )
+                ),
+                ...Object.keys(cashMap)
             ]).sort();
 
         return {
@@ -13386,7 +13564,10 @@ window.DashboardDashboard = (() => {
                     key =>
                         collectionsMap[key] ||
                         0
-                )
+                ),
+
+            cash:
+                monthKeys.map(key => cashMap[key] || 0)
         };
     }
 
@@ -13585,7 +13766,12 @@ window.DashboardDashboard = (() => {
                 monthly.sales,
 
             collections:
-                monthly.collections
+                monthly.collections,
+
+            cash:
+                document.body.classList.contains("cash-disabled")
+                    ? null
+                    : monthly.cash
         });
 
         charts.renderDueOverdue({
@@ -20350,6 +20536,19 @@ window.DashboardProfiles = (() => {
         const currentSales = utils.sumBy(currentInvoices, getInvoiceSales);
         const previousSales = utils.sumBy(previousInvoices, getInvoiceSales);
 
+        // التحصيل الكاش (شهري)
+        const pad2 = value => String(value).padStart(2, "0");
+        const currentMonthKey = `${referenceDate.getFullYear()}-${pad2(referenceDate.getMonth() + 1)}`;
+        const previousMonthKey = `${previousDate.getFullYear()}-${pad2(previousDate.getMonth() + 1)}`;
+        const codeCash = (Array.isArray(window.DashboardCashAll) ? window.DashboardCashAll : [])
+            .filter(row => rowBelongsToCodes(row, profileCodes));
+        const cashFor = monthKey => utils.sumBy(
+            codeCash.filter(row => String(row.month || "") === monthKey),
+            row => utils.toNumber(row.cashAmount)
+        );
+        const currentCash = cashFor(currentMonthKey);
+        const previousCash = cashFor(previousMonthKey);
+
         const currentCollectionsTotal = utils.sumBy(
             currentCollections,
             getCollectionAmount
@@ -20373,6 +20572,11 @@ window.DashboardProfiles = (() => {
                     currentCollectionsTotal,
                     previousCollectionsTotal
                 )
+            },
+            cash: {
+                current: currentCash,
+                previous: previousCash,
+                growth: calculateGrowth(currentCash, previousCash)
             },
             invoiceCount: {
                 current: uniqueInvoiceCount(currentInvoices),
@@ -20689,6 +20893,11 @@ window.DashboardProfiles = (() => {
             sales,
             collections:
                 collectionsTotal,
+            cashCollections: utils.sumBy(
+                (Array.isArray(window.DashboardCash) ? window.DashboardCash : [])
+                    .filter(row => rowBelongsToCodes(row, profileCodes)),
+                row => utils.toNumber(row.cashAmount)
+            ),
             due,
             overdue,
             achievement,
@@ -21168,6 +21377,13 @@ window.DashboardProfiles = (() => {
             "profileCollectionsValue",
             utils.formatCurrency(
                 profile.collections
+            )
+        );
+
+        utils.setText(
+            "profileCashCollectionsValue",
+            utils.formatCurrency(
+                profile.cashCollections || 0
             )
         );
 
@@ -22190,6 +22406,12 @@ window.DashboardProfiles = (() => {
             monthly.collections.growth
         );
 
+        if (monthly.cash) {
+            utils.setText("profileCashCurrentValue", utils.formatCurrency(monthly.cash.current));
+            utils.setText("profileCashPreviousValue", utils.formatCurrency(monthly.cash.previous));
+            renderGrowthBadge("profileCashGrowthBadge", monthly.cash.growth);
+        }
+
         utils.setText(
             "profileInvoiceCountCurrentValue",
             utils.formatNumber(monthly.invoiceCount.current, 0)
@@ -22536,7 +22758,7 @@ window.DashboardProfiles = (() => {
 
                     .monthly-comparison-grid {
                         display: grid;
-                        grid-template-columns: repeat(3, 1fr);
+                        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                         gap: 12px;
                         margin-bottom: 6px;
                     }
@@ -22743,11 +22965,17 @@ window.DashboardProfiles = (() => {
                     </div>
 
                     <div>
-                        Collections:
+                        Credit Collections:
                         ${utils.formatCurrency(
                             profile.collections
                         )}
                     </div>
+
+                    ${
+                        document.body.classList.contains("cash-disabled")
+                            ? ""
+                            : `<div>Cash Collections: ${utils.formatCurrency(profile.cashCollections || 0)}</div>`
+                    }
 
                     <div>
                         Achievement:
@@ -22846,10 +23074,16 @@ window.DashboardProfiles = (() => {
                         <small>Previous month: ${utils.formatCurrency(monthly.sales.previous)} (${formatGrowth(monthly.sales.growth)})</small>
                     </div>
                     <div class="comparison-box">
-                        <span>Collections</span>
+                        <span>Credit Collections</span>
                         <strong>${utils.formatCurrency(monthly.collections.current)}</strong>
                         <small>Previous month: ${utils.formatCurrency(monthly.collections.previous)} (${formatGrowth(monthly.collections.growth)})</small>
                     </div>
+                    ${monthly.cash && !document.body.classList.contains("cash-disabled") ? `
+                    <div class="comparison-box">
+                        <span>Cash Collections</span>
+                        <strong>${utils.formatCurrency(monthly.cash.current)}</strong>
+                        <small>Previous month: ${utils.formatCurrency(monthly.cash.previous)} (${formatGrowth(monthly.cash.growth)})</small>
+                    </div>` : ""}
                     <div class="comparison-box">
                         <span>Invoice Count</span>
                         <strong>${utils.formatNumber(monthly.invoiceCount.current, 0)}</strong>
@@ -27908,6 +28142,7 @@ window.DashboardReports = (() => {
             target: safeArray(data.target),
             invoices: safeArray(data.invoices),
             collections: safeArray(data.collections),
+            cashCollections: safeArray(data.cashCollections),
             dueOverdue: safeArray(data.dueOverdue),
             upcomingDue: safeArray(data.upcomingDue),
             updatedAt: data.updatedAt || ""
@@ -27963,7 +28198,8 @@ window.DashboardReports = (() => {
                 "تقرير المندوب"
             ),
             branch: utils.t("reports.branchReport", "تقرير الفرع"),
-            upcoming: utils.t("reports.upcomingCollectionsReport", "تقرير التحصيلات القادمة")
+            upcoming: utils.t("reports.upcomingCollectionsReport", "تقرير التحصيلات القادمة"),
+            cash: utils.t("reports.cashReport", "تقرير التحصيل الكاش")
         };
 
         return titles[type] || utils.t("reports.title", "التقارير");
@@ -28255,6 +28491,7 @@ window.DashboardReports = (() => {
                     name: nameGetter(row) || key,
                     sales: 0,
                     collections: 0,
+                    cash: 0,
                     due: 0,
                     overdue: 0,
                     invoiceCount: 0
@@ -28275,6 +28512,12 @@ window.DashboardReports = (() => {
             const item = ensure(row);
             if (!item) return;
             item.collections += collection(row);
+        });
+
+        (currentData.cashCollections || []).forEach(row => {
+            const item = ensure(row);
+            if (!item) return;
+            item.cash += utils.toNumber(row.cashAmount);
         });
 
         /*
@@ -28314,11 +28557,12 @@ window.DashboardReports = (() => {
                 "Salesman Name": item.name,
                 "Net Sales": item.sales,
                 "Collections": item.collections,
+                ...(hasCash() ? { "Cash Collections": item.cash } : {}),
                 "Due": item.due,
                 "Overdue": item.overdue,
                 "Invoice Count": item.invoiceCount
             })),
-            currencyColumns: ["Net Sales", "Collections", "Due", "Overdue"]
+            currencyColumns: ["Net Sales", "Collections", "Cash Collections", "Due", "Overdue"]
         };
     }
 
@@ -28333,14 +28577,42 @@ window.DashboardReports = (() => {
                 "Branch": item.name,
                 "Net Sales": item.sales,
                 "Collections": item.collections,
+                ...(hasCash() ? { "Cash Collections": item.cash } : {}),
                 "Due": item.due,
                 "Overdue": item.overdue,
                 "Invoice Count": item.invoiceCount
             })),
-            currencyColumns: ["Net Sales", "Collections", "Due", "Overdue"]
+            currencyColumns: ["Net Sales", "Collections", "Cash Collections", "Due", "Overdue"]
         };
     }
 
+
+    function hasCash() {
+        return !document.body.classList.contains("cash-disabled");
+    }
+
+    function buildCashReport() {
+        const rows = [...(currentData.cashCollections || [])]
+            .sort((x, y) =>
+                String(x.month).localeCompare(String(y.month)) ||
+                String(x.branch || "").localeCompare(String(y.branch || "")) ||
+                utils.toNumber(y.cashAmount) - utils.toNumber(x.cashAmount)
+            )
+            .map(row => ({
+                "Month": row.month,
+                "Branch": row.branch || "",
+                "Salesman Code": row.originalSalesmanCode || row.salesmanCode,
+                "Salesman Name": row.salesmanName || row.sheetSalesmanName || "",
+                "Cash Collections": utils.toNumber(row.cashAmount)
+            }));
+
+        return {
+            type: "cash",
+            title: reportTitle("cash"),
+            rows,
+            currencyColumns: ["Cash Collections"]
+        };
+    }
 
     function buildUpcomingCollectionsReport() {
         const rows = currentData.upcomingDue
@@ -28383,6 +28655,7 @@ window.DashboardReports = (() => {
         const builders = {
             sales: buildSalesReport,
             collections: buildCollectionsReport,
+            cash: buildCashReport,
             overdue: buildOverdueReport,
             target: buildTargetReport,
             salesman: buildSalesmanReport,
@@ -28474,6 +28747,21 @@ window.DashboardReports = (() => {
                 {
                     label: utils.t("reports.customersCount", "عدد العملاء"),
                     value: utils.formatNumber(uniqueCount("Customer Code"))
+                },
+                {
+                    label: utils.t("reports.salesmenCount", "عدد المندوبين"),
+                    value: utils.formatNumber(uniqueCount("Salesman Code"))
+                }
+            ];
+        }
+
+        if (report?.type === "cash") {
+            const cashTotal = rows.reduce((sum, row) => sum + utils.toNumber(row["Cash Collections"]), 0);
+            return [
+                recordsCard,
+                {
+                    label: utils.t("dashboard.cashCollections", "التحصيل الكاش"),
+                    value: utils.formatCurrency(cashTotal)
                 },
                 {
                     label: utils.t("reports.salesmenCount", "عدد المندوبين"),
@@ -29070,6 +29358,12 @@ window.DashboardReports = (() => {
         /* التقرير الشهري */
         if (type === "monthly" && window.DashboardMonthlyReport) {
             window.DashboardMonthlyReport.open();
+            return true;
+        }
+
+        /* تقرير المستحقات والمتأخرات المجمع */
+        if (type === "receivables" && window.DashboardReceivablesReport) {
+            window.DashboardReceivablesReport.open();
             return true;
         }
 
@@ -30695,7 +30989,15 @@ window.DashboardPresentation = (() => {
             sales: "صافي المبيعات",
             target: "الهدف",
             achievement: "نسبة التحقيق",
-            collections: "التحصيلات",
+            collections: "تحصيل الكرديت",
+            cash: "التحصيل الكاش",
+            allCollections: "إجمالي التحصيل",
+            creditPlusCash: "كرديت + كاش",
+            creditShort: "كرديت",
+            cashShort: "كاش",
+            ofWhichCash: "منه كاش",
+            collectionsShort: "التحصيلات",
+            creditSlashCash: "تحصيل كرديت / كاش",
             collectionRate: "نسبة التحصيل",
             outstanding: "إجمالي المديونية",
             overdue: "المتأخرات",
@@ -30785,7 +31087,15 @@ window.DashboardPresentation = (() => {
             sales: "Net sales",
             target: "Target",
             achievement: "Achievement",
-            collections: "Collections",
+            collections: "Credit collections",
+            cash: "Cash collections",
+            allCollections: "Total collections",
+            creditPlusCash: "Credit + cash",
+            creditShort: "Credit",
+            cashShort: "Cash",
+            ofWhichCash: "Cash",
+            collectionsShort: "Collections",
+            creditSlashCash: "Collections credit / cash",
             collectionRate: "Collection rate",
             outstanding: "Total receivables",
             overdue: "Overdue",
@@ -31104,6 +31414,10 @@ window.DashboardPresentation = (() => {
         return 5;
     }
 
+    function hasCash() {
+        return !document.body.classList.contains("cash-disabled");
+    }
+
     function newAggregate(name) {
         return {
             name,
@@ -31111,6 +31425,7 @@ window.DashboardPresentation = (() => {
             targetSales: 0,
             target: 0,
             collections: 0,
+            cash: 0,
             outstanding: 0,
             due: 0,
             overdue: 0,
@@ -31201,6 +31516,7 @@ window.DashboardPresentation = (() => {
                     targetSales: 0,
                     target: 0,
                     collections: 0,
+                    cash: 0,
                     outstanding: 0,
                     overdue: 0,
                     visits: 0,
@@ -31274,6 +31590,15 @@ window.DashboardPresentation = (() => {
             branchOf(row.branch).collections += amount;
             company.collections += amount;
             salesmanOf(row.salesmanCode, row.salesmanName, row.branch).collections += amount;
+        });
+
+        /* التحصيل الكاش (شهري) */
+        (data.cashCollections || []).forEach(row => {
+            const amount = toNum(row.cashAmount);
+
+            branchOf(row.branch).cash += amount;
+            company.cash += amount;
+            salesmanOf(row.salesmanCode, row.salesmanName, row.branch).cash += amount;
         });
 
         balances.forEach(row => {
@@ -31364,6 +31689,7 @@ window.DashboardPresentation = (() => {
                 branch.sales ||
                 branch.target ||
                 branch.collections ||
+                branch.cash ||
                 branch.outstanding ||
                 branch.newCustomers ||
                 branch.reactivated
@@ -31374,6 +31700,7 @@ window.DashboardPresentation = (() => {
             salesman.sales ||
             salesman.target ||
             salesman.collections ||
+            salesman.cash ||
             salesman.outstanding
         );
 
@@ -31547,11 +31874,13 @@ window.DashboardPresentation = (() => {
             title: tx("overviewTitle"),
             subtitle: tx("overviewSub"),
             body: `
-                <div class="pz-kpis" style="--cols:4">
+                <div class="pz-kpis" style="--cols:${hasCash() ? 5 : 4}">
                     ${kpi(tx("sales"), fmtCompact(company.sales), "SAR " + fmtInt(company.sales))}
                     ${kpi(tx("target"), fmtCompact(company.target), "SAR " + fmtInt(company.target))}
                     ${kpi(tx("achievement"), fmtPct(achievement), targetGap(company.targetSales, company.target), achievementTone(achievement))}
                     ${kpi(tx("collections"), fmtCompact(company.collections), "SAR " + fmtInt(company.collections))}
+                    ${hasCash() ? kpi(tx("cash"), fmtCompact(company.cash), "SAR " + fmtInt(company.cash)) : ""}
+                    ${hasCash() ? kpi(tx("allCollections"), fmtCompact(company.collections + company.cash), tx("creditPlusCash")) : ""}
                     ${kpi(tx("collectionRate"), fmtPct(collectionRate), tx("ofSales"))}
                     ${kpi(tx("outstanding"), fmtCompact(company.outstanding), tx("notDueValue", { value: fmtInt(company.due) }))}
                     ${kpi(tx("overdue"), fmtCompact(company.overdue), "SAR " + fmtInt(company.overdue), overdueTone(overdueShare))}
@@ -31585,6 +31914,7 @@ window.DashboardPresentation = (() => {
                 <td class="n">${branch.target > 0 ? fmtInt(branch.target) : "—"}</td>
                 <td>${meter(achievement)}</td>
                 <td class="n">${fmtInt(branch.collections)}</td>
+                ${hasCash() ? `<td class="n">${fmtInt(branch.cash)}</td>` : ""}
                 <td class="n">${fmtPct(ratio(branch.collections, branch.sales))}</td>
                 <td class="n">${fmtInt(branch.outstanding)}</td>
                 <td class="n">${fmtInt(branch.overdue)}</td>
@@ -31605,6 +31935,7 @@ window.DashboardPresentation = (() => {
                             <th class="n">${esc(tx("target"))}</th>
                             <th>${esc(tx("achievement"))}</th>
                             <th class="n">${esc(tx("collections"))}</th>
+                            ${hasCash() ? `<th class="n">${esc(tx("cash"))}</th>` : ""}
                             <th class="n">${esc(tx("collectionRate"))}</th>
                             <th class="n">${esc(tx("outstanding"))}</th>
                             <th class="n">${esc(tx("overdue"))}</th>
@@ -31716,6 +32047,7 @@ window.DashboardPresentation = (() => {
                             <th class="n">${esc(tx("target"))}</th>
                             <th>${esc(tx("achievement"))}</th>
                             <th class="n">${esc(tx("collections"))}</th>
+                            ${hasCash() ? `<th class="n">${esc(tx("cash"))}</th>` : ""}
                             ${model.hasVisits
                                 ? `<th class="n">${esc(tx("visits"))}</th><th class="n">${esc(tx("visitConversion"))}</th>`
                                 : `<th class="n">${esc(tx("outstanding"))}</th>`}
@@ -31732,11 +32064,12 @@ window.DashboardPresentation = (() => {
                                 <td class="n">${salesman.target > 0 ? fmtInt(salesman.target) : `<span class="pz-muted">${esc(tx("noTarget"))}</span>`}</td>
                                 <td>${meter(ratio(salesman.targetSales, salesman.target))}</td>
                                 <td class="n">${fmtInt(salesman.collections)}</td>
+                                ${hasCash() ? `<td class="n">${fmtInt(salesman.cash)}</td>` : ""}
                                 ${model.hasVisits
                                     ? `<td class="n">${salesman.visits ? fmtInt(salesman.visits) : "—"}</td><td class="n pz-strong">${fmtPct(salesman.conversion)}</td>`
                                     : `<td class="n">${fmtInt(salesman.outstanding)}</td>`}
                                 <td class="n">${fmtInt(salesman.overdue)}</td>
-                            </tr>`).join("") : emptyRow(model.hasVisits ? 10 : 9)}
+                            </tr>`).join("") : emptyRow((model.hasVisits ? 10 : 9) + (hasCash() ? 1 : 0))}
                     </tbody>
                 </table>`
         }));
@@ -31766,7 +32099,9 @@ window.DashboardPresentation = (() => {
                     ${kpi(tx("sales"), fmtCompact(branch.sales), "SAR " + fmtInt(branch.sales))}
                     ${kpi(tx("target"), branch.target > 0 ? fmtCompact(branch.target) : "—", branch.target > 0 ? "SAR " + fmtInt(branch.target) : "")}
                     ${kpi(tx("achievement"), fmtPct(achievement), targetGap(branch.targetSales, branch.target, fmtCompact), achievementTone(achievement))}
-                    ${kpi(tx("collections"), fmtCompact(branch.collections), tx("collectionRate") + " " + fmtPct(ratio(branch.collections, branch.sales)))}
+                    ${hasCash()
+                        ? kpi(tx("allCollections"), fmtCompact(branch.collections + branch.cash), tx("ofWhichCash") + " " + fmtCompact(branch.cash))
+                        : kpi(tx("collections"), fmtCompact(branch.collections), tx("collectionRate") + " " + fmtPct(ratio(branch.collections, branch.sales)))}
                     ${kpi(tx("outstanding"), fmtCompact(branch.outstanding), tx("notDueValue", { value: fmtCompact(branch.due) }))}
                     ${kpi(tx("overdue"), fmtCompact(branch.overdue), tx("overdueShare") + " " + fmtPct(overdueShare), overdueTone(overdueShare))}
                 </div>
@@ -31780,7 +32115,7 @@ window.DashboardPresentation = (() => {
                                         <th>${esc(tx("salesman"))}</th>
                                         <th class="n">${esc(tx("sales"))}</th>
                                         <th>${esc(tx("achievement"))}</th>
-                                        <th class="n">${esc(tx("collections"))}</th>
+                                        <th class="n">${esc(hasCash() ? tx("collectionsShort") : tx("collections"))}</th>
                                         ${model.hasVisits ? `<th class="n">${esc(tx("visitConversion"))}</th>` : ""}
                                         <th class="n">${esc(tx("overdue"))}</th>
                                     </tr>
@@ -31791,7 +32126,7 @@ window.DashboardPresentation = (() => {
                                             <td class="pz-strong" style="--clip:${model.hasVisits ? 130 : 170}px">${clip(salesman.name)}</td>
                                             <td class="n">${fmtInt(salesman.sales)}</td>
                                             <td>${salesman.target > 0 ? meter(ratio(salesman.targetSales, salesman.target)) : `<span class="pz-muted">${esc(tx("noTarget"))}</span>`}</td>
-                                            <td class="n">${fmtInt(salesman.collections)}</td>
+                                            <td class="n">${fmtInt(salesman.collections)}${hasCash() ? `<div class="pz-muted" style="font-size:.82em;line-height:1.1">${esc(tx("cashShort"))} ${fmtCompact(salesman.cash)}</div>` : ""}</td>
                                             ${model.hasVisits ? `<td class="n">${fmtPct(salesman.conversion)}</td>` : ""}
                                             <td class="n">${fmtInt(salesman.overdue)}</td>
                                         </tr>`).join("") : emptyRow(model.hasVisits ? 6 : 5)}
@@ -32727,7 +33062,8 @@ window.DashboardBranchReport = (() => {
             target: "هدف الفترة",
             achievement: "نسبة التحقيق",
             remaining: "المتبقي للهدف",
-            collections: "التحصيلات",
+            collections: "تحصيل الكرديت",
+            cash: "التحصيل الكاش",
             collectionRate: "نسبة التحصيل",
             outstanding: "إجمالي المديونية",
             due: "مستحق",
@@ -32796,7 +33132,8 @@ window.DashboardBranchReport = (() => {
             target: "Period target",
             achievement: "Achievement",
             remaining: "Remaining to target",
-            collections: "Collections",
+            collections: "Credit collections",
+            cash: "Cash collections",
             collectionRate: "Collection rate",
             outstanding: "Total receivables",
             due: "Due",
@@ -32995,6 +33332,7 @@ window.DashboardBranchReport = (() => {
             targetSales: 0,
             target: 0,
             collections: 0,
+            cash: 0,
             due: 0,
             overdue: 0,
             quantity: 0,
@@ -33042,6 +33380,7 @@ window.DashboardBranchReport = (() => {
                     sales: 0,
                     targetSales: 0,
                     collections: 0,
+                    cash: 0,
                     due: 0,
                     overdue: 0,
                     invoiceSet: new Set(),
@@ -33059,7 +33398,7 @@ window.DashboardBranchReport = (() => {
 
         const getMonth = (aggregate, monthKey) => {
             if (!aggregate.months.has(monthKey)) {
-                aggregate.months.set(monthKey, { sales: 0, collections: 0, invoiceSet: new Set(), visits: 0 });
+                aggregate.months.set(monthKey, { sales: 0, collections: 0, cash: 0, invoiceSet: new Set(), visits: 0 });
             }
             return aggregate.months.get(monthKey);
         };
@@ -33128,6 +33467,20 @@ window.DashboardBranchReport = (() => {
             });
 
             getSalesman(branch, salesmanCodeOf(row), row.salesmanName).collections += amount;
+        });
+
+        /* التحصيل الكاش (شهري) */
+        (data.cashCollections || []).forEach(row => {
+            const amount = num(row.cashAmount);
+            const monthKey = String(row.month || "").slice(0, 7);
+            const branch = getBranch(branchOf(row));
+
+            [branch, company].forEach(aggregate => {
+                aggregate.cash += amount;
+                if (monthKey) getMonth(aggregate, monthKey).cash += amount;
+            });
+
+            getSalesman(branch, salesmanCodeOf(row), row.salesmanName).cash += amount;
         });
 
         (state.balances || []).forEach(row => {
@@ -33233,7 +33586,7 @@ window.DashboardBranchReport = (() => {
         });
 
         const branchList = [...branches.values()]
-            .filter(branch => branch.sales || branch.target || branch.collections || branch.due || branch.overdue)
+            .filter(branch => branch.sales || branch.target || branch.collections || branch.cash || branch.due || branch.overdue)
             .sort((a, b) => b.sales - a.sales);
 
         return {
@@ -33241,6 +33594,7 @@ window.DashboardBranchReport = (() => {
             company,
             branches: branchList,
             hasVisits,
+            hasCash: !document.body.classList.contains("cash-disabled"),
             hasProducts: [...company.products.values()].some(item => item.amount > 0),
             hasNew: company.newList.length > 0,
             hasReactivated: company.reactivatedList.length > 0
@@ -33273,6 +33627,7 @@ window.DashboardBranchReport = (() => {
             [t.achievement, pct(achievement), tone(achievement)],
             [t.remaining, branch.target > 0 ? money(Math.max(branch.target - branch.targetSales, 0)) : "—"],
             [t.collections, money(branch.collections)],
+            ...(model.hasCash ? [[t.cash, money(branch.cash)]] : []),
             [t.collectionRate, pct(ratio(branch.collections, branch.sales))],
             [t.outstanding, money(branch.due + branch.overdue)],
             [t.due, money(branch.due)],
@@ -33299,12 +33654,12 @@ window.DashboardBranchReport = (() => {
         const t = L();
 
         const salesmen = [...branch.salesmen.values()]
-            .filter(s => s.sales || s.target || s.collections || s.due || s.overdue || s.visits)
+            .filter(s => s.sales || s.target || s.collections || s.cash || s.due || s.overdue || s.visits)
             .sort((a, b) => b.sales - a.sales);
 
         const salesmanHead = [
             { t: t.code }, { t: t.salesman }, { t: t.target, n: 1 }, { t: t.sales, n: 1 }, { t: t.achievement },
-            { t: t.collections, n: 1 }, { t: t.due, n: 1 }, { t: t.overdue, n: 1 }, { t: t.invoices, n: 1 },
+            { t: t.collections, n: 1 }, ...(model.hasCash ? [{ t: t.cash, n: 1 }] : []), { t: t.due, n: 1 }, { t: t.overdue, n: 1 }, { t: t.invoices, n: 1 },
             ...(model.hasVisits ? [{ t: t.visits, n: 1 }, { t: t.conversion, n: 1 }] : []),
             ...(model.hasNew ? [{ t: t.newCustomers, n: 1 }] : [])
         ];
@@ -33317,6 +33672,7 @@ window.DashboardBranchReport = (() => {
                 <td class="n">${money(s.sales)}</td>
                 <td>${s.target > 0 ? meter(ratio(s.targetSales, s.target)) : "—"}</td>
                 <td class="n">${money(s.collections)}</td>
+                ${model.hasCash ? `<td class="n">${money(s.cash)}</td>` : ""}
                 <td class="n">${money(s.due)}</td>
                 <td class="n">${money(s.overdue)}</td>
                 <td class="n">${money(s.invoiceSet.size)}</td>
@@ -33325,12 +33681,13 @@ window.DashboardBranchReport = (() => {
             </tr>`);
 
         const monthRows = model.period.keys.map(monthKey => {
-            const month = branch.months.get(monthKey) || { sales: 0, collections: 0, invoiceSet: new Set(), visits: 0 };
+            const month = branch.months.get(monthKey) || { sales: 0, collections: 0, cash: 0, invoiceSet: new Set(), visits: 0 };
             return `
                 <tr>
                     <td>${esc(fmtMonth(monthKey))}</td>
                     <td class="n">${money(month.sales)}</td>
                     <td class="n">${money(month.collections)}</td>
+                    ${model.hasCash ? `<td class="n">${money(month.cash)}</td>` : ""}
                     <td class="n">${money(month.invoiceSet.size)}</td>
                     ${model.hasVisits ? `<td class="n">${money(month.visits)}</td><td class="n">${pct(ratio(month.invoiceSet.size, month.visits))}</td>` : ""}
                 </tr>`;
@@ -33368,7 +33725,7 @@ window.DashboardBranchReport = (() => {
                     <div>
                         <h3>${esc(t.monthly)}</h3>
                         ${table(
-                            [{ t: t.month }, { t: t.sales, n: 1 }, { t: t.collections, n: 1 }, { t: t.invoices, n: 1 },
+                            [{ t: t.month }, { t: t.sales, n: 1 }, { t: t.collections, n: 1 }, ...(model.hasCash ? [{ t: t.cash, n: 1 }] : []), { t: t.invoices, n: 1 },
                              ...(model.hasVisits ? [{ t: t.visits, n: 1 }, { t: t.conversion, n: 1 }] : [])],
                             monthRows
                         )}
@@ -33455,6 +33812,7 @@ window.DashboardBranchReport = (() => {
                     <td class="n">${b.target > 0 ? money(b.target) : "—"}</td>
                     <td>${meter(achievement)}</td>
                     <td class="n">${money(b.collections)}</td>
+                    ${model.hasCash ? `<td class="n">${money(b.cash)}</td>` : ""}
                     <td class="n">${money(b.due)}</td>
                     <td class="n">${money(b.overdue)}</td>
                     <td class="n ${tone(overdueShare, "overdue")}">${pct(overdueShare)}</td>
@@ -33471,6 +33829,7 @@ window.DashboardBranchReport = (() => {
                 <h3>${esc(t.branchComparison)}</h3>
                 ${table(
                     [{ t: t.branch }, { t: t.sales, n: 1 }, { t: t.target, n: 1 }, { t: t.achievement }, { t: t.collections, n: 1 },
+                     ...(model.hasCash ? [{ t: t.cash, n: 1 }] : []),
                      { t: t.due, n: 1 }, { t: t.overdue, n: 1 }, { t: t.overdueShare, n: 1 }, { t: t.invoices, n: 1 },
                      ...(model.hasVisits ? [{ t: t.conversion, n: 1 }] : []),
                      ...(model.hasNew ? [{ t: t.newCustomers, n: 1 }] : [])],
@@ -33607,6 +33966,7 @@ ${selected.length || !selection ? body : `<p class="empty">${esc(t.noData)}</p>`
             [t.target]: Math.round(b.target),
             [t.achievement]: b.target > 0 ? +(b.targetSales / b.target * 100).toFixed(1) : "",
             [t.collections]: Math.round(b.collections),
+            ...(model.hasCash ? { [t.cash]: Math.round(b.cash) } : {}),
             [t.due]: Math.round(b.due),
             [t.overdue]: Math.round(b.overdue),
             [t.invoices]: b.invoiceSet.size,
@@ -33617,7 +33977,7 @@ ${selected.length || !selection ? body : `<p class="empty">${esc(t.noData)}</p>`
         })));
 
         add("Salesmen", branches.flatMap(b => [...b.salesmen.values()]
-            .filter(s => s.sales || s.target || s.collections || s.due || s.overdue)
+            .filter(s => s.sales || s.target || s.collections || s.cash || s.due || s.overdue)
             .map(s => ({
                 [t.branch]: b.name,
                 [t.code]: s.code,
@@ -33626,6 +33986,7 @@ ${selected.length || !selection ? body : `<p class="empty">${esc(t.noData)}</p>`
                 [t.sales]: Math.round(s.sales),
                 [t.achievement]: s.target > 0 ? +(s.sales / s.target * 100).toFixed(1) : "",
                 [t.collections]: Math.round(s.collections),
+                ...(model.hasCash ? { [t.cash]: Math.round(s.cash) } : {}),
                 [t.due]: Math.round(s.due),
                 [t.overdue]: Math.round(s.overdue),
                 [t.invoices]: s.invoiceSet.size,
@@ -33633,12 +33994,13 @@ ${selected.length || !selection ? body : `<p class="empty">${esc(t.noData)}</p>`
             }))));
 
         add("Monthly", branches.flatMap(b => model.period.keys.map(monthKey => {
-            const m = b.months.get(monthKey) || { sales: 0, collections: 0, invoiceSet: new Set(), visits: 0 };
+            const m = b.months.get(monthKey) || { sales: 0, collections: 0, cash: 0, invoiceSet: new Set(), visits: 0 };
             return {
                 [t.branch]: b.name,
                 [t.month]: monthKey,
                 [t.sales]: Math.round(m.sales),
                 [t.collections]: Math.round(m.collections),
+                ...(model.hasCash ? { [t.cash]: Math.round(m.cash) } : {}),
                 [t.invoices]: m.invoiceSet.size,
                 ...(model.hasVisits ? { [t.visits]: m.visits } : {})
             };
@@ -33791,6 +34153,716 @@ ${selected.length || !selection ? body : `<p class="empty">${esc(t.noData)}</p>`
     }
 
     return Object.freeze({ open, close, setData, render, print, exportExcel });
+})();
+
+</script>
+<script>
+/* ===== receivables-report.js ===== */
+"use strict";
+
+/*
+ * تقرير المستحقات والمتأخرات المجمع
+ * - المتأخرات: لكل فرع مقسمة على فترات التأخير، ولكل عميل المبلغ وأيام التأخير
+ * - المستحقات (لسه ما تأخرتش): العميل مرة واحدة بإجمالي المبلغ،
+ *   وأقرب تاريخ استحقاق والمبلغ المستحق في التاريخ ده
+ * الأرصدة دائمًا حالية (بفلتر الفرع/المندوب فقط، بدون فلتر التاريخ).
+ */
+window.DashboardReceivablesReport = (() => {
+    const utils = window.DashboardUtils;
+
+    const TEXT = {
+        ar: {
+            title: "تقرير المستحقات والمتأخرات",
+            note: "الأرصدة الحالية حسب تاريخ الاستحقاق • بدون كود 998 • المبالغ بالريال السعودي",
+            chooseBranch: "الفرع",
+            allBranches: "كل الفروع",
+            print: "طباعة / PDF",
+            excel: "تصدير Excel",
+            noData: "لا توجد بيانات متاحة",
+            generated: "تاريخ التقرير",
+            scope: "النطاق",
+            totalReceivables: "إجمالي المديونية",
+            totalOverdue: "إجمالي المتأخرات",
+            overdueShare: "نسبة المتأخر",
+            totalDue: "إجمالي المستحق (لم يتأخر)",
+            overdueCustomers: "عملاء عليهم متأخرات",
+            dueNext7: "يستحق خلال 7 أيام",
+            dueNext30: "يستحق خلال 30 يوم",
+            overdueByBranch: "المتأخرات حسب الفرع وفترات التأخير",
+            overdueCustomersTitle: "عملاء المتأخرات",
+            dueByBranch: "المستحقات حسب الفرع وموعد الاستحقاق",
+            dueCustomersTitle: "عملاء المستحقات (مجمع لكل عميل)",
+            branch: "الفرع",
+            customerCode: "كود العميل",
+            customer: "العميل",
+            salesman: "المندوب",
+            total: "الإجمالي",
+            invoices: "الفواتير",
+            customers: "العملاء",
+            maxDays: "أقصى تأخير (يوم)",
+            buckets: ["0 - 30 يوم", "31 - 60 يوم", "61 - 90 يوم", "91 - 180 يوم", "أكثر من 180 يوم"],
+            dueTotal: "إجمالي المستحق",
+            nearestDate: "أقرب تاريخ استحقاق",
+            daysLeft: "متبقي (يوم)",
+            nearestAmount: "المستحق في أقرب تاريخ",
+            within7: "خلال 7 أيام",
+            within30: "8 - 30 يوم",
+            after30: "بعد 30 يوم",
+            today: "اليوم",
+            noOverdue: "لا توجد متأخرات",
+            noDue: "لا توجد مستحقات",
+            unassigned: "غير محدد"
+        },
+        en: {
+            title: "Due & Overdue Report",
+            note: "Current balances by due date • Excludes code 998 • Amounts in SAR",
+            chooseBranch: "Branch",
+            allBranches: "All branches",
+            print: "Print / PDF",
+            excel: "Export Excel",
+            noData: "No data available",
+            generated: "Report date",
+            scope: "Scope",
+            totalReceivables: "Total receivables",
+            totalOverdue: "Total overdue",
+            overdueShare: "Overdue share",
+            totalDue: "Total due (not overdue)",
+            overdueCustomers: "Customers with overdue",
+            dueNext7: "Due within 7 days",
+            dueNext30: "Due within 30 days",
+            overdueByBranch: "Overdue by branch and aging",
+            overdueCustomersTitle: "Overdue customers",
+            dueByBranch: "Due amounts by branch and due date",
+            dueCustomersTitle: "Due customers (one line per customer)",
+            branch: "Branch",
+            customerCode: "Customer code",
+            customer: "Customer",
+            salesman: "Salesman",
+            total: "Total",
+            invoices: "Invoices",
+            customers: "Customers",
+            maxDays: "Max days overdue",
+            buckets: ["0 - 30 days", "31 - 60 days", "61 - 90 days", "91 - 180 days", "Over 180 days"],
+            dueTotal: "Total due",
+            nearestDate: "Nearest due date",
+            daysLeft: "Days left",
+            nearestAmount: "Due on nearest date",
+            within7: "Within 7 days",
+            within30: "8 - 30 days",
+            after30: "After 30 days",
+            today: "Today",
+            noOverdue: "No overdue balances",
+            noDue: "No due balances",
+            unassigned: "Unassigned"
+        }
+    };
+
+    const state = { balances: [], data: null, selected: "", lastModel: null };
+
+    const lang = () => (utils.getLanguage() === "en" ? "en" : "ar");
+    const L = () => TEXT[lang()];
+    const esc = value => utils.escapeHTML(value == null ? "" : String(value));
+    const num = value => utils.toNumber(value);
+    const clean = value => String(value == null ? "" : value).replace(/\s+/g, " ").trim();
+    const key = value => clean(value).toLowerCase();
+    const intFormat = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+    const money = value => intFormat.format(Math.round(num(value)));
+    const pct = value => (value == null || !isFinite(value) ? "—" : `${value.toFixed(1)}%`);
+
+    function todayIso() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    }
+
+    function fmtDay(value) {
+        const text = String(value || "").slice(0, 10);
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return "—";
+        const [y, m, d] = text.split("-");
+        return `${d}/${m}/${y}`;
+    }
+
+    function addDays(iso, days) {
+        const [y, m, d] = iso.split("-").map(Number);
+        const date = new Date(y, m - 1, d + days);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function daysBetween(fromIso, toIso) {
+        const a = fromIso.split("-").map(Number);
+        const b = toIso.split("-").map(Number);
+        return Math.round((Date.UTC(b[0], b[1] - 1, b[2]) - Date.UTC(a[0], a[1] - 1, a[2])) / 86400000);
+    }
+
+    /* أكواد مستبعدة من التقرير (998 = BLACKLISTED CUSTOMERS) */
+    const EXCLUDED_CODES = ["998"];
+    const isExcludedCode = row =>
+        [row.salesmanCode, row.originalSalesmanCode, ...(Array.isArray(row.salesmanCodes) ? row.salesmanCodes : [])]
+            .some(code => EXCLUDED_CODES.includes(clean(code).replace(/\.0+$/, "")));
+
+    const isOverdue = row => String(row.status || "").toLowerCase() === "overdue";
+
+    function bucketIndex(days) {
+        if (days <= 30) return 0;
+        if (days <= 60) return 1;
+        if (days <= 90) return 2;
+        if (days <= 180) return 3;
+        return 4;
+    }
+
+    /* تاريخ الاستحقاق: من الشيت، أو اليوم + الأيام المتبقية */
+    function dueDateOf(row, today) {
+        const direct = String(row.dueDate || "").slice(0, 10);
+        if (/^\d{4}-\d{2}-\d{2}$/.test(direct)) return direct;
+        const remaining = row.daysRemainingToCollect ?? row.daysUntilDue ?? row.daysToDue;
+        if (remaining !== "" && remaining != null && isFinite(Number(remaining))) {
+            return addDays(today, Number(remaining));
+        }
+        return "";
+    }
+
+    /* ---------------- model ---------------- */
+
+    function buildModel() {
+        const t = L();
+        const today = todayIso();
+        const branches = new Map();
+        const overdueCustomers = new Map();
+        const dueCustomers = new Map();
+
+        const branchOf = name => {
+            const branchName = clean(name) || t.unassigned;
+            const branchKey = key(branchName);
+            if (!branches.has(branchKey)) {
+                branches.set(branchKey, {
+                    name: branchName,
+                    buckets: [0, 0, 0, 0, 0],
+                    overdue: 0,
+                    overdueInvoices: 0,
+                    overdueCustomers: new Set(),
+                    due: 0,
+                    due7: 0,
+                    due30: 0,
+                    dueLater: 0,
+                    dueInvoices: 0,
+                    dueCustomers: new Set()
+                });
+            }
+            return branches.get(branchKey);
+        };
+
+        (state.balances || []).forEach(row => {
+            const amount = num(row.invoiceBalance);
+            if (amount <= 0) return;
+            if (isExcludedCode(row)) return;
+
+            const branch = branchOf(row.branch || row.sheetBranch);
+            const customerKey = `${key(branch.name)}|${clean(row.customerCode) || key(row.customerName)}`;
+            const base = {
+                branch: branch.name,
+                code: clean(row.customerCode),
+                name: clean(row.customerName) || clean(row.customerCode) || "—",
+                salesman: clean(row.salesmanName) || clean(row.salesmanCode)
+            };
+
+            if (isOverdue(row)) {
+                const days = Math.max(num(row.overdueDays), 0);
+                const index = bucketIndex(days);
+
+                branch.buckets[index] += amount;
+                branch.overdue += amount;
+                branch.overdueInvoices += 1;
+                branch.overdueCustomers.add(customerKey);
+
+                if (!overdueCustomers.has(customerKey)) {
+                    overdueCustomers.set(customerKey, { ...base, buckets: [0, 0, 0, 0, 0], total: 0, maxDays: 0, invoices: 0 });
+                }
+                const customer = overdueCustomers.get(customerKey);
+                customer.buckets[index] += amount;
+                customer.total += amount;
+                customer.maxDays = Math.max(customer.maxDays, days);
+                customer.invoices += 1;
+                return;
+            }
+
+            const dueDate = dueDateOf(row, today);
+            const daysLeft = dueDate ? daysBetween(today, dueDate) : null;
+
+            branch.due += amount;
+            branch.dueInvoices += 1;
+            branch.dueCustomers.add(customerKey);
+            if (daysLeft != null && daysLeft <= 7) branch.due7 += amount;
+            else if (daysLeft != null && daysLeft <= 30) branch.due30 += amount;
+            else branch.dueLater += amount;
+
+            if (!dueCustomers.has(customerKey)) {
+                dueCustomers.set(customerKey, { ...base, total: 0, invoices: 0, nearestDate: "", nearestAmount: 0 });
+            }
+            const customer = dueCustomers.get(customerKey);
+            customer.total += amount;
+            customer.invoices += 1;
+
+            if (dueDate) {
+                if (!customer.nearestDate || dueDate < customer.nearestDate) {
+                    customer.nearestDate = dueDate;
+                    customer.nearestAmount = amount;
+                } else if (dueDate === customer.nearestDate) {
+                    customer.nearestAmount += amount;
+                }
+            }
+        });
+
+        const branchList = [...branches.values()]
+            .filter(b => b.overdue || b.due)
+            .sort((a, b) => (b.overdue + b.due) - (a.overdue + a.due));
+
+        const overdueList = [...overdueCustomers.values()].sort((a, b) => b.total - a.total);
+        const dueList = [...dueCustomers.values()]
+            .map(c => ({ ...c, daysLeft: c.nearestDate ? daysBetween(today, c.nearestDate) : null }))
+            .sort((a, b) => {
+                if (!a.nearestDate && !b.nearestDate) return b.total - a.total;
+                if (!a.nearestDate) return 1;
+                if (!b.nearestDate) return -1;
+                return a.nearestDate.localeCompare(b.nearestDate) || b.nearestAmount - a.nearestAmount;
+            });
+
+        return { today, branches: branchList, overdueList, dueList };
+    }
+
+    function scoped(model, selection) {
+        if (!selection) return model;
+        const match = item => key(item.branch || item.name) === key(selection);
+        return {
+            ...model,
+            branches: model.branches.filter(match),
+            overdueList: model.overdueList.filter(match),
+            dueList: model.dueList.filter(match)
+        };
+    }
+
+    function totals(branches) {
+        const sum = field => branches.reduce((s, b) => s + b[field], 0);
+        return {
+            buckets: [0, 1, 2, 3, 4].map(i => branches.reduce((s, b) => s + b.buckets[i], 0)),
+            overdue: sum("overdue"),
+            overdueInvoices: sum("overdueInvoices"),
+            overdueCustomers: branches.reduce((s, b) => s + b.overdueCustomers.size, 0),
+            due: sum("due"),
+            due7: sum("due7"),
+            due30: sum("due30"),
+            dueLater: sum("dueLater"),
+            dueInvoices: sum("dueInvoices"),
+            dueCustomers: branches.reduce((s, b) => s + b.dueCustomers.size, 0)
+        };
+    }
+
+    /* ---------------- document ---------------- */
+
+    const table = (head, rows, footer = "", emptyText = "") => `
+        <table>
+            <thead><tr>${head.map(h => `<th class="${h.n ? "n" : ""}">${esc(h.t)}</th>`).join("")}</tr></thead>
+            <tbody>${rows.length ? rows.join("") : `<tr><td colspan="${head.length}" class="empty">${esc(emptyText || L().noData)}</td></tr>`}</tbody>
+            ${footer ? `<tfoot>${footer}</tfoot>` : ""}
+        </table>`;
+
+    function buildDocument(model, selection) {
+        const t = L();
+        const isArabic = lang() === "ar";
+        const logo = document.querySelector(".sidebar-brand-logo img")?.getAttribute("src") || "";
+        const company = document.querySelector(".sidebar-brand-text span")?.textContent?.trim() || "";
+        const view = scoped(model, selection);
+        const sum = totals(view.branches);
+        const receivables = sum.overdue + sum.due;
+        const showBranch = !selection;
+
+        const kpis = [
+            [t.totalReceivables, money(receivables)],
+            [t.totalOverdue, money(sum.overdue), "is-bad"],
+            [t.overdueShare, pct(receivables ? (sum.overdue / receivables) * 100 : null), "is-bad"],
+            [t.totalDue, money(sum.due)],
+            [t.dueNext7, money(sum.due7), "is-warn"],
+            [t.overdueCustomers, money(view.overdueList.length)]
+        ];
+
+        /* 1) المتأخرات حسب الفرع */
+        const overdueBranchRows = view.branches.filter(b => b.overdue).map(b => `
+            <tr>
+                <td class="strong">${esc(b.name)}</td>
+                ${b.buckets.map((v, i) => `<td class="n ${i >= 3 && v ? "bad" : ""}">${v ? money(v) : "—"}</td>`).join("")}
+                <td class="n strong">${money(b.overdue)}</td>
+                <td class="n">${pct(b.overdue + b.due ? (b.overdue / (b.overdue + b.due)) * 100 : null)}</td>
+                <td class="n">${money(b.overdueCustomers.size)}</td>
+                <td class="n">${money(b.overdueInvoices)}</td>
+            </tr>`);
+        const overdueBranchFooter = `
+            <tr>
+                <td>${esc(t.total)}</td>
+                ${sum.buckets.map(v => `<td class="n">${money(v)}</td>`).join("")}
+                <td class="n">${money(sum.overdue)}</td>
+                <td class="n">${pct(receivables ? (sum.overdue / receivables) * 100 : null)}</td>
+                <td class="n">${money(view.overdueList.length)}</td>
+                <td class="n">${money(sum.overdueInvoices)}</td>
+            </tr>`;
+        const bucketShare = sum.overdue
+            ? `<div class="bucket-bar">${sum.buckets.map((v, i) => v ? `<i class="b${i}" style="flex:${v}" title="${esc(t.buckets[i])}"></i>` : "").join("")}</div>
+               <div class="bucket-legend">${sum.buckets.map((v, i) => `<span><i class="b${i}"></i>${esc(t.buckets[i])}: <b>${pct((v / sum.overdue) * 100)}</b></span>`).join("")}</div>`
+            : "";
+
+        /* 2) عملاء المتأخرات */
+        const overdueCustomerRows = view.overdueList.map((c, index) => `
+            <tr class="${c.maxDays > 90 ? "risk" : ""}">
+                <td class="n muted">${index + 1}</td>
+                <td><bdi dir="ltr">${esc(c.code || "—")}</bdi></td>
+                <td class="wrap strong">${esc(c.name)}</td>
+                ${showBranch ? `<td>${esc(c.branch)}</td>` : ""}
+                <td class="sm">${esc(c.salesman)}</td>
+                ${c.buckets.map(v => `<td class="n">${v ? money(v) : "—"}</td>`).join("")}
+                <td class="n strong bad">${money(c.total)}</td>
+                <td class="n strong">${money(c.maxDays)}</td>
+                <td class="n">${money(c.invoices)}</td>
+            </tr>`);
+        const overdueCustomerFooter = view.overdueList.length ? `
+            <tr>
+                <td></td><td colspan="${showBranch ? 4 : 3}">${esc(t.total)} (${money(view.overdueList.length)} ${esc(t.customers)})</td>
+                ${sum.buckets.map(v => `<td class="n">${money(v)}</td>`).join("")}
+                <td class="n">${money(sum.overdue)}</td><td></td>
+                <td class="n">${money(sum.overdueInvoices)}</td>
+            </tr>` : "";
+
+        /* 3) المستحقات حسب الفرع */
+        const dueBranchRows = view.branches.filter(b => b.due).map(b => `
+            <tr>
+                <td class="strong">${esc(b.name)}</td>
+                <td class="n">${money(b.due7)}</td>
+                <td class="n">${money(b.due30)}</td>
+                <td class="n">${money(b.dueLater)}</td>
+                <td class="n strong">${money(b.due)}</td>
+                <td class="n">${money(b.dueCustomers.size)}</td>
+                <td class="n">${money(b.dueInvoices)}</td>
+            </tr>`);
+        const dueBranchFooter = `
+            <tr>
+                <td>${esc(t.total)}</td>
+                <td class="n">${money(sum.due7)}</td>
+                <td class="n">${money(sum.due30)}</td>
+                <td class="n">${money(sum.dueLater)}</td>
+                <td class="n">${money(sum.due)}</td>
+                <td class="n">${money(view.dueList.length)}</td>
+                <td class="n">${money(sum.dueInvoices)}</td>
+            </tr>`;
+
+        /* 4) عملاء المستحقات (مجمع) */
+        const dueCustomerRows = view.dueList.map((c, index) => {
+            const soon = c.daysLeft != null && c.daysLeft <= 7;
+            return `
+            <tr class="${soon ? "soon" : ""}">
+                <td class="n muted">${index + 1}</td>
+                <td><bdi dir="ltr">${esc(c.code || "—")}</bdi></td>
+                <td class="wrap strong">${esc(c.name)}</td>
+                ${showBranch ? `<td>${esc(c.branch)}</td>` : ""}
+                <td class="sm">${esc(c.salesman)}</td>
+                <td class="n strong">${money(c.total)}</td>
+                <td class="n">${esc(fmtDay(c.nearestDate))}</td>
+                <td class="n ${soon ? "warn" : ""}">${c.daysLeft == null ? "—" : c.daysLeft === 0 ? esc(t.today) : money(c.daysLeft)}</td>
+                <td class="n strong">${c.nearestDate ? money(c.nearestAmount) : "—"}</td>
+                <td class="n">${money(c.invoices)}</td>
+            </tr>`;
+        });
+        const dueCustomerFooter = view.dueList.length ? `
+            <tr>
+                <td></td><td colspan="${showBranch ? 4 : 3}">${esc(t.total)} (${money(view.dueList.length)} ${esc(t.customers)})</td>
+                <td class="n">${money(sum.due)}</td><td></td><td></td>
+                <td></td>
+                <td class="n">${money(sum.dueInvoices)}</td>
+            </tr>` : "";
+
+        const docTitle = `Due-Overdue-Report_${selection ? selection.replace(/\s+/g, "-") : "All"}_${model.today}`;
+
+        return `<!DOCTYPE html>
+<html lang="${isArabic ? "ar" : "en"}" dir="${isArabic ? "rtl" : "ltr"}">
+<head>
+<meta charset="UTF-8">
+<title>${esc(docTitle)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 landscape; margin: 10mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: ${isArabic ? '"Cairo", "Inter"' : '"Inter", "Cairo"'}, "Segoe UI", Tahoma, sans-serif;
+    color: #0c2e42; font-size: 11px; font-variant-numeric: tabular-nums;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    background: #fff; padding: 14px;
+}
+@media print { body { padding: 0; } }
+header.doc { display: flex; align-items: center; gap: 14px; padding-bottom: 8px; border-bottom: 2px solid #0c2e42; margin-bottom: 10px; }
+header.doc img { height: 40px; }
+header.doc h1 { font-size: 20px; font-weight: 800; }
+header.doc p { color: #5b6b78; font-size: 11px; }
+header.doc dl { margin-inline-start: auto; display: grid; grid-template-columns: auto auto; gap: 2px 10px; font-size: 10.5px; }
+header.doc dt { color: #5b6b78; } header.doc dd { font-weight: 700; }
+.section-title { background: #0c2e42; color: #fff; padding: 6px 12px; margin: 14px 0 8px; font-size: 14px; font-weight: 800; break-after: avoid; }
+.section-title.is-bad { background: #8f2a1f; }
+.new-page { break-before: page; page-break-before: always; }
+.kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.kpi { border: 1px solid #dfe6ec; border-top: 3px solid #1c95b8; padding: 5px 8px; break-inside: avoid; }
+.kpi span { display: block; color: #5b6b78; font-size: 10px; }
+.kpi strong { display: block; font-size: 15px; font-weight: 800; font-family: "Inter", "Cairo", sans-serif; }
+.kpi.is-bad { border-top-color: #c0392b; } .kpi.is-bad strong { color: #c0392b; }
+.kpi.is-warn { border-top-color: #c98a12; } .kpi.is-warn strong { color: #a8700a; }
+table { width: 100%; border-collapse: collapse; }
+thead { display: table-header-group; } tfoot { display: table-row-group; }
+tr { break-inside: avoid; page-break-inside: avoid; }
+th { background: #0c2e42; color: #fff; font-weight: 700; padding: 5px 6px; text-align: start; white-space: nowrap; font-size: 10.5px; }
+td { padding: 4px 6px; border-bottom: 1px solid #e6ecf1; white-space: nowrap; }
+tbody tr:nth-child(even) td { background: #f5f8fa; }
+tfoot td { font-weight: 800; background: #e8f1f5; border-top: 2px solid #0c2e42; }
+tr.risk td { background: #fbeeec !important; }
+tr.soon td { background: #fff6e5 !important; }
+.n { text-align: end; } .strong { font-weight: 700; } .muted { color: #8595a2; }
+.bad { color: #c0392b; } .warn { color: #a8700a; font-weight: 700; }
+td.wrap { white-space: normal; overflow-wrap: anywhere; min-width: 160px; }
+td.sm { white-space: normal; max-width: 150px; font-size: 10px; }
+.empty { text-align: center; color: #8595a2; padding: 10px; }
+.bucket-bar { display: flex; height: 10px; margin: 8px 0 4px; border-radius: 2px; overflow: hidden; background: #e3eaef; }
+.bucket-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 10px; color: #5b6b78; }
+.bucket-legend i { display: inline-block; width: 9px; height: 9px; margin-inline-end: 4px; vertical-align: -1px; }
+.b0 { background: #e8b04a; } .b1 { background: #df8a3c; } .b2 { background: #d4652f; } .b3 { background: #b8412a; } .b4 { background: #7e2219; }
+.hint { color: #8595a2; font-size: 9.5px; margin-top: 4px; }
+footer.doc { margin-top: 10px; color: #8595a2; font-size: 9.5px; border-top: 1px solid #dfe6ec; padding-top: 5px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<header class="doc">
+    ${logo ? `<img src="${esc(logo)}" alt="">` : ""}
+    <div>
+        <h1>${esc(t.title)}${selection ? ` — ${esc(selection)}` : ""}</h1>
+        <p>${esc(company)}</p>
+    </div>
+    <dl>
+        <dt>${esc(t.scope)}</dt><dd>${esc(selection || t.allBranches)}</dd>
+        <dt>${esc(t.generated)}</dt><dd>${esc(fmtDay(model.today))}</dd>
+    </dl>
+</header>
+
+<div class="kpis">${kpis.map(([label, value, cls]) => `<div class="kpi ${cls || ""}"><span>${esc(label)}</span><strong>${value}</strong></div>`).join("")}</div>
+
+<div class="section-title is-bad">${esc(t.overdueByBranch)}</div>
+${table(
+    [{ t: t.branch }, ...t.buckets.map(b => ({ t: b, n: 1 })), { t: t.totalOverdue, n: 1 }, { t: t.overdueShare, n: 1 }, { t: t.customers, n: 1 }, { t: t.invoices, n: 1 }],
+    overdueBranchRows,
+    overdueBranchRows.length ? overdueBranchFooter : "",
+    t.noOverdue
+)}
+${bucketShare}
+
+<div class="section-title is-bad">${esc(t.overdueCustomersTitle)}</div>
+${table(
+    [{ t: "#", n: 1 }, { t: t.customerCode }, { t: t.customer }, ...(showBranch ? [{ t: t.branch }] : []), { t: t.salesman },
+     ...t.buckets.map(b => ({ t: b, n: 1 })), { t: t.total, n: 1 }, { t: t.maxDays, n: 1 }, { t: t.invoices, n: 1 }],
+    overdueCustomerRows,
+    overdueCustomerFooter,
+    t.noOverdue
+)}
+
+<div class="section-title new-page">${esc(t.dueByBranch)}</div>
+${table(
+    [{ t: t.branch }, { t: t.within7, n: 1 }, { t: t.within30, n: 1 }, { t: t.after30, n: 1 }, { t: t.dueTotal, n: 1 }, { t: t.customers, n: 1 }, { t: t.invoices, n: 1 }],
+    dueBranchRows,
+    dueBranchRows.length ? dueBranchFooter : "",
+    t.noDue
+)}
+
+<div class="section-title">${esc(t.dueCustomersTitle)}</div>
+${table(
+    [{ t: "#", n: 1 }, { t: t.customerCode }, { t: t.customer }, ...(showBranch ? [{ t: t.branch }] : []), { t: t.salesman },
+     { t: t.dueTotal, n: 1 }, { t: t.nearestDate, n: 1 }, { t: t.daysLeft, n: 1 }, { t: t.nearestAmount, n: 1 }, { t: t.invoices, n: 1 }],
+    dueCustomerRows,
+    dueCustomerFooter,
+    t.noDue
+)}
+
+<footer class="doc"><span>${esc(company)}</span><span>${esc(t.note)}</span></footer>
+</body>
+</html>`;
+    }
+
+    /* ---------------- Excel ---------------- */
+
+    function exportExcel() {
+        const t = L();
+        if (!window.XLSX?.utils) {
+            utils.showToast(t.noData, "warning");
+            return;
+        }
+
+        const view = scoped(state.lastModel || buildModel(), state.selected);
+        const workbook = window.XLSX.utils.book_new();
+        const add = (name, rows) => {
+            if (rows.length) window.XLSX.utils.book_append_sheet(workbook, window.XLSX.utils.json_to_sheet(rows), name.slice(0, 31));
+        };
+        const bucketCols = buckets => Object.fromEntries(t.buckets.map((label, i) => [label, Math.round(buckets[i])]));
+
+        add("Overdue by Branch", view.branches.filter(b => b.overdue).map(b => ({
+            [t.branch]: b.name,
+            ...bucketCols(b.buckets),
+            [t.totalOverdue]: Math.round(b.overdue),
+            [t.customers]: b.overdueCustomers.size,
+            [t.invoices]: b.overdueInvoices
+        })));
+
+        add("Overdue Customers", view.overdueList.map(c => ({
+            [t.customerCode]: c.code,
+            [t.customer]: c.name,
+            [t.branch]: c.branch,
+            [t.salesman]: c.salesman,
+            ...bucketCols(c.buckets),
+            [t.total]: Math.round(c.total),
+            [t.maxDays]: c.maxDays,
+            [t.invoices]: c.invoices
+        })));
+
+        add("Due by Branch", view.branches.filter(b => b.due).map(b => ({
+            [t.branch]: b.name,
+            [t.within7]: Math.round(b.due7),
+            [t.within30]: Math.round(b.due30),
+            [t.after30]: Math.round(b.dueLater),
+            [t.dueTotal]: Math.round(b.due),
+            [t.customers]: b.dueCustomers.size,
+            [t.invoices]: b.dueInvoices
+        })));
+
+        add("Due Customers", view.dueList.map(c => ({
+            [t.customerCode]: c.code,
+            [t.customer]: c.name,
+            [t.branch]: c.branch,
+            [t.salesman]: c.salesman,
+            [t.dueTotal]: Math.round(c.total),
+            [t.nearestDate]: c.nearestDate || "",
+            [t.daysLeft]: c.daysLeft == null ? "" : c.daysLeft,
+            [t.nearestAmount]: c.nearestDate ? Math.round(c.nearestAmount) : "",
+            [t.invoices]: c.invoices
+        })));
+
+        if (!workbook.SheetNames.length) {
+            utils.showToast(t.noData, "warning");
+            return;
+        }
+
+        window.XLSX.writeFile(workbook, `Due-Overdue-Report_${state.selected || "All"}_${todayIso()}.xlsx`);
+    }
+
+    /* ---------------- modal ---------------- */
+
+    function render() {
+        const frame = utils.byId("receivablesReportFrame");
+        if (!frame) return;
+        const model = buildModel();
+        state.lastModel = model;
+        frame.srcdoc = buildDocument(model, state.selected);
+    }
+
+    function print() {
+        const frame = utils.byId("receivablesReportFrame");
+        const view = frame?.contentWindow;
+        if (!view) return;
+        const run = () => {
+            try { view.focus(); view.print(); } catch (error) { console.error(error); }
+        };
+        const ready = frame.contentDocument?.fonts?.ready;
+        if (ready) ready.then(run).catch(run);
+        else run();
+    }
+
+    function close() {
+        utils.byId("receivablesReportModal")?.remove();
+    }
+
+    function open() {
+        const t = L();
+        close();
+
+        const model = buildModel();
+        if (!model.branches.length) {
+            utils.showToast(t.noData, "warning");
+            return;
+        }
+
+        const filterBranch = clean(state.data?.filters?.branch);
+        state.selected = filterBranch && model.branches.some(b => key(b.name) === key(filterBranch))
+            ? model.branches.find(b => key(b.name) === key(filterBranch)).name
+            : "";
+
+        const modal = document.createElement("div");
+        modal.id = "receivablesReportModal";
+        modal.className = "report-preview-overlay";
+        modal.innerHTML = `
+            <section class="report-preview-card branch-report-card">
+                <header class="report-preview-header">
+                    <div>
+                        <h2>${esc(t.title)}</h2>
+                        <p>${esc(t.note)}</p>
+                    </div>
+                    <button type="button" class="icon-button" data-rr="close" aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </header>
+
+                <div class="report-preview-actions branch-report-actions">
+                    <label class="branch-report-select">
+                        <span>${esc(t.chooseBranch)}</span>
+                        <select id="receivablesReportSelect">
+                            <option value="">${esc(t.allBranches)}</option>
+                            ${model.branches.map(b => `<option value="${esc(b.name)}" ${key(b.name) === key(state.selected) ? "selected" : ""}>${esc(b.name)}</option>`).join("")}
+                        </select>
+                    </label>
+                    <span style="flex:1"></span>
+                    <button class="secondary-button" type="button" data-rr="excel">
+                        <i class="fa-solid fa-file-excel"></i><span>${esc(t.excel)}</span>
+                    </button>
+                    <button class="primary-button" type="button" data-rr="print">
+                        <i class="fa-solid fa-print"></i><span>${esc(t.print)}</span>
+                    </button>
+                </div>
+
+                <iframe id="receivablesReportFrame" class="branch-report-frame" title="${esc(t.title)}"></iframe>
+            </section>`;
+
+        document.body.appendChild(modal);
+
+        modal.addEventListener("click", event => {
+            if (event.target === modal) {
+                close();
+                return;
+            }
+            const action = event.target.closest("[data-rr]")?.dataset.rr;
+            if (action === "close") close();
+            if (action === "print") print();
+            if (action === "excel") exportExcel();
+        });
+
+        utils.byId("receivablesReportSelect")?.addEventListener("change", event => {
+            state.selected = event.target.value;
+            render();
+        });
+
+        document.addEventListener("keydown", function onKey(event) {
+            if (event.key === "Escape") {
+                close();
+                document.removeEventListener("keydown", onKey);
+            }
+        });
+
+        render();
+    }
+
+    function setData(data, balances) {
+        state.data = data || null;
+        state.balances = Array.isArray(balances) ? balances : (data?.dueOverdue || []);
+        if (utils.byId("receivablesReportModal")) render();
+    }
+
+    return Object.freeze({ open, close, setData, render, print, exportExcel, buildModel });
 })();
 
 </script>
@@ -34496,7 +35568,8 @@ window.DashboardMonthlyReport = (() => {
             remaining: "المتبقي للهدف",
             forecast: "توقع نهاية الشهر",
             forecastPct: "التحقيق المتوقع",
-            collections: "التحصيلات",
+            collections: "تحصيل الكرديت",
+            cash: "التحصيل الكاش",
             invoices: "عدد الفواتير",
             overdue: "المتأخرات (الرصيد الحالي)",
             due: "المستحق (غير متأخر)",
@@ -34517,6 +35590,21 @@ window.DashboardMonthlyReport = (() => {
             value: "القيمة",
             avg: "متوسط سعر القطعة",
             topOverdue: "أعلى 10 عملاء متأخرات (الرصيد الحالي)",
+            gapTitle: "أكبر أسباب العجز",
+            gapLead: (n, gap, share) => `${n === 1 ? "مندوب واحد عجزه" : `${n} مندوبين عجزهم`} المتوقع ${gap}، يعني ${share} من عجز النطاق ده.`,
+            gapLeadFinal: (n, gap, share) => `${n === 1 ? "مندوب واحد عجزه" : `${n} مندوبين عجزهم`} ${gap}، يعني ${share} من عجز النطاق ده.`,
+            gap: "العجز المتوقع",
+            gapFinal: "العجز",
+            dailyNow: "البيع اليومي",
+            dailyNeed: "المطلوب يومياً",
+            overdue90: "متأخر +90 يوم",
+            topCustomer: "أكبر عميل متأخر",
+            signal: "الإشارة",
+            sigOverdueHigh: "المتأخرات أكبر من مبيعات الشهر",
+            sigOld: "مديونية قديمة +90 يوم",
+            sigSelling: "مشكلة بيع مش مديونية (زيارات / عملاء)",
+            sigFewInvoices: n => `${n} فواتير بس`,
+            noGap: "مفيش عجز عند المندوبين في النطاق ده",
             customer: "العميل",
             balance: "الرصيد",
             days: "أيام التأخير",
@@ -34560,7 +35648,8 @@ window.DashboardMonthlyReport = (() => {
             remaining: "Remaining to target",
             forecast: "Month-end forecast",
             forecastPct: "Forecast achievement",
-            collections: "Collections",
+            collections: "Credit collections",
+            cash: "Cash collections",
             invoices: "Invoices",
             overdue: "Overdue (current balance)",
             due: "Due (not overdue)",
@@ -34581,6 +35670,21 @@ window.DashboardMonthlyReport = (() => {
             value: "Value",
             avg: "Avg price / piece",
             topOverdue: "Top 10 overdue customers (current balance)",
+            gapTitle: "Biggest gap drivers",
+            gapLead: (n, gap, share) => `${n} salesmen account for an expected gap of ${gap}, ${share} of this scope's gap.`,
+            gapLeadFinal: (n, gap, share) => `${n} salesmen account for a gap of ${gap}, ${share} of this scope's gap.`,
+            gap: "Expected gap",
+            gapFinal: "Gap",
+            dailyNow: "Daily now",
+            dailyNeed: "Needed daily",
+            overdue90: "Overdue 90+ days",
+            topCustomer: "Largest overdue customer",
+            signal: "Signal",
+            sigOverdueHigh: "Overdue exceeds month sales",
+            sigOld: "Old debt 90+ days",
+            sigSelling: "Selling problem, not debt (visits / customers)",
+            sigFewInvoices: n => `Only ${n} invoices`,
+            noGap: "No salesman gap in this scope",
             customer: "Customer",
             balance: "Balance",
             days: "Days late",
@@ -34657,9 +35761,13 @@ window.DashboardMonthlyReport = (() => {
        بناء بيانات الشهر
     ===================================================== */
 
+    function hasCash() {
+        return !document.body.classList.contains("cash-disabled");
+    }
+
     function newScope(name) {
         return {
-            name, sales: 0, targetedSales: 0, collections: 0, invoiceSet: new Set(),
+            name, sales: 0, targetedSales: 0, collections: 0, cash: 0, invoiceSet: new Set(),
             target: 0, overdue: 0, due: 0, upcoming: [], overdueCustomers: new Map(), invoiceRows: [],
             otherCodes: new Map()
         };
@@ -34707,7 +35815,10 @@ window.DashboardMonthlyReport = (() => {
                 branch: clean(row.branch) || t.unassigned,
                 target,
                 sales: 0,
-                overdue: 0
+                overdue: 0,
+                overdue90: 0,
+                invoiceSet: new Set(),
+                overdueCustomers: new Map()
             });
         });
 
@@ -34744,7 +35855,10 @@ window.DashboardMonthlyReport = (() => {
             });
 
             const salesman = salesmanOf(row.salesmanCode);
-            if (salesman) salesman.sales += amount;
+            if (salesman) {
+                salesman.sales += amount;
+                if (row.invoiceNo) salesman.invoiceSet.add(clean(row.invoiceNo));
+            }
         });
 
         (data.collections || []).forEach(row => {
@@ -34752,6 +35866,13 @@ window.DashboardMonthlyReport = (() => {
             if (date < start || date > end) return;
             const amount = num(row.collectionAmount);
             scopesFor(row).forEach(scope => { scope.collections += amount; });
+        });
+
+        /* التحصيل الكاش (شهري) */
+        (data.cashCollections || []).forEach(row => {
+            if (String(row.month || "").slice(0, 7) !== monthKey) return;
+            const amount = num(row.cashAmount);
+            scopesFor(row).forEach(scope => { scope.cash += amount; });
         });
 
         (data.dueOverdue || []).forEach(row => {
@@ -34776,7 +35897,15 @@ window.DashboardMonthlyReport = (() => {
             });
 
             const salesman = salesmanOf(row.salesmanCode);
-            if (salesman && isOverdue) salesman.overdue += amount;
+            if (salesman && isOverdue) {
+                salesman.overdue += amount;
+                if (num(row.overdueDays) > 90) salesman.overdue90 += amount;
+                const customerKey = clean(row.customerCode) || clean(row.customerName);
+                const entry = salesman.overdueCustomers.get(customerKey) || { name: clean(row.customerName), amount: 0, days: 0 };
+                entry.amount += amount;
+                entry.days = Math.max(entry.days, num(row.overdueDays));
+                salesman.overdueCustomers.set(customerKey, entry);
+            }
         });
 
         const workingDays = (from, to) => {
@@ -34800,6 +35929,37 @@ window.DashboardMonthlyReport = (() => {
             };
         };
 
+        const remainingDays = Math.max(totalDays - elapsed, 0);
+
+        const invoiceCounts = [...salesmen.values()].filter(s => s.target > 0).map(s => s.invoiceSet.size).sort((x, y) => x - y);
+        const medianInvoices = invoiceCounts.length ? invoiceCounts[Math.floor(invoiceCounts.length / 2)] : 0;
+
+        const gapDrivers = (isCompany, scopeName) => {
+            const list = [...salesmen.values()]
+                .filter(s => (isCompany || s.branch === scopeName) && s.target > 0)
+                .map(s => {
+                    const p = project(s.sales, s.target);
+                    const top = [...s.overdueCustomers.values()].sort((x, y) => y.amount - x.amount)[0] || null;
+                    const invoices = s.invoiceSet.size;
+                    const signals = [];
+                    if (s.overdue > s.sales && s.overdue > 0) signals.push("overdueHigh");
+                    if (s.overdue90 > 0) signals.push("old");
+                    if (!signals.length && s.overdue90 < s.target * 0.1) signals.push("selling");
+                    if (medianInvoices > 0 && invoices < medianInvoices * 0.5) signals.push("few");
+                    return {
+                        code: s.code, name: s.name, branch: s.branch, target: s.target, sales: s.sales,
+                        achievedPct: p.achievedPct, forecastPct: p.forecastPct,
+                        gap: Math.max(s.target - p.forecast, 0),
+                        dailyNow: s.sales / elapsed,
+                        dailyNeed: remainingDays > 0 ? Math.max(s.target - s.sales, 0) / remainingDays : null,
+                        overdue: s.overdue, overdue90: s.overdue90, invoices, top, signals
+                    };
+                })
+                .filter(d => d.gap > 0)
+                .sort((x, y) => y.gap - x.gap);
+            return list;
+        };
+
         const finalize = (scope, isCompany) => ({
             ...scope,
             ...project(scope.targetedSales, scope.target),
@@ -34812,6 +35972,7 @@ window.DashboardMonthlyReport = (() => {
             otherCodeList: [...scope.otherCodes.values()]
                 .map(entry => ({ ...entry, invoiceCount: entry.invoices.size }))
                 .sort((a, b) => b.sales - a.sales),
+            gapDrivers: gapDrivers(isCompany, scope.name),
             salesmen: [...salesmen.values()]
                 .filter(s => (isCompany || s.branch === scope.name) && s.target > 0)
                 .map(s => ({ ...s, ...project(s.target > 0 ? s.sales : 0, s.target) }))
@@ -34852,6 +36013,7 @@ window.DashboardMonthlyReport = (() => {
                 [t.achievedFinal, pct(scope.achievedPct), tone(scope.achievedPct)],
                 [t.remaining, money(scope.remaining)],
                 [t.collections, money(scope.collections)],
+                ...(hasCash() ? [[t.cash, money(scope.cash)]] : []),
                 [t.invoices, money(scope.invoiceCount)],
                 [t.overdue, money(scope.overdue), "is-bad"],
                 [t.untargeted, money(scope.untargetedSales)]
@@ -34864,6 +36026,7 @@ window.DashboardMonthlyReport = (() => {
                 [t.forecast, money(scope.forecast)],
                 [t.forecastPct, pct(scope.forecastPct), tone(scope.forecastPct)],
                 [t.collections, money(scope.collections)],
+                ...(hasCash() ? [[t.cash, money(scope.cash)]] : []),
                 [t.invoices, money(scope.invoiceCount)],
                 [t.overdue, money(scope.overdue), "is-bad"],
                 [t.due, money(scope.due)],
@@ -34885,7 +36048,7 @@ window.DashboardMonthlyReport = (() => {
             ? `<h3>${esc(t.branches)}</h3>` + table(
                 [{ t: t.branch }, { t: t.sales, n: 1 }, { t: t.target, n: 1 }, { t: t.achieved, n: 1 },
                  ...(closed ? [] : [{ t: t.forecastPct, n: 1 }]),
-                 { t: t.remaining, n: 1 }, { t: t.otherSales, n: 1 }, { t: t.collections, n: 1 }, { t: t.overdue, n: 1 }],
+                 { t: t.remaining, n: 1 }, { t: t.otherSales, n: 1 }, { t: t.collections, n: 1 }, ...(hasCash() ? [{ t: t.cash, n: 1 }] : []), { t: t.overdue, n: 1 }],
                 data.branches.map(b => `<tr>
                     <td class="strong">${esc(b.name)}</td>
                     <td class="n">${money(b.targetedSales)}</td>
@@ -34895,6 +36058,7 @@ window.DashboardMonthlyReport = (() => {
                     <td class="n">${money(b.remaining)}</td>
                     <td class="n">${money(b.untargetedSales)}</td>
                     <td class="n">${money(b.collections)}</td>
+                    ${hasCash() ? `<td class="n">${money(b.cash)}</td>` : ""}
                     <td class="n">${money(b.overdue)}</td></tr>`))
             : "";
 
@@ -34909,6 +36073,30 @@ window.DashboardMonthlyReport = (() => {
                 <td class="n ${tone(s.achievedPct)}">${pct(s.achievedPct)}</td>
                 ${closed ? "" : `<td class="n ${tone(s.forecastPct)}">${pct(s.forecastPct)}</td>`}
                 <td class="n">${money(s.overdue)}</td></tr>`));
+
+        const drivers = (scope.gapDrivers || []).slice(0, isConsolidated ? 8 : 6);
+        const driversGap = drivers.reduce((sum, d) => sum + d.gap, 0);
+        const scopeGap = Math.max(scope.target - scope.forecast, 0);
+        const signalText = d => d.signals.map(sig =>
+            sig === "overdueHigh" ? t.sigOverdueHigh
+            : sig === "old" ? t.sigOld
+            : sig === "selling" ? t.sigSelling
+            : t.sigFewInvoices(d.invoices)).join(" • ");
+        const gapTable = `<h3>${esc(t.gapTitle)}</h3>` + (drivers.length
+            ? `<p class="lead">${esc((closed ? t.gapLeadFinal : t.gapLead)(drivers.length, money(driversGap), scopeGap > 0 ? pct((driversGap / scopeGap) * 100) : "—"))}</p>` + table(
+                [{ t: t.salesman }, ...(isConsolidated ? [{ t: t.branch }] : []), { t: t.achieved, n: 1 }, { t: closed ? t.gapFinal : t.gap, n: 1 },
+                 ...(closed ? [] : [{ t: t.dailyNow, n: 1 }, { t: t.dailyNeed, n: 1 }]),
+                 { t: t.overdue, n: 1 }, { t: t.overdue90, n: 1 }, { t: t.topCustomer }],
+                drivers.map(d => `<tr>
+                    <td class="strong">${esc(d.name)}${d.signals.length ? `<small class="sig">${esc(signalText(d))}</small>` : ""}</td>
+                    ${isConsolidated ? `<td>${esc(d.branch)}</td>` : ""}
+                    <td class="n ${tone(d.achievedPct)}">${pct(d.achievedPct)}</td>
+                    <td class="n bad strong">${money(d.gap)}</td>
+                    ${closed ? "" : `<td class="n">${money(d.dailyNow)}</td><td class="n">${d.dailyNeed == null ? "—" : money(d.dailyNeed)}${d.dailyNeed != null && d.dailyNow > 0 ? `<small> ×${(d.dailyNeed / d.dailyNow).toFixed(1)}</small>` : ""}</td>`}
+                    <td class="n">${money(d.overdue)}</td>
+                    <td class="n ${d.overdue90 ? "bad" : ""}">${d.overdue90 ? money(d.overdue90) : "—"}</td>
+                    <td class="wrap">${d.top ? `${esc(d.top.name)}<small>${money(d.top.amount)} • ${money(d.top.days)} ${esc(lang() === "ar" ? "يوم" : "days")}</small>` : "—"}</td></tr>`))
+            : `<p class="lead">${esc(t.noGap)}</p>`);
 
         const otherTable = scope.otherCodeList.length
             ? `<h3>${esc(t.otherCodes)}</h3>` + table(
@@ -34956,6 +36144,7 @@ window.DashboardMonthlyReport = (() => {
                 ${branchTable}
                 <h3>${esc(isConsolidated ? t.salesmen : t.branchSalesmen)}</h3>
                 ${salesmenTable}
+                ${gapTable}
                 ${otherTable}
                 ${mix}
                 ${overdueTable}
@@ -35021,6 +36210,10 @@ tbody tr:nth-child(even) td { background: #f5f8fa; }
 td.is-good { color: #1f8a5b; font-weight: 700; } td.is-warn { color: #a8700a; font-weight: 700; } td.is-bad { color: #c0392b; font-weight: 700; }
 .empty { text-align: center; color: #8595a2; padding: 8px; }
 .note { margin-top: 10px; color: #8595a2; font-size: 9.5px; border-top: 1px solid #dfe6ec; padding-top: 5px; }
+td.wrap { white-space: normal; overflow-wrap: anywhere; min-width: 150px; max-width: 240px; }
+td small.sig { color: #a8700a; font-weight: 600; }
+td small { display: block; color: #8595a2; font-size: 9px; font-weight: 400; }
+.lead { margin: 2px 0 6px; color: #0c2e42; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -35064,6 +36257,7 @@ ${body}
             ${closed ? "" : `<td ${total ? tf : td}><b style="color:${color(b.forecastPct)}">${pct(b.forecastPct)}</b></td>`}
             <td ${total ? tf : td}>${money(b.untargetedSales)}</td>
             <td ${total ? tf : td}>${money(b.collections)}</td>
+            ${hasCash() ? `<td ${total ? tf : td}>${money(b.cash)}</td>` : ""}
             <td ${total ? tf : td}>${money(b.overdue)}</td></tr>`;
 
         const branchNames = data.branches.filter(b => b.name !== unassigned).map(b => b.name).join(", ");
@@ -35075,7 +36269,7 @@ ${body}
 <p>Dear Management,</p>
 <p>${intro} The consolidated report and a separate report for each branch (${esc(branchNames)}) are attached.</p>
 <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0">
-<tr><th ${thl}>Branch</th><th ${th}>Sales</th><th ${th}>Target</th><th ${th}>Achieved</th>${closed ? "" : `<th ${th}>Forecast</th>`}<th ${th}>Other Codes Sales</th><th ${th}>Collections</th><th ${th}>Overdue</th></tr>
+<tr><th ${thl}>Branch</th><th ${th}>Sales</th><th ${th}>Target</th><th ${th}>Achieved</th>${closed ? "" : `<th ${th}>Forecast</th>`}<th ${th}>Other Codes Sales</th><th ${th}>Credit Collections</th>${hasCash() ? `<th ${th}>Cash Collections</th>` : ""}<th ${th}>Overdue</th></tr>
 ${data.branches.map(b => row(b, false)).join("")}
 ${row(c, true)}
 </table>
@@ -35163,12 +36357,24 @@ ${row(c, true)}
             ...(data.closed ? {} : { [t.forecastPct]: s.forecastPct == null ? "" : +s.forecastPct.toFixed(1) }),
             [t.remaining]: Math.round(s.remaining),
             [t.collections]: Math.round(s.collections),
+            ...(hasCash() ? { [t.cash]: Math.round(s.cash) } : {}),
             [t.invoices]: s.invoiceCount,
             [t.overdue]: Math.round(s.overdue),
             [t.untargeted]: Math.round(s.untargetedSales)
         });
 
         add("Summary", data.branches.map(scopeRow).concat([{ ...scopeRow(data.company), [t.branch]: "Total" }]));
+        add("Gap Drivers", (data.company.gapDrivers || []).map(d => ({
+            [t.salesman]: d.name,
+            [t.branch]: d.branch,
+            [t.achieved]: d.achievedPct == null ? "" : +d.achievedPct.toFixed(1),
+            [data.closed ? t.gapFinal : t.gap]: Math.round(d.gap),
+            ...(data.closed ? {} : { [t.dailyNow]: Math.round(d.dailyNow), [t.dailyNeed]: d.dailyNeed == null ? "" : Math.round(d.dailyNeed) }),
+            [t.overdue]: Math.round(d.overdue),
+            [t.overdue90]: Math.round(d.overdue90),
+            [t.topCustomer]: d.top ? `${d.top.name} (${Math.round(d.top.amount)} / ${d.top.days})` : "",
+            [t.signal]: d.signals.map(sig => sig === "overdueHigh" ? t.sigOverdueHigh : sig === "old" ? t.sigOld : sig === "selling" ? t.sigSelling : t.sigFewInvoices(d.invoices)).join(" • ")
+        })));
         add("Salesmen", data.company.salesmen.map(s => ({
             [t.salesman]: s.name,
             [t.branch]: s.branch,
@@ -36072,6 +37278,22 @@ window.DashboardApp = (() => {
                 )
             );
 
+        // التحصيل الكاش شهري: الشهر يدخل لو متداخل مع الفترة المختارة
+        const cashCollections = (state.rawData.cashCollections || []).filter(row => {
+            if (!rowMatchesFilters(row, filters)) return false;
+            const month = String(row.month || "");
+            if (!/^\d{4}-\d{2}$/.test(month)) return false;
+            const [year, monthNumber] = month.split("-").map(Number);
+            const monthStart = `${month}-01`;
+            const monthEnd = `${month}-${String(new Date(year, monthNumber, 0).getDate()).padStart(2, "0")}`;
+            if (filters.dateFrom && monthEnd < String(filters.dateFrom).slice(0, 10)) return false;
+            if (filters.dateTo && monthStart > String(filters.dateTo).slice(0, 10)) return false;
+            return true;
+        });
+
+        window.DashboardCash = cashCollections;
+        window.DashboardCashAll = state.rawData.cashCollections || [];
+
         const upcomingFilters = {
             ...filters,
             dateFrom: "",
@@ -36111,6 +37333,7 @@ window.DashboardApp = (() => {
             reactivatedCustomers,
             customerInfo: state.rawData.customerInfo,
             upcomingDue,
+            cashCollections,
 
             updatedAt:
                 state.rawData.updatedAt
@@ -36120,9 +37343,60 @@ window.DashboardApp = (() => {
             state.filteredData
         );
 
+        renderCashCollectionsTable(cashCollections);
+
         return state.filteredData;
     }
 
+
+    /* =====================================================
+       جدول التحصيل الكاش (صفحة التحصيلات)
+    ===================================================== */
+
+    function renderCashCollectionsTable(rows) {
+        const body = utils.byId("cashCollectionsTableBody");
+        if (!body) return;
+
+        const groups = new Map();
+        (rows || []).forEach(row => {
+            const key = `${row.branch || ""}|${row.salesmanCode || ""}`;
+            if (!groups.has(key)) {
+                groups.set(key, {
+                    branch: row.branch || "--",
+                    code: row.salesmanCode || "--",
+                    name: row.salesmanName || row.sheetSalesmanName || row.salesmanCode || "--",
+                    months: new Set(),
+                    amount: 0
+                });
+            }
+            const group = groups.get(key);
+            group.amount += utils.toNumber(row.cashAmount);
+            if (row.month) group.months.add(row.month);
+        });
+
+        const list = [...groups.values()].sort((a, b) => b.amount - a.amount);
+        const total = list.reduce((sum, item) => sum + item.amount, 0);
+
+        if (!list.length) {
+            body.innerHTML = utils.emptyTableRow(6, utils.t("common.noData", "لا توجد بيانات متاحة"));
+            return;
+        }
+
+        body.innerHTML = list.map(item => `
+            <tr>
+                <td>${utils.escapeHTML(item.branch)}</td>
+                <td>${utils.escapeHTML(item.code)}</td>
+                <td>${utils.escapeHTML(item.name)}</td>
+                <td>${utils.formatNumber(item.months.size, 0)}</td>
+                <td><strong>${utils.formatCurrency(item.amount)}</strong></td>
+                <td>${total ? ((item.amount / total) * 100).toFixed(1) + "%" : "—"}</td>
+            </tr>`).join("") + `
+            <tr class="table-total-row">
+                <td colspan="4"><strong>${utils.escapeHTML(utils.t("common.total", "الإجمالي"))}</strong></td>
+                <td><strong>${utils.formatCurrency(total)}</strong></td>
+                <td><strong>100%</strong></td>
+            </tr>`;
+    }
 
     /* =====================================================
        توزيع البيانات على الملفات
@@ -36307,6 +37581,13 @@ window.DashboardApp = (() => {
 
         callModule(
             window.DashboardBranchReport,
+            "setData",
+            data,
+            profileDueOverdue
+        );
+
+        callModule(
+            window.DashboardReceivablesReport,
             "setData",
             data,
             profileDueOverdue
@@ -36790,10 +38071,21 @@ window.DashboardApp = (() => {
                         ? response.upcomingDue
                         : [],
 
+                cashCollections:
+                    Array.isArray(response.cashCollections)
+                        ? response.cashCollections
+                        : [],
+
                 updatedAt:
                     response.updatedAt ||
                     ""
             };
+
+            /* لو مفيش شيت Cash collections، كروت الكاش تختفي */
+            document.body?.classList.toggle(
+                "cash-disabled",
+                !state.rawData.cashCollections.length
+            );
 
             if (response.user) {
                 auth.updateUser(
