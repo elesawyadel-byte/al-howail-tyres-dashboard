@@ -1931,6 +1931,7 @@ tbody tr:last-child td {
     margin-bottom: 8px;
 }
 
+.wk-lfl { display:block; font-size:10px; opacity:.7; font-weight:500; }
 .comparison-growth {
     display: inline-block;
     padding: 3px 9px;
@@ -4773,6 +4774,39 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
     border-radius: 7px; background: transparent; color: var(--text-primary, inherit); font: inherit; cursor: pointer; text-align: start; }
 .print-language-menu button:hover { background: rgba(23, 107, 135, .1); }
 </style>
+<style>
+/* ===== المديونية حسب الكود ===== */
+.dbc-legend { display: flex; gap: 18px; padding: 0 22px 6px; color: var(--text-secondary); font-size: 13px; }
+.dbc-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.dbc-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+.dbc-swatch.is-overdue, .dbc-meter.is-overdue .dbc-track i { background: var(--danger); }
+.dbc-swatch.is-due, .dbc-meter.is-due .dbc-track i { background: var(--primary); }
+.dbc-list { display: flex; flex-direction: column; padding: 0 22px 18px; overflow-x: auto; }
+.dbc-row { display: grid; grid-template-columns: minmax(220px, 1.3fr) minmax(200px, 1.2fr) minmax(200px, 1.2fr) minmax(130px, 0.6fr); gap: 22px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); min-width: 860px; }
+.dbc-head { color: var(--text-secondary); font-size: 12px; font-weight: 700; padding-top: 4px; }
+.dbc-who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dbc-who strong { font-size: 14px; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dbc-who small { font-size: 12px; color: var(--text-secondary); }
+.dbc-meter { display: flex; flex-direction: column; gap: 6px; }
+.dbc-track { height: 10px; border-radius: 6px; background: var(--surface-hover); overflow: hidden; }
+.dbc-track i { display: block; height: 100%; border-radius: 6px; }
+.dbc-values { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.dbc-values strong, .dbc-total strong { font-family: var(--font-en); font-size: 15px; color: var(--text-primary); }
+.dbc-values span, .dbc-total span { font-family: var(--font-en); font-size: 13px; font-weight: 700; color: var(--text-secondary); }
+.dbc-meter.is-overdue .dbc-values span { color: var(--danger); }
+.dbc-meter.is-due .dbc-values span { color: var(--primary); }
+.dbc-total { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; text-align: end; }
+.dbc-total small { font-size: 11.5px; color: var(--text-secondary); }
+.dbc-total small.is-bad { color: var(--danger); font-weight: 700; }
+.dbc-foot { border-bottom: 0; border-top: 2px solid var(--border-strong); margin-top: 2px; }
+.dbc-foot > strong { font-size: 14px; color: var(--text-primary); }
+.dbc-sort { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+.dbc-sort select { min-height: 38px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-primary); font: inherit; }
+.dbc-empty { margin: 0; padding: 12px 0; color: var(--text-secondary); }
+.dbc-blacklist { opacity: .75; border-top: 1px dashed var(--border-strong); border-bottom: 0; }
+.dbc-blacklist .dbc-meter .dbc-track i { background: var(--text-muted); }
+.dbc-note { display: block; font-size: 11.5px; font-weight: 600; color: var(--text-secondary); }
+</style>
 </head>
 
 <body>
@@ -6354,6 +6388,30 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
 
                     </div>
 
+                    <article class="content-card due-by-code-card" style="margin-bottom: 18px">
+                        <div class="card-header page-card-header">
+                            <div>
+                                <h3 data-i18n="dueOverdue.byCodeTitle">المديونية حسب الكود</h3>
+                                <p data-i18n="dueOverdue.byCodeSubtitle">المتأخرات والمستحقات على كل كود، ونسبته من الإجمالي</p>
+                            </div>
+                            <div class="card-actions">
+                                <label class="dbc-sort">
+                                    <span data-i18n="dueOverdue.byCodeSort">ترتيب حسب</span>
+                                    <select id="dueByCodeSort">
+                                        <option value="overdue" data-i18n="dueOverdue.byCodeSortOverdue">المتأخرات</option>
+                                        <option value="due" data-i18n="dueOverdue.byCodeSortDue">المستحقات</option>
+                                        <option value="total" data-i18n="dueOverdue.byCodeSortTotal">الإجمالي</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="dbc-legend">
+                            <span><i class="dbc-swatch is-overdue"></i><span data-i18n="dashboard.overdue">المتأخرات</span></span>
+                            <span><i class="dbc-swatch is-due"></i><span data-i18n="dashboard.due">المستحقات</span></span>
+                        </div>
+                        <div id="dueByCodeList" class="dbc-list"></div>
+                    </article>
+
                     <article class="content-card">
 
                         <div class="card-header page-card-header">
@@ -7134,7 +7192,7 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                                             0.00 ر.س
                                         </strong>
                                         <span class="comparison-card-previous">
-                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span class="js-prev-period-label">الشهر السابق</span>:
                                             <span id="profileSalesPreviousValue">0.00 ر.س</span>
                                         </span>
                                         <span class="comparison-growth comparison-growth-flat" id="profileSalesGrowthBadge">0%</span>
@@ -7148,7 +7206,7 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                                             0.00 ر.س
                                         </strong>
                                         <span class="comparison-card-previous">
-                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span class="js-prev-period-label">الشهر السابق</span>:
                                             <span id="profileCollectionsPreviousValue">0.00 ر.س</span>
                                         </span>
                                         <span class="comparison-growth comparison-growth-flat" id="profileCollectionsGrowthBadge">0%</span>
@@ -7162,7 +7220,7 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                                             0.00 ر.س
                                         </strong>
                                         <span class="comparison-card-previous">
-                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span class="js-prev-period-label">الشهر السابق</span>:
                                             <span id="profileCashPreviousValue">0.00 ر.س</span>
                                         </span>
                                         <span class="comparison-growth comparison-growth-flat" id="profileCashGrowthBadge">0%</span>
@@ -7176,7 +7234,7 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                                             0
                                         </strong>
                                         <span class="comparison-card-previous">
-                                            <span data-i18n="salesmanProfiles.previousMonth">الشهر السابق</span>:
+                                            <span class="js-prev-period-label">الشهر السابق</span>:
                                             <span id="profileInvoiceCountPreviousValue">0</span>
                                         </span>
                                         <span class="comparison-growth comparison-growth-flat" id="profileInvoiceCountGrowthBadge">0%</span>
@@ -8245,6 +8303,12 @@ const TRANSLATIONS = {
         },
 
         dueOverdue: {
+            byCodeTitle: "المديونية حسب الكود",
+            byCodeSubtitle: "المتأخرات والمستحقات على كل كود، ونسبته من الإجمالي",
+            byCodeSort: "ترتيب حسب",
+            byCodeSortOverdue: "المتأخرات",
+            byCodeSortDue: "المستحقات",
+            byCodeSortTotal: "الإجمالي",
             title: "المستحقات والمتأخرات",
             subtitle: "متابعة أرصدة العملاء وحالات التأخير",
             searchPlaceholder: "بحث في المستحقات والمتأخرات...",
@@ -8679,6 +8743,12 @@ const TRANSLATIONS = {
         },
 
         dueOverdue: {
+            byCodeTitle: "Receivables by Code",
+            byCodeSubtitle: "Overdue and due balance on each code, and its share of the total",
+            byCodeSort: "Sort by",
+            byCodeSortOverdue: "Overdue",
+            byCodeSortDue: "Due",
+            byCodeSortTotal: "Total",
             title: "Due & Overdue",
             subtitle: "Track customer balances and overdue status",
             searchPlaceholder: "Search due and overdue...",
@@ -10136,6 +10206,12 @@ window.DashboardAPI = (() => {
 
             updatedAt:
                 response?.updatedAt || "",
+
+            dataAsOf:
+                response?.dataAsOf || "",
+
+            sheetUpdatedAt:
+                response?.sheetUpdatedAt || "",
 
             user:
                 response?.user || null,
@@ -13957,7 +14033,9 @@ window.DashboardDashboard = (() => {
         renderTopOverdue();
         renderCharts(summary);
 
-        if (currentData.updatedAt) {
+        if (typeof window.__renderLastUpdate === "function") {
+            window.__renderLastUpdate();
+        } else if (currentData.updatedAt) {
             utils.setText(
                 "lastUpdateText",
                 utils.formatDateTime(
@@ -19847,6 +19925,7 @@ window.DashboardProfiles = (() => {
      * السنوي بشكل مستقل عن فلتر الفترة الحالي.
      */
     let rawInvoiceRows = [];
+    let dataAsOfValue = "";
     let rawCollectionRows = [];
 
     /*
@@ -20308,6 +20387,7 @@ window.DashboardProfiles = (() => {
     }
 
     function setRawData(data = {}) {
+        dataAsOfValue = data.dataAsOf || window.__dataAsOf || "";
         rawInvoiceRows = Array.isArray(data.invoices)
             ? data.invoices
             : [];
@@ -20606,22 +20686,92 @@ window.DashboardProfiles = (() => {
         return ((current - previous) / previous) * 100;
     }
 
+    /*
+     * آخر يوم فيه بيانات فعلية (على مستوى الشركة من السيرفر)،
+     * ولو مش موجود ناخد آخر تاريخ فاتورة في البيانات المحملة.
+     */
+    function getDataAsOfDate() {
+        const text = String(dataAsOfValue || window.__dataAsOf || "").slice(0, 10);
+        const match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+
+        let latest = null;
+        rawInvoiceRows.forEach(row => {
+            const date = utils.parseDate(getInvoiceDate(row));
+            if (date && !isNaN(date.getTime()) && (!latest || date > latest)) latest = date;
+        });
+        if (!latest) return null;
+        return new Date(latest.getFullYear(), latest.getMonth(), latest.getDate());
+    }
+
+    /*
+     * مقارنة عادلة: لو الشهر لسه مخلصش، بنقارن نفس عدد الأيام
+     * من الشهر اللي قبله (مثلاً 1–6 نوفمبر مقابل 1–6 أكتوبر).
+     */
+    function comparablePeriod(referenceDate) {
+        const year = referenceDate.getFullYear();
+        const month = referenceDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const previousDate = new Date(year, month - 1, 1);
+        const daysInPrevious = new Date(previousDate.getFullYear(), previousDate.getMonth() + 1, 0).getDate();
+        const asOf = getDataAsOfDate();
+
+        let cutDay = null;
+        if (asOf) {
+            const asOfKey = asOf.getFullYear() * 12 + asOf.getMonth();
+            const refKey = year * 12 + month;
+            if (asOfKey === refKey && asOf.getDate() < daysInMonth) cutDay = asOf.getDate();
+            else if (asOfKey < refKey) cutDay = 0;
+        }
+
+        const partial = cutDay != null;
+        const previousDays = partial ? Math.min(cutDay, daysInPrevious) : daysInPrevious;
+
+        return {
+            partial,
+            day: partial ? cutDay : daysInMonth,
+            previousDays,
+            daysInPrevious,
+            year,
+            month,
+            previousYear: previousDate.getFullYear(),
+            previousMonth: previousDate.getMonth(),
+            current: {
+                start: new Date(year, month, 1),
+                end: partial ? new Date(year, month, cutDay + 1) : new Date(year, month + 1, 1)
+            },
+            previous: {
+                start: new Date(previousDate.getFullYear(), previousDate.getMonth(), 1),
+                end: partial
+                    ? new Date(previousDate.getFullYear(), previousDate.getMonth(), previousDays + 1)
+                    : new Date(previousDate.getFullYear(), previousDate.getMonth() + 1, 1)
+            }
+        };
+    }
+
+    /* نص المقارنة: "نفس الفترة من أكتوبر (1–6)" أو "أكتوبر (الشهر كامل)" */
+    function comparisonLabel(monthly, english) {
+        const period = monthly && monthly.period;
+        if (!period) return english ? "Previous month" : "الشهر السابق";
+        const monthName = new Intl.DateTimeFormat(english ? "en-US" : "ar-EG-u-ca-gregory-nu-latn", { month: "long" })
+            .format(new Date(period.previousYear, period.previousMonth, 1));
+        if (!period.partial) {
+            return english ? `${monthName} (full month)` : `${monthName} (الشهر كامل)`;
+        }
+        if (period.previousDays <= 0) {
+            return english ? `Same period of ${monthName}` : `نفس الفترة من ${monthName}`;
+        }
+        const range = period.previousDays === 1 ? "1" : `1–${period.previousDays}`;
+        return english
+            ? `Same period of ${monthName} (${range})`
+            : `نفس الفترة من ${monthName} (${range})`;
+    }
+
     function buildMonthlyComparison(profileCodes, referenceDate) {
-        const currentBounds = getMonthBounds(
-            referenceDate.getFullYear(),
-            referenceDate.getMonth()
-        );
-
-        const previousDate = new Date(
-            referenceDate.getFullYear(),
-            referenceDate.getMonth() - 1,
-            1
-        );
-
-        const previousBounds = getMonthBounds(
-            previousDate.getFullYear(),
-            previousDate.getMonth()
-        );
+        const period = comparablePeriod(referenceDate);
+        const currentBounds = period.current;
+        const previousBounds = period.previous;
+        const previousDate = new Date(period.previousYear, period.previousMonth, 1);
 
         const codeInvoices = rawInvoiceRows.filter(row =>
             rowBelongsToCodes(row, profileCodes)
@@ -20650,7 +20800,7 @@ window.DashboardProfiles = (() => {
         const currentSales = utils.sumBy(currentInvoices, getInvoiceSales);
         const previousSales = utils.sumBy(previousInvoices, getInvoiceSales);
 
-        // التحصيل الكاش (شهري)
+        // التحصيل الكاش شهري فقط: لو الشهر لسه مخلصش ناخد نسبة الأيام من الشهر السابق
         const pad2 = value => String(value).padStart(2, "0");
         const currentMonthKey = `${referenceDate.getFullYear()}-${pad2(referenceDate.getMonth() + 1)}`;
         const previousMonthKey = `${previousDate.getFullYear()}-${pad2(previousDate.getMonth() + 1)}`;
@@ -20661,7 +20811,10 @@ window.DashboardProfiles = (() => {
             row => utils.toNumber(row.cashAmount)
         );
         const currentCash = cashFor(currentMonthKey);
-        const previousCash = cashFor(previousMonthKey);
+        const previousCashFull = cashFor(previousMonthKey);
+        const previousCash = period.partial
+            ? previousCashFull * (period.previousDays / period.daysInPrevious)
+            : previousCashFull;
 
         const currentCollectionsTotal = utils.sumBy(
             currentCollections,
@@ -20673,7 +20826,11 @@ window.DashboardProfiles = (() => {
             getCollectionAmount
         );
 
+        const currentInvoiceCount = uniqueInvoiceCount(currentInvoices);
+        const previousInvoiceCount = uniqueInvoiceCount(previousInvoices);
+
         return {
+            period,
             sales: {
                 current: currentSales,
                 previous: previousSales,
@@ -20690,14 +20847,15 @@ window.DashboardProfiles = (() => {
             cash: {
                 current: currentCash,
                 previous: previousCash,
+                estimated: period.partial,
                 growth: calculateGrowth(currentCash, previousCash)
             },
             invoiceCount: {
-                current: uniqueInvoiceCount(currentInvoices),
-                previous: uniqueInvoiceCount(previousInvoices),
+                current: currentInvoiceCount,
+                previous: previousInvoiceCount,
                 growth: calculateGrowth(
-                    uniqueInvoiceCount(currentInvoices),
-                    uniqueInvoiceCount(previousInvoices)
+                    currentInvoiceCount,
+                    previousInvoiceCount
                 )
             }
         };
@@ -22273,16 +22431,43 @@ window.DashboardProfiles = (() => {
         const allInvoices = new Set();
         const allCustomers = new Set();
 
+        const asOfDay = getDataAsOfDate();
+        const salesBetween = (from, toExclusive) => utils.sumBy(
+            invoiceRows.filter(row => {
+                if (!rowBelongsToCodes(row, codes)) return false;
+                const date = utils.parseDate(getInvoiceDate(row));
+                return date && !isNaN(date.getTime()) && date >= from && date < toExclusive;
+            }),
+            getInvoiceSales
+        );
+
         list.forEach((week, index) => {
             const previous = index > 0 ? list[index - 1] : null;
             week.share = totalSales ? (week.sales / totalSales) * 100 : null;
-            week.change = previous && previous.sales
-                ? ((week.sales - previous.sales) / Math.abs(previous.sales)) * 100
-                : null;
             // الأسبوع الحالي (لسه مخلصش)
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             week.partial = week.start <= today && today <= week.end;
+
+            let previousSales = previous ? previous.sales : 0;
+            week.comparedDays = 7;
+            // آخر يوم فيه بيانات فعلية (أو النهارده لو أقدم)
+            const lastDay = asOfDay && asOfDay < today ? asOfDay : today;
+            const weekEndDay = new Date(week.end);
+            weekEndDay.setHours(0, 0, 0, 0);
+            if (previous && week.start <= lastDay && lastDay < weekEndDay) {
+                // نقارن نفس عدد الأيام من الأسبوع اللي قبله
+                const days = Math.max(0, Math.min(7, Math.round((lastDay - week.start) / 86400000) + 1));
+                week.comparedDays = days;
+                const from = new Date(previous.start);
+                const to = new Date(previous.start);
+                to.setDate(to.getDate() + days);
+                previousSales = days > 0 ? salesBetween(from, to) : 0;
+                week.previousComparable = previousSales;
+            }
+            week.change = previous && previousSales
+                ? ((week.sales - previousSales) / Math.abs(previousSales)) * 100
+                : null;
         });
 
         invoiceRows
@@ -22350,7 +22535,7 @@ window.DashboardProfiles = (() => {
                         <td>${utils.formatNumber(week.invoices, 0)}</td>
                         <td>${utils.formatNumber(week.customers, 0)}</td>
                         <td>${week.share == null ? "—" : week.share.toFixed(1) + "%"}</td>
-                        <td dir="ltr" class="${changeClass}">${formatWeekChange(week.change)}</td>
+                        <td dir="ltr" class="${changeClass}"${week.comparedDays < 7 ? ` title="${utils.escapeHTML(isArabic ? `مقارنة بأول ${week.comparedDays} أيام من الأسبوع السابق` : `vs first ${week.comparedDays} days of previous week`)}"` : ""}>${formatWeekChange(week.change)}${week.comparedDays < 7 && week.change != null ? `<small class="wk-lfl">${utils.escapeHTML(isArabic ? `نفس ${week.comparedDays} أيام` : `same ${week.comparedDays} days`)}</small>` : ""}</td>
                     </tr>
                 `;
             }).join("") +
@@ -22392,7 +22577,7 @@ window.DashboardProfiles = (() => {
         const esc = utils.escapeHTML;
         const n0 = value => new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Math.round(utils.toNumber(value)));
         const pct = value => (value == null || !isFinite(value) ? "—" : `${Number(value).toFixed(1)}%`);
-        const hasCash = !document.body.classList.contains("cash-disabled");
+        const hasCash = !document.body.classList.contains("cash-disabled") && (window.DashboardCashAll || []).length > 0;
 
         const target = utils.toNumber(profile.target);
         const sales = utils.toNumber(profile.sales);
@@ -22491,7 +22676,7 @@ window.DashboardProfiles = (() => {
                 </div>
                 <div class="ps-kpis ${hasCash ? "" : "is-three"}">
                     ${kpi(T("تحصيل الكرديت", "Credit collections"), n0(credit),
-                        growth == null || !isFinite(growth) || !(utils.toNumber(profile.monthly?.collections?.previous) > 0) ? "" : `<em class="${growth >= 0 ? "ps-up" : "ps-down"}">${growth >= 0 ? "+" : ""}${Math.round(growth)}% ${esc(T("عن الشهر السابق", "vs previous month"))}</em>`)}
+                        growth == null || !isFinite(growth) || !(utils.toNumber(profile.monthly?.collections?.previous) > 0) ? "" : `<em class="${growth >= 0 ? "ps-up" : "ps-down"}">${growth >= 0 ? "+" : ""}${Math.round(growth)}% ${esc(profile.monthly?.period?.partial ? T("عن نفس الفترة من الشهر السابق", "vs same period last month") : T("عن الشهر السابق", "vs previous month"))}</em>`)}
                     ${hasCash ? kpi(T("التحصيل الكاش", "Cash collections"), n0(cash), esc(T(`إجمالي التحصيل ${n0(credit + cash)}`, `Total collected ${n0(credit + cash)}`))) : ""}
                     ${kpi(T("المستحق (لم يتأخر)", "Due (not overdue)"), n0(due), esc(T(`من إجمالي مديونية ${n0(receivables)}`, `of ${n0(receivables)} receivables`)))}
                     ${kpi(T("المتأخرات", "Overdue"), n0(overdue), overdueShare == null ? "" : esc(T(`${Math.round(overdueShare)}% من المديونية متأخرة`, `${Math.round(overdueShare)}% of receivables`)), overdue > 0 ? "is-bad" : "")}
@@ -22685,6 +22870,16 @@ window.DashboardProfiles = (() => {
 
     function renderMonthlyComparison(monthly) {
         if (!monthly) return;
+
+        const english = utils.getLanguage() === "en";
+        const prevLabel = comparisonLabel(monthly, english);
+        document.querySelectorAll(".js-prev-period-label").forEach(element => {
+            element.textContent = prevLabel;
+        });
+        const cashLabel = utils.byId("profileCashPreviousValue")?.closest(".comparison-card")?.querySelector(".js-prev-period-label");
+        if (cashLabel && monthly.cash && monthly.cash.estimated) {
+            cashLabel.textContent = `${prevLabel} ${english ? "(est. by days)" : "(تقديري بالأيام)"}`;
+        }
 
         utils.setText(
             "profileSalesCurrentValue",
@@ -23350,23 +23545,23 @@ window.DashboardProfiles = (() => {
                     <div class="comparison-box">
                         <span>${L("Sales", "المبيعات")}</span>
                         <strong>${utils.formatCurrency(monthly.sales.current)}</strong>
-                        <small>${L("Previous month", "الشهر السابق")}: ${utils.formatCurrency(monthly.sales.previous)} (${formatGrowth(monthly.sales.growth)})</small>
+                        <small>${utils.escapeHTML(L(comparisonLabel(monthly, true), comparisonLabel(monthly, false)))}: ${utils.formatCurrency(monthly.sales.previous)} (${formatGrowth(monthly.sales.growth)})</small>
                     </div>
                     <div class="comparison-box">
                         <span>${L("Credit Collections", "تحصيل الكرديت")}</span>
                         <strong>${utils.formatCurrency(monthly.collections.current)}</strong>
-                        <small>${L("Previous month", "الشهر السابق")}: ${utils.formatCurrency(monthly.collections.previous)} (${formatGrowth(monthly.collections.growth)})</small>
+                        <small>${utils.escapeHTML(L(comparisonLabel(monthly, true), comparisonLabel(monthly, false)))}: ${utils.formatCurrency(monthly.collections.previous)} (${formatGrowth(monthly.collections.growth)})</small>
                     </div>
                     ${monthly.cash && !document.body.classList.contains("cash-disabled") ? `
                     <div class="comparison-box">
                         <span>${L("Cash Collections", "التحصيل الكاش")}</span>
                         <strong>${utils.formatCurrency(monthly.cash.current)}</strong>
-                        <small>${L("Previous month", "الشهر السابق")}: ${utils.formatCurrency(monthly.cash.previous)} (${formatGrowth(monthly.cash.growth)})</small>
+                        <small>${utils.escapeHTML(L(comparisonLabel(monthly, true) + (monthly.cash && monthly.cash.estimated ? " (est. by days)" : ""), comparisonLabel(monthly, false) + (monthly.cash && monthly.cash.estimated ? " (تقديري بالأيام)" : "")))}: ${utils.formatCurrency(monthly.cash.previous)} (${formatGrowth(monthly.cash.growth)})</small>
                     </div>` : ""}
                     <div class="comparison-box">
                         <span>${L("Invoice Count", "عدد الفواتير")}</span>
                         <strong>${utils.formatNumber(monthly.invoiceCount.current, 0)}</strong>
-                        <small>${L("Previous month", "الشهر السابق")}: ${utils.formatNumber(monthly.invoiceCount.previous, 0)} (${formatGrowth(monthly.invoiceCount.growth)})</small>
+                        <small>${utils.escapeHTML(L(comparisonLabel(monthly, true), comparisonLabel(monthly, false)))}: ${utils.formatNumber(monthly.invoiceCount.previous, 0)} (${formatGrowth(monthly.invoiceCount.growth)})</small>
                     </div>
                 </div>
 
@@ -23408,7 +23603,7 @@ window.DashboardProfiles = (() => {
                                                 <td>${utils.formatNumber(week.invoices, 0)}</td>
                                                 <td>${utils.formatNumber(week.customers, 0)}</td>
                                                 <td>${week.share == null ? "—" : week.share.toFixed(1) + "%"}</td>
-                                                <td>${formatWeekChange(week.change)}</td>
+                                                <td>${formatWeekChange(week.change)}${week.comparedDays < 7 && week.change != null ? `<br><small style="color:#64748b">${L(`same ${week.comparedDays} days`, `نفس ${week.comparedDays} أيام`)}</small>` : ""}</td>
                                             </tr>
                                         `).join("")}
                                         <tr>
@@ -38070,10 +38265,134 @@ window.DashboardApp = (() => {
         );
 
         renderCashCollectionsTable(cashCollections);
+        renderDueByCode(dueOverdue);
 
         return state.filteredData;
     }
 
+
+    /* =====================================================
+       المديونية حسب الكود (صفحة المستحقات والمتأخرات)
+    ===================================================== */
+
+    let lastDueByCodeRows = [];
+
+    function renderDueByCode(rows) {
+        lastDueByCodeRows = Array.isArray(rows) ? rows : [];
+        const box = utils.byId("dueByCodeList");
+        if (!box) return;
+
+        const en = utils.getLanguage() === "en";
+        const T = (ar, eng) => (en ? eng : ar);
+        const esc = utils.escapeHTML;
+        const n0 = value => new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Math.round(value));
+        const pct = value => `${value.toFixed(1)}%`;
+
+        const codes = new Map();
+        lastDueByCodeRows.forEach(row => {
+            const amount = utils.toNumber(row.invoiceBalance);
+            if (!amount) return;
+            const code = String(row.originalSalesmanCode || row.salesmanCode || "").trim() || "—";
+            if (!codes.has(code)) {
+                codes.set(code, {
+                    code,
+                    name: String(row.salesmanName || "").trim(),
+                    branch: String(row.branch || row.sheetBranch || "").trim(),
+                    overdue: 0,
+                    due: 0,
+                    overdueCustomers: new Set(),
+                    maxDays: 0
+                });
+            }
+            const item = codes.get(code);
+            if (!item.name && row.salesmanName) item.name = String(row.salesmanName).trim();
+            if (String(row.status || "").toLowerCase() === "overdue") {
+                item.overdue += amount;
+                item.overdueCustomers.add(String(row.customerCode || row.customerName || ""));
+                item.maxDays = Math.max(item.maxDays, utils.toNumber(row.overdueDays));
+            } else {
+                item.due += amount;
+            }
+        });
+
+        /* Black list (998): يظهر برقمه بس، وخارج النسب */
+        const isBlacklist = item => item.code === "998" || /black\s*list|blacklist|القائمة السوداء/i.test(item.name);
+        const all = [...codes.values()].filter(item => item.overdue || item.due);
+        const blacklist = all.filter(isBlacklist);
+        const list = all.filter(item => !isBlacklist(item));
+        const totalOverdue = list.reduce((sum, item) => sum + item.overdue, 0);
+        const totalDue = list.reduce((sum, item) => sum + item.due, 0);
+        const total = totalOverdue + totalDue;
+
+        const sortKey = utils.byId("dueByCodeSort")?.value || "overdue";
+        list.sort((a, b) => sortKey === "due"
+            ? b.due - a.due
+            : sortKey === "total"
+                ? (b.overdue + b.due) - (a.overdue + a.due)
+                : b.overdue - a.overdue || b.due - a.due);
+
+        if (!list.length && !blacklist.length) {
+            box.innerHTML = `<p class="dbc-empty">${esc(utils.t("common.noData", "لا توجد بيانات متاحة"))}</p>`;
+            return;
+        }
+
+        const maxOverdue = Math.max(...list.map(item => item.overdue), 1);
+        const maxDue = Math.max(...list.map(item => item.due), 1);
+
+        const meter = (value, max, share, kind) => `
+            <div class="dbc-meter ${kind}">
+                <div class="dbc-track"><i style="width:${Math.min(Math.max(value / max * 100, value > 0 ? 1.5 : 0), 100).toFixed(1)}%"></i></div>
+                <div class="dbc-values"><strong>${n0(value)}</strong><span>${share == null ? "—" : pct(share)}</span></div>
+            </div>`;
+
+        const blacklistRows = blacklist.map(item => `
+                <div class="dbc-row dbc-blacklist">
+                    <div class="dbc-who">
+                        <strong><bdi dir="ltr">${esc(item.code)}</bdi> ${item.name ? `• ${esc(item.name)}` : ""}</strong>
+                        <small>${esc(T("خارج النسب", "Excluded from shares"))}${item.overdue ? ` • ${esc(T(`${item.overdueCustomers.size} عميل • أقصى ${n0(item.maxDays)} يوم`, `${item.overdueCustomers.size} customers • max ${n0(item.maxDays)} days`))}` : ""}</small>
+                    </div>
+                    ${meter(item.overdue, maxOverdue, null, "is-overdue")}
+                    ${meter(item.due, maxDue, null, "is-due")}
+                    <div class="dbc-total"><strong>${n0(item.overdue + item.due)}</strong><span>—</span></div>
+                </div>`).join("");
+
+        box.innerHTML = `
+            <div class="dbc-row dbc-head">
+                <span>${esc(T("الكود / المندوب", "Code / salesman"))}</span>
+                <span>${esc(T("المتأخرات • نسبتها من إجمالي المتأخرات", "Overdue • share of total overdue"))}</span>
+                <span>${esc(T("المستحقات • نسبتها من إجمالي المستحقات", "Due • share of total due"))}</span>
+                <span class="dbc-num">${esc(T("الإجمالي • من كل المديونية", "Total • of all receivables"))}</span>
+            </div>
+            ${list.map(item => {
+                const itemTotal = item.overdue + item.due;
+                const overdueOfOwn = itemTotal ? item.overdue / itemTotal * 100 : 0;
+                return `
+                <div class="dbc-row">
+                    <div class="dbc-who">
+                        <strong><bdi dir="ltr">${esc(item.code)}</bdi> ${item.name ? `• ${esc(item.name)}` : ""}</strong>
+                        <small>${esc(item.branch || "—")}${item.overdue ? ` • ${esc(T(`${item.overdueCustomers.size} عميل متأخر • أقصى ${n0(item.maxDays)} يوم`, `${item.overdueCustomers.size} overdue customers • max ${n0(item.maxDays)} days`))}` : ""}</small>
+                    </div>
+                    ${meter(item.overdue, maxOverdue, totalOverdue ? item.overdue / totalOverdue * 100 : 0, "is-overdue")}
+                    ${meter(item.due, maxDue, totalDue ? item.due / totalDue * 100 : 0, "is-due")}
+                    <div class="dbc-total">
+                        <strong>${n0(itemTotal)}</strong>
+                        <span>${pct(total ? itemTotal / total * 100 : 0)}</span>
+                        <small class="${overdueOfOwn >= 50 ? "is-bad" : ""}">${esc(T(`${Math.round(overdueOfOwn)}% منها متأخر`, `${Math.round(overdueOfOwn)}% overdue`))}</small>
+                    </div>
+                </div>`;
+            }).join("")}
+            <div class="dbc-row dbc-foot">
+                <strong>${esc(utils.t("common.total", "الإجمالي"))} (${n0(list.length)} ${esc(T("كود", "codes"))})${blacklist.length ? `<small class="dbc-note">${esc(T("بدون Black list", "Excluding Black list"))}</small>` : ""}</strong>
+                <div class="dbc-values"><strong>${n0(totalOverdue)}</strong><span>100%</span></div>
+                <div class="dbc-values"><strong>${n0(totalDue)}</strong><span>100%</span></div>
+                <div class="dbc-total"><strong>${n0(total)}</strong><span>100%</span><small class="${total && totalOverdue / total >= 0.5 ? "is-bad" : ""}">${esc(T(`${Math.round(total ? totalOverdue / total * 100 : 0)}% منها متأخر`, `${Math.round(total ? totalOverdue / total * 100 : 0)}% overdue`))}</small></div>
+            </div>
+            ${blacklistRows}`;
+    }
+
+    document.addEventListener("change", event => {
+        if (event.target?.id === "dueByCodeSort") renderDueByCode(lastDueByCodeRows);
+    });
 
     /* =====================================================
        جدول التحصيل الكاش (صفحة التحصيلات)
@@ -38804,7 +39123,13 @@ window.DashboardApp = (() => {
 
                 updatedAt:
                     response.updatedAt ||
-                    ""
+                    "",
+
+                dataAsOf:
+                    response.dataAsOf || "",
+
+                sheetUpdatedAt:
+                    response.sheetUpdatedAt || ""
             };
 
             /* لو مفيش شيت Cash collections، كروت الكاش تختفي */
@@ -38833,25 +39158,61 @@ window.DashboardApp = (() => {
        آخر تحديث
     ===================================================== */
 
+    /* آخر تحديث: تاريخ آخر بيانات فعلية + وقت تحديث الشيت */
+    function lastUpdateParts(value) {
+        const en = utils.getLanguage() === "en";
+        const pad = n => String(n).padStart(2, "0");
+        const parse = text => {
+            const match = String(text || "").match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/);
+            return match ? { y: match[1], m: match[2], d: match[3], hh: match[4], mm: match[5] } : null;
+        };
+        const timeText = p => {
+            if (!p || p.hh == null) return "";
+            let hour = Number(p.hh);
+            const suffix = en ? (hour >= 12 ? "PM" : "AM") : (hour >= 12 ? "م" : "ص");
+            hour = hour % 12 || 12;
+            return `${pad(hour)}:${p.mm} ${suffix}`;
+        };
+
+        const raw = state.rawData || {};
+        const dataDay = parse(raw.dataAsOf);
+        const updated = parse(raw.sheetUpdatedAt) || parse(raw.updatedAt || value);
+
+        if (!dataDay && !updated) {
+            const fallback = value ? utils.formatDateTime(value) : utils.formatDateTime(new Date());
+            return { text: fallback, title: fallback };
+        }
+
+        const dateText = dataDay
+            ? `${dataDay.d}/${dataDay.m}/${dataDay.y}`
+            : `${updated.d}/${updated.m}/${updated.y}`;
+        const sameDay = dataDay && updated && dataDay.y === updated.y && dataDay.m === updated.m && dataDay.d === updated.d;
+        const updateText = updated
+            ? (sameDay || !dataDay ? timeText(updated) : `${updated.d}/${updated.m} ${timeText(updated)}`)
+            : "";
+
+        return {
+            text: updateText ? `${dateText} • ${updateText}` : dateText,
+            title: en
+                ? `Data up to ${dateText}${updated ? ` • Sheet updated ${updated.d}/${updated.m}/${updated.y} ${timeText(updated)}` : ""}`
+                : `البيانات حتى ${dateText}${updated ? ` • آخر تحديث للشيت ${updated.d}/${updated.m}/${updated.y} ${timeText(updated)}` : ""}`
+        };
+    }
+
     function updateLastUpdate(value) {
-        const formatted =
-            value
-                ? utils.formatDateTime(
-                      value
-                  )
-                : utils.formatDateTime(
-                      new Date()
-                  );
+        const parts = lastUpdateParts(value);
 
         [
             "lastUpdateText",
             "lastUpdated",
             "updatedAt"
         ].forEach(id => {
-            utils.setText(
-                id,
-                formatted
-            );
+            const element = utils.byId(id);
+            if (element) {
+                element.textContent = parts.text;
+                element.title = parts.title;
+                element.setAttribute("dir", "ltr");
+            }
         });
 
         utils
@@ -38860,9 +39221,11 @@ window.DashboardApp = (() => {
             )
             .forEach(element => {
                 element.textContent =
-                    formatted;
+                    parts.text;
             });
     }
+
+    window.__renderLastUpdate = () => updateLastUpdate(state.rawData?.updatedAt);
 
 
     /* =====================================================
