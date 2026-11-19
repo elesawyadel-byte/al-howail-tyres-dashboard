@@ -2684,6 +2684,86 @@ body.dark-mode input[type="date"] {
    Print
 ========================================================= */
 
+/* ===== المقارنات التاريخية ===== */
+.hx-root { display: grid; gap: 18px; min-width: 0; }
+.hx-root > *, .hx-grid-2 > * { min-width: 0; }
+.hx-root .table-wrapper { overflow-x: auto; max-width: 100%; }
+.global-filters.hx-hidden { display: none !important; }
+#historyPage { min-width: 0; max-width: 100%; overflow-x: hidden; }
+.hx-block { padding: 18px; }
+.hx-top { display: grid; gap: 10px; }
+.hx-title { font-size: 18px; color: var(--primary-dark); margin: 0; }
+body.dark-mode .hx-title { color: var(--primary); }
+.hx-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.hx-controls label { display: grid; gap: 4px; font-size: 13px; color: var(--text-secondary); min-width: 220px; flex: 1 1 220px; }
+.hx-controls select { padding: 9px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-primary); font: inherit; }
+.hx-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.hx-note { font-size: 12px; color: var(--text-secondary); margin: 6px 0 0; }
+.hx-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.hx-head h3 { margin: 0; font-size: 16px; }
+.hx-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.hx-card { padding: 16px; display: grid; gap: 6px; }
+.hx-card span { font-size: 13px; color: var(--text-secondary); }
+.hx-card strong { font-size: 24px; color: var(--text-primary); }
+.hx-card small { font-size: 12px; color: var(--text-secondary); }
+.hx-up { color: var(--success) !important; }
+.hx-down { color: var(--danger) !important; }
+.hx-muted { color: var(--text-muted); }
+.hx-root table.hx-table { width: 100%; min-width: 0; border-collapse: collapse; font-size: 13px; }
+.hx-table td.hx-wrap { white-space: normal; min-width: 160px; }
+.hx-table th, .hx-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: start; white-space: nowrap; }
+.hx-table th { background: var(--surface-soft); color: var(--text-secondary); font-weight: 600; position: sticky; top: 0; }
+.hx-table td.n, .hx-table th.n { text-align: end; font-variant-numeric: tabular-nums; }
+.hx-table th.hx-yh { text-align: center; border-inline-start: 1px solid var(--border); }
+.hx-table td.hx-cur { font-weight: 700; background: rgba(23, 107, 135, 0.06); }
+.hx-table tr.hx-total td { font-weight: 700; border-top: 2px solid var(--border-strong); }
+.hx-table tr.hx-sep td { background: var(--surface-soft); font-weight: 700; color: var(--primary-dark); }
+body.dark-mode .hx-table tr.hx-sep td { color: var(--primary); }
+.hx-rank tbody tr[data-scope] { cursor: pointer; }
+.hx-rank tbody tr[data-scope]:hover td { background: var(--surface-hover); }
+.hx-rank tr.hx-branch-row td { font-weight: 600; }
+.hx-rank tr.hx-black-row td { color: var(--text-secondary); }
+.hx-sort { cursor: pointer; user-select: none; }
+.hx-heat td.n { color: var(--text-primary); }
+.hx-item { font-size: 12px; }
+.hx-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; background: var(--surface-soft); color: var(--text-secondary); }
+.hx-badge.up { background: var(--success-light); color: var(--success); }
+.hx-badge.down { background: var(--danger-light); color: var(--danger); }
+.hx-grid-2 { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.hx-grid-eq { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.hx-chart { height: 320px; margin-bottom: 14px; }
+.hx-chart-sm { height: 260px; }
+.hx-insights ul { list-style: none; display: grid; gap: 8px; padding: 0; margin: 0; }
+.hx-insights li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; border-radius: var(--radius-sm); background: var(--surface-soft); line-height: 1.7; }
+.hx-insights li i { margin-top: 5px; }
+.hx-insights li.hx-good i { color: var(--success); }
+.hx-insights li.hx-bad i { color: var(--danger); }
+.hx-insights li.hx-info i { color: var(--info); }
+.hx-insights h4 { margin: 14px 0 6px; font-size: 14px; }
+.hx-insights ol { margin: 0; padding-inline-start: 22px; display: grid; gap: 6px; line-height: 1.7; }
+.hx-pv { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.hx-pv div { display: grid; gap: 4px; padding: 12px; border-radius: var(--radius-sm); background: var(--surface-soft); }
+.hx-pv span, .hx-pv small { font-size: 12px; color: var(--text-secondary); }
+.hx-pv strong { font-size: 20px; }
+.hx-center { text-align: center; display: grid; gap: 12px; justify-items: center; padding: 40px 18px; }
+@media (max-width: 900px) {
+    .hx-grid-2 { grid-template-columns: 1fr; }
+    .hx-controls label { min-width: 100%; }
+}
+@media print {
+    .hx-controls, .hx-actions { display: none !important; }
+    .hx-block, .hx-card { break-inside: avoid; box-shadow: none !important; }
+    .hx-table th { position: static; }
+    .hx-chart, .hx-chart-sm { height: 260px; }
+    .hx-table td, .hx-table th { white-space: normal; }
+}
+
+.ct-badge { display: inline-block; margin-inline-start: 6px; padding: 1px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 700; vertical-align: middle; }
+.ct-badge.ct-credit { background: rgba(37, 99, 235, 0.12); color: #2563eb; }
+.ct-badge.ct-cash { background: rgba(22, 163, 74, 0.12); color: #16a34a; }
+.ct-badge.ct-both { background: rgba(217, 119, 6, 0.14); color: #d97706; }
+.ct-split { display: block; font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
 @media print {
     body {
         background: #ffffff !important;
@@ -5246,6 +5326,18 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                 <button
                     class="navigation-item"
                     type="button"
+                    data-page="history"
+                >
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span data-i18n="navigation.history">
+                        المقارنات التاريخية
+                    </span>
+                </button>
+
+                <button
+                    class="navigation-item"
+                    type="button"
                     data-page="training"
                 >
                     <i class="fa-solid fa-graduation-cap"></i>
@@ -5772,6 +5864,31 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                             </strong>
 
                             <small id="invoiceCountNote">
+                                --
+                            </small>
+
+                        </article>
+
+                        <article class="kpi-card">
+
+                            <div class="kpi-card-header">
+                                <span data-i18n="dashboard.buyingCustomers">
+                                    العملاء المشترين
+                                </span>
+
+                                <div class="kpi-icon">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                            </div>
+
+                            <strong
+                                class="kpi-value"
+                                id="buyingCustomersKpi"
+                            >
+                                0
+                            </strong>
+
+                            <small id="buyingCustomersNote">
                                 --
                             </small>
 
@@ -7585,6 +7702,18 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                             <button
                                 class="report-card"
                                 type="button"
+                                data-report="history"
+                            >
+                                <i class="fa-solid fa-chart-line"></i>
+
+                                <span data-i18n="reports.historyReport">
+                                    تقرير المقارنات التاريخية (مجمع / فرع)
+                                </span>
+                            </button>
+
+                            <button
+                                class="report-card"
+                                type="button"
                                 data-report="target"
                             >
                                 <i class="fa-solid fa-bullseye"></i>
@@ -7734,6 +7863,14 @@ body.dark-mode .ps-hero { background: #0a2536; border: 1px solid var(--border); 
                 <!-- =====================================
                      Training
                 ====================================== -->
+
+                <section
+                    class="page-section hidden"
+                    id="historyPage"
+                    data-page-section="history"
+                >
+                    <div id="historyRoot" class="hx-root"></div>
+                </section>
 
                 <section
                     class="page-section hidden"
@@ -8150,7 +8287,13 @@ const TRANSLATIONS = {
             reports: "التقارير",
             presentation: "العرض التقديمي",
             training: "التدريب",
+            history: "المقارنات التاريخية",
             settings: "الإعدادات"
+        },
+
+        history: {
+            title: "المقارنات التاريخية",
+            subtitle: "مقارنة كل كود وفرع من 2023 لحد النهارده بنفس الفترة من كل سنة"
         },
 
         forecast: {
@@ -8213,6 +8356,7 @@ const TRANSLATIONS = {
             averageInvoice: "متوسط الفاتورة",
             invoiceCount: "عدد الفواتير",
             activeCustomers: "العملاء النشطون",
+            buyingCustomers: "العملاء المشترين",
             newCustomers: "العملاء الجدد",
             reactivatedCustomers: "العملاء المعاد تنشيطهم",
             selectedPeriod: "خلال الفترة المختارة",
@@ -8460,6 +8604,7 @@ const TRANSLATIONS = {
             collectionsReport: "تقرير تحصيل الكرديت",
             cashReport: "تقرير التحصيل الكاش",
             receivablesReport: "تقرير المستحقات والمتأخرات (مجمع)",
+            historyReport: "تقرير المقارنات التاريخية (مجمع / فرع)",
             overdueReport: "تقرير المتأخرات",
             targetReport: "تقرير تحقيق الأهداف",
             salesmanReport: "تقرير المندوب",
@@ -8590,7 +8735,13 @@ const TRANSLATIONS = {
             reports: "Reports",
             presentation: "Presentation",
             training: "Training",
+            history: "Historical comparisons",
             settings: "Settings"
+        },
+
+        history: {
+            title: "Historical comparisons",
+            subtitle: "Every code and branch from 2023 to date, same period each year"
         },
 
         forecast: {
@@ -8653,6 +8804,7 @@ const TRANSLATIONS = {
             averageInvoice: "Average Invoice",
             invoiceCount: "Invoice Count",
             activeCustomers: "Active Customers",
+            buyingCustomers: "Buying customers",
             newCustomers: "New Customers",
             reactivatedCustomers: "Reactivated Customers",
             selectedPeriod: "During selected period",
@@ -8900,6 +9052,7 @@ const TRANSLATIONS = {
             collectionsReport: "Credit Collections Report",
             cashReport: "Cash Collections Report",
             receivablesReport: "Due & Overdue Report (Consolidated)",
+            historyReport: "Historical Comparison Report (Consolidated / Branch)",
             overdueReport: "Overdue Report",
             targetReport: "Target Achievement Report",
             salesmanReport: "Salesman Report",
@@ -13028,6 +13181,9 @@ window.DashboardDashboard = (() => {
             activeCustomerCount:
                 activeCustomers.size,
 
+            customerSplit:
+                window.DashboardCustomerType?.splitRows(invoices) || null,
+
             overdueCustomerCount:
                 overdueCustomers.size
         };
@@ -13150,7 +13306,10 @@ window.DashboardDashboard = (() => {
                 utils.toNumber(
                     serverSummary.overdueCustomerCount ??
                     fallback.overdueCustomerCount
-                )
+                ),
+
+            customerSplit:
+                fallback.customerSplit
         };
     }
 
@@ -13380,6 +13539,12 @@ window.DashboardDashboard = (() => {
                 summary.invoiceCount
             )
         );
+
+        {
+            const split = summary.customerSplit;
+            utils.setText("buyingCustomersKpi", utils.formatNumber(split ? split.total : 0));
+            utils.setText("buyingCustomersNote", split ? window.DashboardCustomerType.text(split) : "--");
+        }
 
         utils.setText(
             "averageInvoiceKpi",
@@ -21188,6 +21353,9 @@ window.DashboardProfiles = (() => {
                 customersList,
 
             purchasingCustomerCount,
+
+            customerSplit:
+                window.DashboardCustomerType?.splitRows(invoices) || null,
             purchasingCustomerPercentage,
 
             monthly:
@@ -22070,7 +22238,7 @@ window.DashboardProfiles = (() => {
                     ${utils.escapeHTML(
                         customer.customerName ||
                             "--"
-                    )}
+                    )}${window.DashboardCustomerType ? (forPrint ? ` <small>(${window.DashboardCustomerType.label(customer.customerCode || customer.customerName, undefined, customer.customerName)})</small>` : window.DashboardCustomerType.badge(customer.customerCode || customer.customerName, customer.customerName)) : ""}
                 </td>
 
                 <td>
@@ -22687,6 +22855,9 @@ window.DashboardProfiles = (() => {
             <div class="ps-activity">
                 ${stat(T("الفواتير", "Invoices"), n0(profile.invoiceCount))}
                 ${stat(T("عملاء اشتروا", "Buying customers"), `${n0(purchasing)} <small>/ ${n0(customerCount)}</small>`)}
+                ${profile.customerSplit ? stat(T("عملاء كرديت", "Credit customers"), n0(profile.customerSplit.credit)) : ""}
+                ${profile.customerSplit ? stat(T("عملاء كاش", "Cash customers"), n0(profile.customerSplit.cash)) : ""}
+                ${profile.customerSplit ? stat(T("كرديت + كاش", "Both"), n0(profile.customerSplit.both)) : ""}
                 ${stat(T("نسبة الشراء", "Buying rate"), pct(profile.purchasingCustomerPercentage), utils.toNumber(profile.purchasingCustomerPercentage) < 40 ? "ps-warn" : "")}
                 ${visits ? stat(T("الزيارات", "Visits"), n0(visits.totalVisits)) : ""}
                 ${visits ? stat(T("تحويل الزيارات", "Visit conversion"), pct(visits.conversion)) : ""}
@@ -22969,6 +23140,9 @@ window.DashboardProfiles = (() => {
 
                 "Customer Name":
                     customer.customerName,
+
+                "Customer Type":
+                    window.DashboardCustomerType?.label(customer.customerCode || customer.customerName, false, customer.customerName) || "",
 
                 "Last Purchase":
                     utils.formatDate(
@@ -29135,6 +29309,7 @@ window.DashboardReports = (() => {
                 "Invoice Date": formatDate(invoiceDate(row)),
                 "Customer Code": customerCode(row),
                 "Customer Name": customerName(row),
+                "Customer Type": window.DashboardCustomerType?.label(customerCode(row) || customerName(row), utils.getLanguage?.() !== "en", customerName(row)) || "",
                 "Salesman Code": canonicalSalesman(row).code,
                 "Salesman Name": canonicalSalesman(row).name,
                 "Branch": canonicalSalesman(row).branch || branch(row),
@@ -29653,6 +29828,16 @@ window.DashboardReports = (() => {
             return values.size;
         }
 
+        function customerTypeCard() {
+            const split = report?.type === "sales"
+                ? window.DashboardCustomerType?.splitRows(currentData.invoices)
+                : window.DashboardCustomerType?.splitKeys(rows.map(row => row["Customer Code"] || row["Customer Name"]));
+            return {
+                label: utils.getLanguage?.() === "en" ? "Credit / cash customers" : "عملاء كرديت / كاش",
+                value: split ? window.DashboardCustomerType.text(split) : "--"
+            };
+        }
+
         const recordsCard = {
             label: utils.t("common.records", "عدد السجلات"),
             value: utils.formatNumber(rows.length)
@@ -29669,6 +29854,7 @@ window.DashboardReports = (() => {
                     label: utils.t("reports.customersCount", "عدد العملاء"),
                     value: utils.formatNumber(uniqueCount("Customer Code"))
                 },
+                customerTypeCard(),
                 {
                     label: utils.t("reports.salesmenCount", "عدد المندوبين"),
                     value: utils.formatNumber(uniqueCount("Salesman Code"))
@@ -29702,6 +29888,7 @@ window.DashboardReports = (() => {
                     label: utils.t("reports.customersCount", "عدد العملاء"),
                     value: utils.formatNumber(uniqueCount("Customer Code"))
                 },
+                customerTypeCard(),
                 {
                     label: utils.t("reports.salesmenCount", "عدد المندوبين"),
                     value: utils.formatNumber(uniqueCount("Salesman Code"))
@@ -29730,7 +29917,8 @@ window.DashboardReports = (() => {
                 {
                     label: utils.t("reports.customersCount", "عدد العملاء"),
                     value: utils.formatNumber(uniqueCount("Customer Code"))
-                }
+                },
+                customerTypeCard()
             ];
         }
 
@@ -30279,6 +30467,12 @@ window.DashboardReports = (() => {
         /* التقرير الشهري */
         if (type === "monthly" && window.DashboardMonthlyReport) {
             window.DashboardMonthlyReport.open();
+            return true;
+        }
+
+        /* تقرير المقارنات التاريخية: مجمع / فرع / الكل */
+        if (type === "history" && window.DashboardHistory) {
+            window.DashboardHistory.openReport();
             return true;
         }
 
@@ -31097,6 +31291,8 @@ window.DashboardSalesIntelligence = (() => {
                         .customerCodes
                         .add(customerCode);
                 }
+
+                window.DashboardCustomerType?.track(branchData, row);
             }
         );
 
@@ -31508,6 +31704,10 @@ window.DashboardSalesIntelligence = (() => {
                             ${escapeHTML(utils.t("dashboard.activeCustomers", "العملاء"))}
                             <strong>${escapeHTML(utils.formatNumber(branch.customerCount))}</strong>
                         </span>
+                        ${window.DashboardCustomerType && branch.customerCodes ? `<span>
+                            <i class="fa-solid fa-credit-card"></i>
+                            ${escapeHTML(window.DashboardCustomerType.text(window.DashboardCustomerType.splitTracked(branch)))}
+                        </span>` : ""}
                         <span>
                             <i class="fa-solid fa-receipt"></i>
                             ${escapeHTML(utils.t("dashboard.invoiceCount", "الفواتير"))}
@@ -31926,6 +32126,7 @@ window.DashboardPresentation = (() => {
             notDueValue: "غير مستحق بعد: {value}",
             invoices: "عدد الفواتير",
             activeCustomers: "العملاء النشطون",
+            buyingCustomers: "العملاء المشترين",
             newCustomers: "عملاء جدد",
             reactivated: "عملاء معاد تنشيطهم",
             quantity: "الكمية المباعة",
@@ -32479,6 +32680,7 @@ window.DashboardPresentation = (() => {
 
                 if (invoiceKey) aggregate.invoiceSet.add(invoiceKey);
                 if (customerKey) aggregate.customerSet.add(customerKey);
+                window.DashboardCustomerType?.track(aggregate, row);
 
                 addKeyed(aggregate.customerSales, customerKey, clean(row.customerName), amount, quantity);
                 addKeyed(aggregate.productSales, productKey, productLabel, amount, quantity);
@@ -32780,6 +32982,16 @@ window.DashboardPresentation = (() => {
         const stats = [
             [tx("invoices"), fmtInt(company.invoiceSet.size)],
             [tx("activeCustomers"), fmtInt(company.customerSet.size)],
+            ...(window.DashboardCustomerType
+                ? (() => {
+                      const split = window.DashboardCustomerType.splitTracked(company);
+                      return [
+                          [language() === "ar" ? "عملاء كرديت" : "Credit customers", fmtInt(split.credit)],
+                          [language() === "ar" ? "عملاء كاش" : "Cash customers", fmtInt(split.cash)],
+                          [language() === "ar" ? "كرديت + كاش" : "Both", fmtInt(split.both)]
+                      ];
+                  })()
+                : []),
             [tx("newCustomers"), fmtInt(company.newCustomers)],
             [tx("reactivated"), fmtInt(company.reactivated)],
             ...(model.hasVisits
@@ -33014,7 +33226,15 @@ window.DashboardPresentation = (() => {
             subtitle:
                 tx("branchRank", { rank, total: model.branches.length }) +
                 (language() === "ar" ? "، " : ", ") +
-                tx("branchCustomers", { new: fmtInt(branch.newCustomers), re: fmtInt(branch.reactivated) }),
+                tx("branchCustomers", { new: fmtInt(branch.newCustomers), re: fmtInt(branch.reactivated) }) +
+                (window.DashboardCustomerType && branch.customerSet
+                    ? (language() === "ar" ? "، " : ", ") +
+                      (language() === "ar" ? `اشترى ${fmtInt(branch.customerSet.size)} عميل (` : `${fmtInt(branch.customerSet.size)} buying customers (`) +
+                      (() => {
+                          const split = window.DashboardCustomerType.splitTracked(branch);
+                          return window.DashboardCustomerType.text(split, language() === "ar", fmtInt);
+                      })() + ")"
+                    : ""),
             body: `
                 <div class="pz-kpis is-compact" style="--cols:6">
                     ${kpi(tx("sales"), fmtCompact(branch.sales), "SAR " + fmtInt(branch.sales))}
@@ -33993,6 +34213,9 @@ window.DashboardBranchReport = (() => {
             invoices: "عدد الفواتير",
             avgInvoice: "متوسط الفاتورة",
             activeCustomers: "العملاء المشترين",
+            creditCustomers: "منهم كرديت",
+            cashCustomers: "منهم كاش",
+            bothCustomers: "منهم كرديت + كاش",
             quantity: "الكمية المباعة",
             newCustomers: "عملاء جدد",
             reactivated: "عملاء معاد تنشيطهم",
@@ -34063,6 +34286,9 @@ window.DashboardBranchReport = (() => {
             invoices: "Invoices",
             avgInvoice: "Average invoice",
             activeCustomers: "Purchasing customers",
+            creditCustomers: "of which credit",
+            cashCustomers: "of which cash",
+            bothCustomers: "of which both",
             quantity: "Units sold",
             newCustomers: "New customers",
             reactivated: "Reactivated customers",
@@ -34347,6 +34573,7 @@ window.DashboardBranchReport = (() => {
                 aggregate.quantity += qty;
                 if (invoiceNo) aggregate.invoiceSet.add(invoiceNo);
                 if (customerKey) aggregate.customerSet.add(customerKey);
+                window.DashboardCustomerType?.track(aggregate, row);
                 addTo(aggregate.customers, customerKey, clean(row.customerName), amount, { invoiceNo });
                 addTo(aggregate.products, productKey, clean(row.productDescription) || clean(row.productCode), amount, { qty });
 
@@ -34557,6 +34784,12 @@ window.DashboardBranchReport = (() => {
             [t.invoices, money(invoices)],
             [t.avgInvoice, invoices ? money(branch.sales / invoices) : "—"],
             [t.activeCustomers, money(branch.customerSet.size)],
+            ...(window.DashboardCustomerType
+                ? (() => {
+                      const split = window.DashboardCustomerType.splitTracked(branch);
+                      return [[t.creditCustomers, money(split.credit)], [t.cashCustomers, money(split.cash)], [t.bothCustomers, money(split.both)]];
+                  })()
+                : []),
             [t.quantity, money(branch.quantity)]
         ];
 
@@ -34892,6 +35125,12 @@ ${selected.length || !selection ? body : `<p class="empty">${esc(t.noData)}</p>`
             [t.overdue]: Math.round(b.overdue),
             [t.invoices]: b.invoiceSet.size,
             [t.activeCustomers]: b.customerSet.size,
+            ...(window.DashboardCustomerType
+                ? (() => {
+                      const split = window.DashboardCustomerType.splitTracked(b);
+                      return { [t.creditCustomers]: split.credit, [t.cashCustomers]: split.cash, [t.bothCustomers]: split.both };
+                  })()
+                : {}),
             ...(model.hasNew ? { [t.newCustomers]: b.newList.length } : {}),
             ...(model.hasReactivated ? { [t.reactivated]: b.reactivatedList.length } : {}),
             ...(model.hasVisits ? { [t.visits]: b.visits, [t.conversion]: b.visits ? +(b.visitInvoices / b.visits * 100).toFixed(1) : "" } : {})
@@ -36886,6 +37125,7 @@ window.DashboardMonthlyReport = (() => {
             ...project(scope.targetedSales, scope.target),
             untargetedSales: scope.sales - scope.targetedSales,
             invoiceCount: scope.invoiceSet.size,
+            customerSplit: window.DashboardCustomerType ? window.DashboardCustomerType.splitRows(scope.invoiceRows) : null,
             mix: window.DashboardProductMix ? window.DashboardProductMix.summarize(scope.invoiceRows) : null,
             topOverdue: [...scope.overdueCustomers.values()].sort((a, b) => b.amount - a.amount).slice(0, 10),
             upcoming: [...scope.upcoming].sort((a, b) => a.remaining - b.remaining || b.amount - a.amount),
@@ -36936,6 +37176,11 @@ window.DashboardMonthlyReport = (() => {
                 [t.collections, money(scope.collections)],
                 ...(hasCash() ? [[t.cash, money(scope.cash)]] : []),
                 [t.invoices, money(scope.invoiceCount)],
+                ...(scope.customerSplit ? [
+                    [utils.getLanguage() === "en" ? "Credit customers bought" : "عملاء كرديت اشتروا", money(scope.customerSplit.credit)],
+                    [utils.getLanguage() === "en" ? "Cash customers bought" : "عملاء كاش اشتروا", money(scope.customerSplit.cash)],
+                    [utils.getLanguage() === "en" ? "Bought credit + cash" : "اشتروا كرديت + كاش", money(scope.customerSplit.both)]
+                ] : []),
                 [t.overdue, money(scope.overdue), "is-bad"],
                 [t.untargeted, money(scope.untargetedSales)]
             ]
@@ -36949,6 +37194,11 @@ window.DashboardMonthlyReport = (() => {
                 [t.collections, money(scope.collections)],
                 ...(hasCash() ? [[t.cash, money(scope.cash)]] : []),
                 [t.invoices, money(scope.invoiceCount)],
+                ...(scope.customerSplit ? [
+                    [utils.getLanguage() === "en" ? "Credit customers bought" : "عملاء كرديت اشتروا", money(scope.customerSplit.credit)],
+                    [utils.getLanguage() === "en" ? "Cash customers bought" : "عملاء كاش اشتروا", money(scope.customerSplit.cash)],
+                    [utils.getLanguage() === "en" ? "Bought credit + cash" : "اشتروا كرديت + كاش", money(scope.customerSplit.both)]
+                ] : []),
                 [t.overdue, money(scope.overdue), "is-bad"],
                 [t.due, money(scope.due)],
                 [t.upcoming7, money(scope.upcomingTotal)],
@@ -37280,6 +37530,11 @@ ${row(c, true)}
             [t.collections]: Math.round(s.collections),
             ...(hasCash() ? { [t.cash]: Math.round(s.cash) } : {}),
             [t.invoices]: s.invoiceCount,
+            ...(s.customerSplit ? {
+                [utils.getLanguage() === "en" ? "Credit customers" : "عملاء كرديت"]: s.customerSplit.credit,
+                [utils.getLanguage() === "en" ? "Cash customers" : "عملاء كاش"]: s.customerSplit.cash,
+                [utils.getLanguage() === "en" ? "Both" : "كرديت + كاش"]: s.customerSplit.both
+            } : {}),
             [t.overdue]: Math.round(s.overdue),
             [t.untargeted]: Math.round(s.untargetedSales)
         });
@@ -37456,6 +37711,1571 @@ ${row(c, true)}
    Al-Howail Tyres Sales Operations
    app.js
 ========================================================= */
+
+/* =========================================================
+   المقارنات التاريخية 2023 → الآن
+   البيانات من action=history (شيت Sales History + الفواتير الحالية)
+========================================================= */
+window.DashboardHistory = (() => {
+    const utils = window.DashboardUtils;
+
+    const state = {
+        data: null,
+        loading: false,
+        error: "",
+        scopeId: "",
+        period: "ytd",
+        sort: { key: "growth", dir: -1 },
+        charts: {}
+    };
+
+    const TEXT = {
+        ar: {
+            loading: "جاري تحميل بيانات المقارنات… (أول مرة ممكن تاخد دقيقة)",
+            missing: sheet => `لسه مفيش شيت باسم "${sheet}" في ملف جوجل شيت. أضف الشيت بنفس أعمدة شيت الفواتير وبعدين اضغط تحديث.`,
+            error: "حصلت مشكلة في تحميل المقارنات",
+            retry: "إعادة المحاولة",
+            empty: "مفيش بيانات تاريخية متاحة لحسابك",
+            scope: "النطاق",
+            period: "فترة المقارنة",
+            ytd: (d, m) => `نفس الفترة من كل سنة (1 يناير – ${d}/${m})`,
+            full: "السنة كاملة",
+            mtd: (d, m) => `الشهر الحالي لنفس اليوم (1–${d}/${m})`,
+            company: "المجمع (كل الفروع بدون البلاك ليست)",
+            branch: "فرع",
+            branches: "الفروع",
+            codes: "الأكواد",
+            blacklist: "البلاك ليست",
+            refresh: "تحديث",
+            print: "طباعة / PDF",
+            excel: "تصدير Excel",
+            dataRange: (a, b, n) => `البيانات من ${a} إلى ${b} • ${n} سطر فاتورة`,
+            fairNote: "كل المقارنات بنفس عدد الأيام من كل سنة عشان تبقى عادلة",
+            fullNote: y => `تنبيه: ${y} لسه مخلصتش، فمقارنة السنة كاملة مش عادلة لسنة ${y}`,
+            partial: "(لحد النهارده)",
+            cards: {
+                sales: "صافي المبيعات",
+                vsLast: y => `عن ${y}`,
+                customers: "العملاء المشترين",
+                avgPrice: "متوسط سعر الإطار",
+                qty: "عدد الإطارات"
+            },
+            yearTable: "مقارنة السنين — نفس الفترة",
+            metric: "المؤشر",
+            change: (a, b) => `التغير ${a} عن ${b}`,
+            cagr: (a, b) => `النمو السنوي المركب ${a}→${b}`,
+            metrics: {
+                net: "صافي المبيعات (بدون ضريبة)",
+                inv: "عدد الفواتير",
+                cust: "عدد العملاء المشترين",
+                avgInvoice: "متوسط الفاتورة",
+                tyreQty: "عدد الإطارات المباعة",
+                avgTyre: "متوسط سعر الإطار",
+                discRate: "نسبة الخصم من الإجمالي",
+                cashShare: "نسبة الكاش من المبيعات",
+                tubeAttach: "نسبة بيع الجلبة مع الإطار",
+                flapAttach: "نسبة بيع الفالب مع الإطار"
+            },
+            insights: "التحليل والتوصيات",
+            recommendations: "المطلوب عمله",
+            monthly: "المبيعات شهر بشهر لكل سنة",
+            monthlyTable: "جدول الشهور",
+            month: "الشهر",
+            total: "الإجمالي",
+            ranking: kind => kind === "company" ? "ترتيب الفروع والأكواد" : "ترتيب أكواد الفرع",
+            code: "الكود",
+            name: "الاسم",
+            share: y => `الحصة ${y}`,
+            shareChange: "تغير الحصة",
+            growth: y => `النمو ${y}`,
+            custCol: y => `عملاء ${y}`,
+            status: "الحالة",
+            up: "نمو", down: "تراجع", flat: "ثابت",
+            customers: "العملاء — نفس الفترة من كل سنة",
+            cust: {
+                active: "عملاء اشتروا",
+                retained: "استمروا من السنة اللي فاتت",
+                isNew: "عملاء جداد (أول شراء)",
+                returning: "رجعوا بعد انقطاع",
+                lost: "وقفوا (اشتروا السنة اللي فاتت ومشتروش السنة دي)",
+                lostValue: "مبيعاتهم السنة اللي فاتت",
+                retention: "نسبة الاحتفاظ",
+                top10Share: "حصة أكبر 10 عملاء",
+                top1Share: "حصة أكبر عميل",
+                cashOnly: "منهم عملاء كاش فقط",
+                creditActive: "عملاء الكرديت",
+                creditRetained: "عملاء كرديت استمروا",
+                creditLost: "عملاء كرديت وقفوا",
+                creditLostValue: "مبيعات عملاء الكرديت اللي وقفوا"
+            },
+            topCustomers: "أكبر العملاء ومقارنتهم",
+            lostCustomers: y => `عملاء وقفوا في ${y} (كانوا بيشتروا نفس الفترة ${y - 1})`,
+            newCustomers: y => `أكبر العملاء الجداد في ${y}`,
+            customer: "العميل",
+            city: "المدينة",
+            lastPurchase: "آخر شراء",
+            firstPurchase: "أول شراء",
+            prevValue: "مبيعات نفس الفترة السنة اللي فاتت",
+            value: "القيمة",
+            mix: "المبيعات حسب مجموعة المنتج",
+            group: "المجموعة",
+            qty: "الكمية",
+            avg: "متوسط السعر",
+            brands: "المبيعات حسب البراند (إطارات)",
+            brand: "البراند",
+            items: "أكثر المقاسات / الأصناف مبيعًا",
+            item: "الصنف",
+            cities: "المبيعات حسب المدينة",
+            priceVolume: "النمو جاي منين؟ (كمية ولا سعر)",
+            pvQty: "أثر الكمية",
+            pvPrice: "أثر السعر",
+            pvNote: "صافي مبيعات الإطارات فقط",
+            groups: { TBR: "TBR شاحنات", PCR: "PCR/LTR ملاكي ونقل خفيف", OTR: "OTR معدات ونايلون", ACC: "جلب وفالبات", OTHERS: "أخرى" },
+            months: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
+            none: "—",
+            noRows: "لا توجد بيانات",
+            show: "النطاق المعروض"
+        },
+        en: {
+            loading: "Loading historical comparisons… (first load can take a minute)",
+            missing: sheet => `There is no "${sheet}" sheet in the Google Sheet yet. Add it with the same columns as the Invoices sheet, then press Refresh.`,
+            error: "Could not load the comparisons",
+            retry: "Retry",
+            empty: "No historical data is available for your account",
+            scope: "Scope",
+            period: "Comparison period",
+            ytd: (d, m) => `Same period each year (Jan 1 – ${d}/${m})`,
+            full: "Full year",
+            mtd: (d, m) => `Current month to the same day (1–${d}/${m})`,
+            company: "Consolidated (all branches, excl. black list)",
+            branch: "Branch",
+            branches: "Branches",
+            codes: "Codes",
+            blacklist: "Black list",
+            refresh: "Refresh",
+            print: "Print / PDF",
+            excel: "Export Excel",
+            dataRange: (a, b, n) => `Data from ${a} to ${b} • ${n} invoice lines`,
+            fairNote: "Every comparison uses the same number of days in each year",
+            fullNote: y => `Note: ${y} is not finished, so full-year comparison is not like-for-like for ${y}`,
+            partial: "(to date)",
+            cards: {
+                sales: "Net sales",
+                vsLast: y => `vs ${y}`,
+                customers: "Buying customers",
+                avgPrice: "Average tyre price",
+                qty: "Tyres sold"
+            },
+            yearTable: "Year comparison — same period",
+            metric: "Metric",
+            change: (a, b) => `Change ${a} vs ${b}`,
+            cagr: (a, b) => `CAGR ${a}→${b}`,
+            metrics: {
+                net: "Net sales (excl. VAT)",
+                inv: "Invoices",
+                cust: "Buying customers",
+                avgInvoice: "Average invoice",
+                tyreQty: "Tyres sold",
+                avgTyre: "Average tyre price",
+                discRate: "Discount rate",
+                cashShare: "Cash share of sales",
+                tubeAttach: "Tube attach rate",
+                flapAttach: "Flap attach rate"
+            },
+            insights: "Analysis & recommendations",
+            recommendations: "Actions",
+            monthly: "Monthly sales by year",
+            monthlyTable: "Monthly table",
+            month: "Month",
+            total: "Total",
+            ranking: kind => kind === "company" ? "Branches & codes ranking" : "Branch codes ranking",
+            code: "Code",
+            name: "Name",
+            share: y => `Share ${y}`,
+            shareChange: "Share change",
+            growth: y => `Growth ${y}`,
+            custCol: y => `Customers ${y}`,
+            status: "Status",
+            up: "Growing", down: "Declining", flat: "Flat",
+            customers: "Customers — same period each year",
+            cust: {
+                active: "Buying customers",
+                retained: "Retained from last year",
+                isNew: "New customers (first purchase)",
+                returning: "Returned after a gap",
+                lost: "Lost (bought last year, not this year)",
+                lostValue: "Their sales last year",
+                retention: "Retention rate",
+                top10Share: "Top 10 customers share",
+                top1Share: "Largest customer share",
+                cashOnly: "Of which cash-only",
+                creditActive: "Credit customers",
+                creditRetained: "Credit customers retained",
+                creditLost: "Credit customers lost",
+                creditLostValue: "Sales of lost credit customers"
+            },
+            topCustomers: "Top customers compared",
+            lostCustomers: y => `Customers who stopped in ${y} (bought in the same period of ${y - 1})`,
+            newCustomers: y => `Largest new customers in ${y}`,
+            customer: "Customer",
+            city: "City",
+            lastPurchase: "Last purchase",
+            firstPurchase: "First purchase",
+            prevValue: "Same period last year",
+            value: "Value",
+            mix: "Sales by product group",
+            group: "Group",
+            qty: "Qty",
+            avg: "Avg price",
+            brands: "Sales by brand (tyres)",
+            brand: "Brand",
+            items: "Top sizes / items",
+            item: "Item",
+            cities: "Sales by city",
+            priceVolume: "Where did growth come from? (volume vs price)",
+            pvQty: "Volume effect",
+            pvPrice: "Price effect",
+            pvNote: "Tyre net sales only",
+            groups: { TBR: "TBR Truck", PCR: "PCR/LTR Passenger & LT", OTR: "OTR & nylon", ACC: "Tubes & flaps", OTHERS: "Others" },
+            months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            none: "—",
+            noRows: "No data",
+            show: "Scope shown"
+        }
+    };
+
+    const lang = () => (utils.getLanguage() === "en" ? "en" : "ar");
+    const T = () => TEXT[lang()];
+    const esc = value => utils.escapeHTML(String(value == null ? "" : value));
+    const num = value => (Number.isFinite(Number(value)) ? Number(value) : 0);
+    const n0 = value => new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Math.round(num(value)));
+    const n1 = value => new Intl.NumberFormat("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 }).format(num(value));
+    const short = value => {
+        const v = num(value);
+        const abs = Math.abs(v);
+        if (abs >= 1e6) return `${n1(v / 1e6)}M`;
+        if (abs >= 1e4) return `${n0(v / 1e3)}K`;
+        return n0(v);
+    };
+    const pct = value => (value == null || !isFinite(value) ? "—" : `${n1(value)}%`);
+    // \u2066…\u2069 بيثبت اتجاه الرقم والإشارة جوه النص العربي
+    const signed = value => (value == null || !isFinite(value) ? "—" : `\u200E${value > 0 ? "+" : ""}${n1(value)}%\u200E`);
+    const pp = value => (value == null || !isFinite(value) ? "—" : `\u200E${value > 0 ? "+" : ""}${n1(value)}\u200E ${lang() === "ar" ? "نقطة" : "pp"}`);
+    // أي رقم بإشارة (+/-) بيتلف في عنصر معزول عشان يتعرض صح جوه النص العربي
+    const fixBidi = html => String(html).replace(/\u200E([^\u200E<>]*)\u200E/g, '<bdi dir="ltr">$1</bdi>');
+    const growth = (current, previous) => (previous > 0 ? ((current - previous) / previous) * 100 : null);
+    const cls = value => (value == null || !isFinite(value) ? "" : value > 0.05 ? "hx-up" : value < -0.05 ? "hx-down" : "");
+    const dateText = iso => {
+        const m = String(iso || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+        return m ? `${m[3]}/${m[2]}/${m[1]}` : "—";
+    };
+
+    /* ---------- البيانات ---------- */
+
+    async function load(force = false) {
+        if (state.loading) return;
+        if (state.data && !force) {
+            render();
+            return;
+        }
+        state.loading = true;
+        state.error = "";
+        render();
+        try {
+            const token = window.DashboardAuth?.getToken?.() || "";
+            const response = await window.DashboardAPI.request(
+                { action: "history", token, refresh: force ? "1" : "" },
+                { timeout: 300000 }
+            );
+            state.data = response;
+            const scopes = response.scopes || [];
+            if (!scopes.find(scope => scope.id === state.scopeId)) {
+                state.scopeId = scopes.length ? scopes[0].id : "";
+            }
+        } catch (error) {
+            state.error = error && error.message ? error.message : String(error);
+        } finally {
+            state.loading = false;
+            render();
+        }
+    }
+
+    const scopes = () => (state.data && state.data.scopes) || [];
+    const meta = () => (state.data && state.data.meta) || {};
+    const years = () => meta().years || [];
+    const currentYear = () => years()[years().length - 1];
+    const findScope = id => scopes().find(scope => scope.id === id) || null;
+
+    function scopeLabel(scope, withName = true) {
+        if (!scope) return "";
+        const t = T();
+        if (scope.type === "company") return t.company;
+        if (scope.type === "branch") return `${t.branch} ${scope.label}`;
+        const name = withName && scope.name ? ` — ${scope.name}` : "";
+        return `${scope.code}${name}${scope.blacklist ? ` (${t.blacklist})` : ""}`;
+    }
+
+    function metricsOf(scope, year, period = state.period) {
+        const source = scope && scope[period] ? scope[period][year] : null;
+        return source || null;
+    }
+
+    function derived(m) {
+        if (!m) return null;
+        return {
+            net: m.net,
+            inv: m.inv,
+            cust: m.cust,
+            avgInvoice: m.inv > 0 ? m.net / m.inv : null,
+            tyreQty: m.tyreQty,
+            avgTyre: m.tyreQty > 0 ? m.tyreNet / m.tyreQty : null,
+            discRate: m.gross > 0 ? (m.disc / m.gross) * 100 : null,
+            cashShare: m.net > 0 ? (m.cash / m.net) * 100 : null,
+            tubeAttach: m.tubeTypeQty > 0 ? (m.tubeQty / m.tubeTypeQty) * 100 : null,
+            flapAttach: m.tubeTypeQty > 0 ? (m.flapQty / m.tubeTypeQty) * 100 : null
+        };
+    }
+
+    function childrenOf(scope) {
+        if (!scope) return [];
+        if (scope.type === "company") {
+            return scopes().filter(item => item.type === "branch").concat(scopes().filter(item => item.type === "code"));
+        }
+        if (scope.type === "branch") {
+            return scopes().filter(item => item.type === "code" && item.branch === scope.label && !item.blacklist);
+        }
+        return [];
+    }
+
+    function parentOf(scope) {
+        if (!scope || scope.type === "company") return null;
+        if (scope.type === "code" && !scope.blacklist) {
+            return findScope(`branch:${scope.branch}`) || findScope("company");
+        }
+        return findScope("company");
+    }
+
+    /* ---------- التحليل التلقائي ---------- */
+
+    function buildInsights(scope) {
+        const t = T();
+        const ar = lang() === "ar";
+        const ys = years();
+        const cy = currentYear();
+        const py = cy - 1;
+        const fy = ys[0];
+        const items = [];
+        const actions = [];
+        const add = (type, text) => items.push({ type, text });
+
+        const now = scope.ytd[cy];
+        const prev = scope.ytd[py];
+        const first = scope.ytd[fy];
+        if (!now || !prev) return { items, actions };
+
+        const g = growth(now.net, prev.net);
+        const gFirst = growth(now.net, first ? first.net : 0);
+        const series = ys.map(y => scope.ytd[y] ? scope.ytd[y].net : 0);
+        const ups = series.slice(1).filter((v, i) => v > series[i]).length;
+        const md = `${meta().asOfDay}/${meta().asOfMonth}`;
+
+        if (g != null) {
+            const dir = g >= 0;
+            add(dir ? "good" : "bad", ar
+                ? `المبيعات من 1 يناير لحد ${md}: ${n0(now.net)} مقابل ${n0(prev.net)} في ${py} (${signed(g)})${gFirst != null ? `، و${signed(gFirst)} عن ${fy}` : ""}.`
+                : `Sales Jan 1 – ${md}: ${n0(now.net)} vs ${n0(prev.net)} in ${py} (${signed(g)})${gFirst != null ? `, ${signed(gFirst)} vs ${fy}` : ""}.`);
+        }
+        if (ys.length >= 3) {
+            if (ups === ys.length - 1) add("good", ar ? `نمو متواصل كل سنة من ${fy} لحد ${cy}.` : `Growth every year from ${fy} to ${cy}.`);
+            else if (ups === 0) add("bad", ar ? `تراجع متواصل كل سنة من ${fy} لحد ${cy}.` : `Declining every year from ${fy} to ${cy}.`);
+        }
+
+        // ترتيب بين الأكواد/الفروع المشابهة
+        const parent = parentOf(scope);
+        if (parent && scope.type !== "company") {
+            const siblings = childrenOf(parent).filter(item => item.type === scope.type && !item.blacklist);
+            const ranked = siblings
+                .map(item => ({ id: item.id, g: growth(item.ytd[cy]?.net || 0, item.ytd[py]?.net || 0) }))
+                .filter(item => item.g != null)
+                .sort((a, b) => b.g - a.g);
+            const rank = ranked.findIndex(item => item.id === scope.id);
+            if (rank >= 0 && ranked.length > 2) {
+                add("info", ar
+                    ? `ترتيبه ${rank + 1} من ${ranked.length} في النمو داخل ${parent.type === "company" ? "الشركة" : `فرع ${parent.label}`}.`
+                    : `Ranked ${rank + 1} of ${ranked.length} by growth within ${parent.type === "company" ? "the company" : `${parent.label} branch`}.`);
+            }
+            const pNow = parent.ytd[cy]?.net || 0;
+            const pPrev = parent.ytd[py]?.net || 0;
+            if (pNow > 0 && pPrev > 0) {
+                const shareNow = (now.net / pNow) * 100;
+                const sharePrev = (prev.net / pPrev) * 100;
+                if (Math.abs(shareNow - sharePrev) >= 1) {
+                    add(shareNow > sharePrev ? "good" : "bad", ar
+                        ? `حصته من ${parent.type === "company" ? "الشركة" : "الفرع"} ${pct(shareNow)} مقابل ${pct(sharePrev)} السنة اللي فاتت (${pp(shareNow - sharePrev)}).`
+                        : `Share of ${parent.type === "company" ? "company" : "branch"} ${pct(shareNow)} vs ${pct(sharePrev)} last year (${pp(shareNow - sharePrev)}).`);
+                }
+            }
+        }
+
+        // الكمية × السعر (السعر لكل مجموعة عشان تغير المزيج ميضللش)
+        const qG = growth(now.tyreQty, prev.tyreQty);
+        const avgOf = (y, key) => {
+            const e = scope.mix?.[y]?.[key];
+            return e && e[0] > 0 ? e[1] / e[0] : null;
+        };
+        const groupPrices = ["TBR", "PCR", "OTR"]
+            .map(key => ({ key, now: avgOf(cy, key), prev: avgOf(py, key), q: growth(scope.mix?.[cy]?.[key]?.[0] || 0, scope.mix?.[py]?.[key]?.[0] || 0), qty: scope.mix?.[cy]?.[key]?.[0] || 0 }))
+            .filter(item => item.now && item.prev && item.qty >= 20);
+        if (qG != null) {
+            const parts = groupPrices.map(item => `${t.groups[item.key].split(" ")[0]} ${signed(growth(item.now, item.prev))} (${n0(item.now)})`);
+            add(qG >= 0 ? "good" : "bad", ar
+                ? `عدد الإطارات ${signed(qG)} (${n0(now.tyreQty)} مقابل ${n0(prev.tyreQty)})${parts.length ? `، ومتوسط السعر لكل مجموعة: ${parts.join("، ")}` : ""}.`
+                : `Tyres sold ${signed(qG)} (${n0(now.tyreQty)} vs ${n0(prev.tyreQty)})${parts.length ? `; average price by group: ${parts.join(", ")}` : ""}.`);
+            groupPrices.forEach(item => {
+                const pg = growth(item.now, item.prev);
+                if (item.q < -10 && pg > 5) actions.push(ar ? `${t.groups[item.key]}: الكمية ${signed(item.q)} والسعر ${signed(pg)}. راجع الأسعار مع العملاء الكبار، ممكن السعر بيخسّرنا كمية.` : `${t.groups[item.key]}: volume ${signed(item.q)}, price ${signed(pg)}. Review pricing with key customers.`);
+                if (item.q > 10 && pg < -8) actions.push(ar ? `${t.groups[item.key]}: الكمية ${signed(item.q)} بس السعر ${signed(pg)}. راجع الخصومات عشان الربحية.` : `${t.groups[item.key]}: volume ${signed(item.q)} but price ${signed(pg)}. Review discounts for margin.`);
+            });
+        }
+
+        // العملاء
+        const c = scope.cust ? scope.cust[cy] : null;
+        if (c && c.prevActive != null) {
+            const cg = growth(c.active, c.prevActive);
+            add(cg >= 0 ? "good" : "bad", ar
+                ? `${n0(c.active)} عميل اشتروا مقابل ${n0(c.prevActive)} نفس الفترة ${py} (${signed(cg)}): ${n0(c.retained)} استمروا، ${n0(c.isNew)} جداد، ${n0(c.returning)} رجعوا.`
+                : `${n0(c.active)} buying customers vs ${n0(c.prevActive)} in ${py} (${signed(cg)}): ${n0(c.retained)} retained, ${n0(c.isNew)} new, ${n0(c.returning)} returned.`);
+            if (c.credit && c.credit.prevActive) {
+                add(c.credit.active >= c.credit.prevActive ? "good" : "bad", ar
+                    ? `عملاء الكرديت (الأدق في المقارنة): ${n0(c.credit.active)} مقابل ${n0(c.credit.prevActive)}، استمر منهم ${n0(c.credit.retained)} ووقف ${n0(c.credit.lost)} كانوا بيشتروا بـ ${n0(c.credit.lostValue)}.`
+                    : `Credit customers (most comparable): ${n0(c.credit.active)} vs ${n0(c.credit.prevActive)}; ${n0(c.credit.retained)} retained, ${n0(c.credit.lost)} lost worth ${n0(c.credit.lostValue)}.`);
+            }
+            const prevCash = scope.cust?.[py]?.cashOnly || 0;
+            if (c.cashOnly > 20 && prevCash > 0 && c.cashOnly > prevCash * 1.5) {
+                add("info", ar
+                    ? `عملاء الكاش زادوا من ${n0(prevCash)} لـ ${n0(c.cashOnly)}: غالبًا بسبب تسجيل عميل الكاش باسمه في المعرض، فعدد العملاء مش مقياس دقيق هنا.`
+                    : `Cash-only customers rose from ${n0(prevCash)} to ${n0(c.cashOnly)}, likely because walk-in customers are now registered by name, so customer counts are not like-for-like here.`);
+            }
+            if (c.lost > 0) {
+                const lostShare = prev.net > 0 ? (c.lostValue / prev.net) * 100 : null;
+                const names = (scope.lostCustomers || []).slice(0, 3).map(item => item.n).join(ar ? "، " : ", ");
+                add(lostShare != null && lostShare >= 10 ? "bad" : "info", ar
+                    ? `${n0(c.lost)} عميل وقفوا، وكانوا بيشتروا بـ ${n0(c.lostValue)} نفس الفترة السنة اللي فاتت (${pct(lostShare)} من المبيعات)${names ? `. أكبرهم: ${names}` : ""}.`
+                    : `${n0(c.lost)} customers stopped; they bought ${n0(c.lostValue)} in the same period last year (${pct(lostShare)} of sales)${names ? `. Largest: ${names}` : ""}.`);
+                if (lostShare != null && lostShare >= 10) {
+                    actions.push(ar ? "زيارة أو اتصال بأكبر 10 عملاء وقفوا (الجدول تحت) ومعرفة السبب: سعر، منافس، مديونية، ولا مقاس مش متوفر." : "Call or visit the top 10 lost customers (table below) to learn why: price, competitor, credit or stock.");
+                }
+            }
+            if (c.top10Share != null && c.top10Share >= 60) {
+                add("bad", ar ? `تركيز عالي: أكبر 10 عملاء = ${pct(c.top10Share)} من المبيعات${c.top1Share >= 20 ? `، وأكبر عميل لوحده ${pct(c.top1Share)}` : ""}.` : `High concentration: top 10 customers = ${pct(c.top10Share)} of sales${c.top1Share >= 20 ? `; the largest alone ${pct(c.top1Share)}` : ""}.`);
+                actions.push(ar ? "توسيع قاعدة العملاء: هدف عملاء جداد كل شهر عشان المبيعات متعتمدش على عدد قليل." : "Broaden the customer base with a monthly new-customer target.");
+            }
+        }
+
+        // تغير المزيج
+        const mixNow = scope.mix?.[cy] || {};
+        const mixPrev = scope.mix?.[py] || {};
+        const groups = ["TBR", "PCR", "OTR", "ACC"];
+        const shareOf = (mix, key) => {
+            const total = groups.concat("OTHERS").reduce((sum, k) => sum + (mix[k] ? mix[k][1] : 0), 0);
+            return total > 0 ? ((mix[key] ? mix[key][1] : 0) / total) * 100 : 0;
+        };
+        const shifts = groups
+            .map(key => ({ key, now: shareOf(mixNow, key), prev: shareOf(mixPrev, key), g: growth(mixNow[key]?.[1] || 0, mixPrev[key]?.[1] || 0) }))
+            .filter(item => Math.abs(item.now - item.prev) >= 3)
+            .sort((a, b) => Math.abs(b.now - b.prev) - Math.abs(a.now - a.prev));
+        shifts.slice(0, 2).forEach(item => {
+            add("info", ar
+                ? `${t.groups[item.key]}: حصتها ${pct(item.now)} مقابل ${pct(item.prev)} (${pp(item.now - item.prev)})، ومبيعاتها ${signed(item.g)}.`
+                : `${t.groups[item.key]}: share ${pct(item.now)} vs ${pct(item.prev)} (${pp(item.now - item.prev)}), sales ${signed(item.g)}.`);
+        });
+
+        // البراند
+        const bNow = scope.brands?.[cy] || {};
+        const bPrev = scope.brands?.[py] || {};
+        const bTotal = mix => Object.values(mix).reduce((s, v) => s + v[1], 0);
+        const bn = bTotal(bNow);
+        const bp = bTotal(bPrev);
+        if (bn > 0 && bp > 0) {
+            const brandShift = Object.keys({ ...bNow, ...bPrev })
+                .map(key => ({ key, now: ((bNow[key]?.[1] || 0) / bn) * 100, prev: ((bPrev[key]?.[1] || 0) / bp) * 100 }))
+                .sort((a, b) => Math.abs(b.now - b.prev) - Math.abs(a.now - a.prev))[0];
+            if (brandShift && Math.abs(brandShift.now - brandShift.prev) >= 4) {
+                add("info", ar
+                    ? `أكبر تغير في البراندات: ${brandShift.key} بقى ${pct(brandShift.now)} من الإطارات مقابل ${pct(brandShift.prev)}.`
+                    : `Biggest brand shift: ${brandShift.key} is ${pct(brandShift.now)} of tyre sales vs ${pct(brandShift.prev)}.`);
+            }
+        }
+
+        // الخصم والكاش
+        const d = derived(now);
+        const dp = derived(prev);
+        if (d.discRate != null && dp.discRate != null && Math.abs(d.discRate - dp.discRate) >= 1) {
+            add(d.discRate > dp.discRate ? "bad" : "good", ar
+                ? `نسبة الخصم ${pct(d.discRate)} مقابل ${pct(dp.discRate)} السنة اللي فاتت.`
+                : `Discount rate ${pct(d.discRate)} vs ${pct(dp.discRate)} last year.`);
+        }
+        if (d.cashShare != null && dp.cashShare != null && Math.abs(d.cashShare - dp.cashShare) >= 5) {
+            add("info", ar
+                ? `الكاش ${pct(d.cashShare)} من المبيعات مقابل ${pct(dp.cashShare)} (الباقي كرديت).`
+                : `Cash is ${pct(d.cashShare)} of sales vs ${pct(dp.cashShare)} (rest is credit).`);
+        }
+        if (d.tubeAttach != null && dp.tubeAttach != null && dp.tubeAttach - d.tubeAttach >= 10) {
+            add("bad", ar ? `بيع الجلبة مع الإطار نزل لـ ${pct(d.tubeAttach)} من ${pct(dp.tubeAttach)}.` : `Tube attach rate fell to ${pct(d.tubeAttach)} from ${pct(dp.tubeAttach)}.`);
+            actions.push(ar ? "تذكير المندوب يعرض الجلبة والفالب مع كل إطار بجلبة." : "Remind the rep to offer tube & flap with every tube-type tyre.");
+        }
+
+        // الموسمية: أضعف شهور السنة دي مقارنة بمتوسط السنين اللي قبلها
+        const lastMonth = meta().asOfMonth;
+        const weak = [];
+        for (let i = 0; i < lastMonth - 1; i += 1) {
+            const cur = scope.months?.[cy]?.[i]?.net || 0;
+            const past = ys.slice(0, -1).map(y => scope.months?.[y]?.[i]?.net || 0).filter(v => v > 0);
+            if (!past.length) continue;
+            const avg = past.reduce((s, v) => s + v, 0) / past.length;
+            const gap = growth(cur, avg);
+            if (gap != null) weak.push({ i, gap });
+        }
+        weak.sort((a, b) => a.gap - b.gap);
+        const worst = weak.filter(item => item.gap <= -20).slice(0, 3);
+        if (worst.length) {
+            add("bad", ar
+                ? `أضعف شهور ${cy} مقارنة بمتوسط السنين اللي فاتت: ${worst.map(item => `${t.months[item.i]} (${signed(item.gap)})`).join("، ")}.`
+                : `Weakest months of ${cy} vs prior-year average: ${worst.map(item => `${t.months[item.i]} (${signed(item.gap)})`).join(", ")}.`);
+        }
+        const best = weak.slice().reverse().filter(item => item.gap >= 20).slice(0, 2);
+        if (best.length) {
+            add("good", ar
+                ? `أقوى شهور ${cy}: ${best.map(item => `${t.months[item.i]} (${signed(item.gap)})`).join("، ")}.`
+                : `Strongest months of ${cy}: ${best.map(item => `${t.months[item.i]} (${signed(item.gap)})`).join(", ")}.`);
+        }
+
+        // الشهر الحالي لنفس اليوم
+        const mNow = scope.mtd?.[cy]?.net || 0;
+        const mPrev = scope.mtd?.[py]?.net || 0;
+        const mg = growth(mNow, mPrev);
+        if (mg != null) {
+            add(mg >= 0 ? "good" : "bad", ar
+                ? `${t.months[lastMonth - 1]} لحد يوم ${meta().asOfDay}: ${n0(mNow)} مقابل ${n0(mPrev)} نفس الأيام ${py} (${signed(mg)}).`
+                : `${t.months[lastMonth - 1]} to day ${meta().asOfDay}: ${n0(mNow)} vs ${n0(mPrev)} in the same days of ${py} (${signed(mg)}).`);
+        }
+
+        if (g != null && g < -10 && !actions.length) {
+            actions.push(ar ? "خطة استرجاع: قائمة العملاء اللي وقفوا + هدف أسبوعي للزيارات." : "Recovery plan: lost-customer list plus a weekly visit target.");
+        }
+        if (c && c.isNew != null && c.prevActive && c.isNew < c.prevActive * 0.05) {
+            actions.push(ar ? "عدد العملاء الجداد قليل: حدد هدف عملاء جداد للكود ده." : "Few new customers: set a new-customer target for this code.");
+        }
+
+        return { items, actions };
+    }
+
+    /* ---------- الرسم ---------- */
+
+    function destroyCharts() {
+        Object.values(state.charts).forEach(chart => {
+            try { chart.destroy(); } catch (error) { /* ignore */ }
+        });
+        state.charts = {};
+    }
+
+    const PALETTE = ["#94a3b8", "#60a5fa", "#f59e0b", "#176b87", "#16a34a", "#7c3aed"];
+
+    function drawCharts(scope) {
+        destroyCharts();
+        if (typeof window.Chart === "undefined") return;
+        const t = T();
+        const ys = years();
+        const cy = currentYear();
+        const canvas = utils.byId("historyMonthlyChart");
+        if (canvas) {
+            const lastMonth = meta().asOfMonth;
+            const datasets = ys.map((y, index) => ({
+                label: y === cy ? `${y} ${t.partial}` : String(y),
+                data: (scope.months[y] || []).map((m, i) => (y === cy && i > lastMonth - 1 ? null : Math.round(m.net))),
+                borderColor: PALETTE[(PALETTE.length - ys.length + index + PALETTE.length) % PALETTE.length],
+                backgroundColor: PALETTE[(PALETTE.length - ys.length + index + PALETTE.length) % PALETTE.length],
+                borderWidth: y === cy ? 3 : 2,
+                tension: 0.3,
+                pointRadius: 3,
+                spanGaps: false
+            }));
+            state.charts.monthly = new window.Chart(canvas, {
+                type: "line",
+                data: { labels: t.months, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: "index", intersect: false },
+                    plugins: {
+                        legend: { position: "bottom" },
+                        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${n0(ctx.parsed.y)}` } }
+                    },
+                    scales: { y: { ticks: { callback: value => short(value) } } }
+                }
+            });
+        }
+
+        const yearCanvas = utils.byId("historyYearChart");
+        if (yearCanvas) {
+            state.charts.years = new window.Chart(yearCanvas, {
+                type: "bar",
+                data: {
+                    labels: ys.map(String),
+                    datasets: [{
+                        label: T().metrics.net,
+                        data: ys.map(y => Math.round(metricsOf(scope, y)?.net || 0)),
+                        backgroundColor: ys.map((y, i) => (y === cy ? "#176b87" : "#94a3b8"))
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => n0(ctx.parsed.y) } } },
+                    scales: { y: { ticks: { callback: value => short(value) } } }
+                }
+            });
+        }
+    }
+
+    /* ---------- أجزاء الصفحة ---------- */
+
+    function controlsHTML(scope) {
+        const t = T();
+        const m = meta();
+        const list = scopes();
+        const company = list.filter(s => s.type === "company");
+        const branches = list.filter(s => s.type === "branch");
+        const codes = list.filter(s => s.type === "code");
+        const option = s => `<option value="${esc(s.id)}" ${s.id === state.scopeId ? "selected" : ""}>${esc(scopeLabel(s))}</option>`;
+        const codeGroups = {};
+        codes.forEach(s => { (codeGroups[s.blacklist ? t.blacklist : s.branch] = codeGroups[s.blacklist ? t.blacklist : s.branch] || []).push(s); });
+        const isManagement = window.DashboardAuth?.getUser?.()?.role === "management";
+
+        return `
+            <div class="hx-controls">
+                <label>${esc(t.scope)}
+                    <select id="historyScopeSelect">
+                        ${company.map(option).join("")}
+                        ${branches.length ? `<optgroup label="${esc(t.branches)}">${branches.map(option).join("")}</optgroup>` : ""}
+                        ${Object.keys(codeGroups).map(group => `<optgroup label="${esc(t.codes)} — ${esc(group)}">${codeGroups[group].map(option).join("")}</optgroup>`).join("")}
+                    </select>
+                </label>
+                <label>${esc(t.period)}
+                    <select id="historyPeriodSelect">
+                        <option value="ytd" ${state.period === "ytd" ? "selected" : ""}>${esc(t.ytd(m.asOfDay, m.asOfMonth))}</option>
+                        <option value="mtd" ${state.period === "mtd" ? "selected" : ""}>${esc(t.mtd(m.asOfDay, m.asOfMonth))}</option>
+                        <option value="full" ${state.period === "full" ? "selected" : ""}>${esc(t.full)}</option>
+                    </select>
+                </label>
+                <div class="hx-actions">
+                    ${isManagement ? `<button type="button" class="secondary-button" data-hx="refresh"><i class="fa-solid fa-rotate"></i> ${esc(t.refresh)}</button>` : ""}
+                    <button type="button" class="secondary-button" data-hx="excel"><i class="fa-solid fa-file-excel"></i> ${esc(t.excel)}</button>
+                    <button type="button" class="primary-button" data-hx="print"><i class="fa-solid fa-print"></i> ${esc(t.print)}</button>
+                </div>
+            </div>
+            <p class="hx-note">${esc(t.dataRange(dateText(m.from), dateText(m.asOf), n0(m.rows)))} • ${esc(state.period === "full" ? t.fullNote(currentYear()) : t.fairNote)}</p>
+        `;
+    }
+
+    function cardsHTML(scope) {
+        const t = T();
+        const cy = currentYear();
+        const py = cy - 1;
+        const fy = years()[0];
+        const now = derived(metricsOf(scope, cy)) || {};
+        const prev = derived(metricsOf(scope, py)) || {};
+        const first = derived(metricsOf(scope, fy)) || {};
+        const card = (label, value, sub, gValue) => `
+            <article class="content-card hx-card">
+                <span>${esc(label)}</span>
+                <strong>${value}</strong>
+                <small class="${cls(gValue)}">${sub}</small>
+            </article>`;
+        const gS = growth(now.net, prev.net);
+        const gF = growth(now.net, first.net);
+        const gC = growth(now.cust, prev.cust);
+        const gP = growth(now.avgTyre, prev.avgTyre);
+        const gQ = growth(now.tyreQty, prev.tyreQty);
+        return `
+            <div class="hx-cards">
+                ${card(`${t.cards.sales} ${cy}`, n0(now.net), `${signed(gS)} ${esc(t.cards.vsLast(py))} • ${signed(gF)} ${esc(t.cards.vsLast(fy))}`, gS)}
+                ${card(t.cards.qty, n0(now.tyreQty), `${signed(gQ)} ${esc(t.cards.vsLast(py))}`, gQ)}
+                ${card(t.cards.avgPrice, n0(now.avgTyre), `${signed(gP)} ${esc(t.cards.vsLast(py))}`, gP)}
+                ${card(t.cards.customers, n0(now.cust), `${signed(gC)} ${esc(t.cards.vsLast(py))}`, gC)}
+            </div>`;
+    }
+
+    function yearTableHTML(scope) {
+        const t = T();
+        const ys = years();
+        const cy = currentYear();
+        const py = cy - 1;
+        const fy = ys[0];
+        const rows = Object.keys(t.metrics);
+        const data = {};
+        ys.forEach(y => { data[y] = derived(metricsOf(scope, y)); });
+        const fmt = (key, value) => {
+            if (value == null) return "—";
+            if (["discRate", "cashShare", "tubeAttach", "flapAttach"].includes(key)) return pct(value);
+            return n0(value);
+        };
+        const isRate = key => ["discRate", "cashShare", "tubeAttach", "flapAttach"].includes(key);
+        const body = rows.map(key => {
+            const cur = data[cy]?.[key];
+            const prv = data[py]?.[key];
+            const fst = data[fy]?.[key];
+            let change = "—";
+            let cagr = "—";
+            let c = "";
+            if (cur != null && prv != null) {
+                if (isRate(key)) { change = pp(cur - prv); c = cls(key === "discRate" ? prv - cur : cur - prv); }
+                else { const gv = growth(cur, prv); change = signed(gv); c = cls(gv); }
+            }
+            if (!isRate(key) && cur > 0 && fst > 0 && ys.length > 2) {
+                cagr = signed((Math.pow(cur / fst, 1 / (ys.length - 1)) - 1) * 100);
+            }
+            return `<tr>
+                <td>${esc(t.metrics[key])}</td>
+                ${ys.map(y => `<td class="n${y === cy ? " hx-cur" : ""}">${fmt(key, data[y]?.[key])}</td>`).join("")}
+                <td class="n ${c}"><strong>${change}</strong></td>
+                <td class="n">${cagr}</td>
+            </tr>`;
+        }).join("");
+        return `
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(t.yearTable)}</h3></div>
+                <div class="hx-grid-2">
+                    <div class="table-wrapper"><table class="hx-table">
+                        <thead><tr><th>${esc(t.metric)}</th>${ys.map(y => `<th class="n">${y}${y === cy && state.period === "full" ? ` ${esc(t.partial)}` : ""}</th>`).join("")}<th class="n">${esc(t.change(cy, py))}</th><th class="n">${esc(t.cagr(fy, cy))}</th></tr></thead>
+                        <tbody>${body}</tbody>
+                    </table></div>
+                    <div class="hx-chart-sm"><canvas id="historyYearChart"></canvas></div>
+                </div>
+            </article>`;
+    }
+
+    function insightsHTML(scope) {
+        const t = T();
+        const { items, actions } = buildInsights(scope);
+        if (!items.length) return "";
+        const icon = type => (type === "good" ? "fa-arrow-trend-up" : type === "bad" ? "fa-triangle-exclamation" : "fa-circle-info");
+        return `
+            <article class="content-card hx-block hx-insights">
+                <div class="hx-head"><h3>${esc(t.insights)} — ${esc(scopeLabel(scope))}</h3></div>
+                <ul>${items.map(item => `<li class="hx-${item.type}"><i class="fa-solid ${icon(item.type)}"></i><span>${esc(item.text)}</span></li>`).join("")}</ul>
+                ${actions.length ? `<h4>${esc(t.recommendations)}</h4><ol>${[...new Set(actions)].map(a => `<li>${esc(a)}</li>`).join("")}</ol>` : ""}
+            </article>`;
+    }
+
+    function monthlyHTML(scope) {
+        const t = T();
+        const ys = years();
+        const cy = currentYear();
+        const lastMonth = meta().asOfMonth;
+        const max = Math.max(1, ...ys.flatMap(y => (scope.months[y] || []).map(m => m.net)));
+        const cell = (y, i) => {
+            if (y === cy && i > lastMonth - 1) return `<td class="n hx-muted">—</td>`;
+            const v = scope.months[y]?.[i]?.net || 0;
+            const alpha = Math.max(0.04, Math.min(0.55, v / max * 0.55));
+            const partialMark = y === cy && i === lastMonth - 1 ? "*" : "";
+            return `<td class="n" style="background:rgba(23,107,135,${alpha.toFixed(2)})">${short(v)}${partialMark}</td>`;
+        };
+        const totals = ys.map(y => (scope.full[y]?.net || 0));
+        return `
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(t.monthly)}</h3></div>
+                <div class="hx-chart"><canvas id="historyMonthlyChart"></canvas></div>
+                <div class="table-wrapper"><table class="hx-table hx-heat">
+                    <thead><tr><th>${esc(t.month)}</th>${ys.map(y => `<th class="n">${y}</th>`).join("")}<th class="n">${esc(t.change(cy, cy - 1))}</th></tr></thead>
+                    <tbody>
+                        ${t.months.map((name, i) => {
+                            const cur = scope.months[cy]?.[i]?.net || 0;
+                            const prv = scope.months[cy - 1]?.[i]?.net || 0;
+                            let g = i <= lastMonth - 1 ? growth(cur, prv) : null;
+                            if (i === lastMonth - 1) g = growth(scope.mtd?.[cy]?.net || 0, scope.mtd?.[cy - 1]?.net || 0);
+                            return `<tr><td>${esc(name)}</td>${ys.map(y => cell(y, i)).join("")}<td class="n ${cls(g)}">${signed(g)}</td></tr>`;
+                        }).join("")}
+                        <tr class="hx-total"><td>${esc(t.total)}</td>${totals.map(v => `<td class="n">${short(v)}</td>`).join("")}<td></td></tr>
+                    </tbody>
+                </table></div>
+                <p class="hx-note">* ${esc(lang() === "ar" ? `الشهر الحالي لحد يوم ${meta().asOfDay}، والتغير بتاعه محسوب على نفس الأيام` : `Current month to day ${meta().asOfDay}; its change uses the same days`)}</p>
+            </article>`;
+    }
+
+    function rankingRows(scope) {
+        const cy = currentYear();
+        const py = cy - 1;
+        const children = childrenOf(scope);
+        const parentNow = metricsOf(scope, cy)?.net || 0;
+        const parentPrev = metricsOf(scope, py)?.net || 0;
+        return children.map(child => {
+            const now = metricsOf(child, cy) || {};
+            const prev = metricsOf(child, py) || {};
+            const shareNow = parentNow > 0 && !child.blacklist ? (now.net || 0) / parentNow * 100 : null;
+            const sharePrev = parentPrev > 0 && !child.blacklist ? (prev.net || 0) / parentPrev * 100 : null;
+            return {
+                id: child.id,
+                type: child.type,
+                blacklist: child.blacklist,
+                code: child.type === "branch" ? child.label : child.code,
+                name: child.type === "branch" ? T().branch : child.name,
+                branch: child.branch,
+                years: years().map(y => metricsOf(child, y)?.net || 0),
+                growth: growth(now.net || 0, prev.net || 0),
+                share: shareNow,
+                shareChange: shareNow != null && sharePrev != null ? shareNow - sharePrev : null,
+                cust: now.cust || 0,
+                custPrev: prev.cust || 0,
+                avgTyre: now.tyreQty > 0 ? now.tyreNet / now.tyreQty : null
+            };
+        });
+    }
+
+    function rankingHTML(scope) {
+        const t = T();
+        const rows = rankingRows(scope);
+        if (!rows.length) return "";
+        const ys = years();
+        const cy = currentYear();
+        const { key, dir } = state.sort;
+        const val = (row, k) => {
+            if (k.startsWith("y")) return row.years[Number(k.slice(1))];
+            return row[k] == null ? -Infinity : row[k];
+        };
+        const sortRows = list => list.slice().sort((a, b) => {
+            const av = val(a, key);
+            const bv = val(b, key);
+            if (typeof av === "string") return dir * String(av).localeCompare(String(bv));
+            return dir * (av - bv);
+        });
+        const branches = sortRows(rows.filter(r => r.type === "branch"));
+        const codes = sortRows(rows.filter(r => r.type === "code" && !r.blacklist));
+        const black = rows.filter(r => r.blacklist);
+        const th = (k, label) => `<th class="n hx-sort" data-sort="${k}">${esc(label)}${key === k ? (dir > 0 ? " ▲" : " ▼") : ""}</th>`;
+        const status = g => (g == null ? "" : g > 3 ? `<span class="hx-badge up">${esc(t.up)}</span>` : g < -3 ? `<span class="hx-badge down">${esc(t.down)}</span>` : `<span class="hx-badge">${esc(t.flat)}</span>`);
+        const rowHTML = r => `
+            <tr class="${r.type === "branch" ? "hx-branch-row" : ""}${r.blacklist ? " hx-black-row" : ""}" data-scope="${esc(r.id)}">
+                <td><strong>${esc(r.code)}</strong></td>
+                <td>${esc(r.type === "branch" ? "" : r.name || "—")}${r.type === "code" && scope.type === "company" ? `<small class="hx-muted"> • ${esc(r.branch)}</small>` : ""}</td>
+                ${r.years.map((v, i) => `<td class="n${ys[i] === cy ? " hx-cur" : ""}">${n0(v)}</td>`).join("")}
+                <td class="n ${cls(r.growth)}"><strong>${signed(r.growth)}</strong></td>
+                <td class="n">${pct(r.share)}</td>
+                <td class="n ${cls(r.shareChange)}">${pp(r.shareChange)}</td>
+                <td class="n">${n0(r.cust)} <small class="${cls(growth(r.cust, r.custPrev))}">(${signed(growth(r.cust, r.custPrev))})</small></td>
+                <td class="n">${r.avgTyre == null ? "—" : n0(r.avgTyre)}</td>
+                <td>${r.blacklist ? "" : status(r.growth)}</td>
+            </tr>`;
+        const section = (title, list) => (list.length ? `<tr class="hx-sep"><td colspan="${ys.length + 8}">${esc(title)}</td></tr>${list.map(rowHTML).join("")}` : "");
+        return `
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(t.ranking(scope.type))}</h3><small class="hx-muted hx-hint">${esc(lang() === "ar" ? "اضغط على أي صف لفتح تحليله • اضغط على العنوان للترتيب" : "Click a row to open it • click a header to sort")}</small></div>
+                <div class="table-wrapper"><table class="hx-table hx-rank">
+                    <thead><tr>
+                        <th>${esc(t.code)}</th><th>${esc(t.name)}</th>
+                        ${ys.map((y, i) => th(`y${i}`, String(y))).join("")}
+                        ${th("growth", t.growth(cy))}
+                        ${th("share", t.share(cy))}
+                        ${th("shareChange", t.shareChange)}
+                        ${th("cust", t.custCol(cy))}
+                        ${th("avgTyre", t.cards.avgPrice)}
+                        <th>${esc(t.status)}</th>
+                    </tr></thead>
+                    <tbody>
+                        ${section(t.branches, branches)}
+                        ${section(t.codes, codes)}
+                        ${section(t.blacklist, black)}
+                    </tbody>
+                </table></div>
+            </article>`;
+    }
+
+    function customersHTML(scope) {
+        const t = T();
+        const ys = years();
+        const cy = currentYear();
+        const keys = ["active", "cashOnly", "retained", "isNew", "returning", "lost", "lostValue", "retention", "creditActive", "creditRetained", "creditLost", "creditLostValue", "top10Share", "top1Share"];
+        const value = (y, k) => {
+            const c = scope.cust?.[y];
+            if (!c) return "—";
+            if (k.startsWith("credit")) {
+                const field = { creditActive: "active", creditRetained: "retained", creditLost: "lost", creditLostValue: "lostValue" }[k];
+                const v = c.credit ? c.credit[field] : null;
+                return v == null ? "—" : n0(v);
+            }
+            if (k === "retention") return c.prevActive ? pct((c.retained / c.prevActive) * 100) : "—";
+            if (k === "top10Share" || k === "top1Share") return pct(c[k]);
+            return c[k] == null ? "—" : n0(c[k]);
+        };
+        const top = scope.topCustomers || [];
+        const lost = scope.lostCustomers || [];
+        const fresh = scope.newCustomers || [];
+        return `
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(t.customers)}</h3></div>
+                <div class="table-wrapper"><table class="hx-table">
+                    <thead><tr><th>${esc(t.metric)}</th>${ys.map(y => `<th class="n">${y}</th>`).join("")}</tr></thead>
+                    <tbody>${keys.map(k => `<tr><td>${esc(t.cust[k])}</td>${ys.map(y => `<td class="n${y === cy ? " hx-cur" : ""}">${value(y, k)}</td>`).join("")}</tr>`).join("")}</tbody>
+                </table></div>
+            </article>
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(t.topCustomers)}</h3></div>
+                <div class="table-wrapper"><table class="hx-table">
+                    <thead><tr><th>#</th><th>${esc(t.customer)}</th><th>${esc(t.city)}</th>${ys.map(y => `<th class="n">${y}</th>`).join("")}<th class="n">${esc(t.change(cy, cy - 1))}</th><th>${esc(t.lastPurchase)}</th></tr></thead>
+                    <tbody>${top.length ? top.map((c, i) => {
+                        const g = growth(c.y[cy] || 0, c.y[cy - 1] || 0);
+                        return `<tr><td>${i + 1}</td><td class="hx-wrap">${esc(c.n)}</td><td>${esc(c.city)}</td>${ys.map(y => `<td class="n${y === cy ? " hx-cur" : ""}">${c.y[y] ? n0(c.y[y]) : "—"}</td>`).join("")}<td class="n ${cls(g)}">${c.y[cy] ? signed(g) : `<span class="hx-badge down">${esc(lang() === "ar" ? "وقف" : "Stopped")}</span>`}</td><td>${esc(dateText(c.last))}</td></tr>`;
+                    }).join("") : `<tr><td colspan="${ys.length + 5}">${esc(t.noRows)}</td></tr>`}</tbody>
+                </table></div>
+            </article>
+            <div class="hx-grid-2 hx-grid-eq">
+                <article class="content-card hx-block">
+                    <div class="hx-head"><h3>${esc(t.lostCustomers(cy))}</h3></div>
+                    <div class="table-wrapper"><table class="hx-table">
+                        <thead><tr><th>${esc(t.customer)}</th><th>${esc(t.city)}</th><th class="n">${esc(t.prevValue)}</th><th>${esc(t.lastPurchase)}</th></tr></thead>
+                        <tbody>${lost.length ? lost.map(c => `<tr><td class="hx-wrap">${esc(c.n)}</td><td>${esc(c.city)}</td><td class="n">${n0(c.prev)}</td><td>${esc(dateText(c.last))}</td></tr>`).join("") : `<tr><td colspan="4">${esc(t.noRows)}</td></tr>`}</tbody>
+                    </table></div>
+                </article>
+                <article class="content-card hx-block">
+                    <div class="hx-head"><h3>${esc(t.newCustomers(cy))}</h3></div>
+                    <div class="table-wrapper"><table class="hx-table">
+                        <thead><tr><th>${esc(t.customer)}</th><th>${esc(t.city)}</th><th class="n">${esc(t.value)}</th><th>${esc(t.firstPurchase)}</th></tr></thead>
+                        <tbody>${fresh.length ? fresh.map(c => `<tr><td class="hx-wrap">${esc(c.n)}</td><td>${esc(c.city)}</td><td class="n">${n0(c.value)}</td><td>${esc(dateText(c.first))}</td></tr>`).join("") : `<tr><td colspan="4">${esc(t.noRows)}</td></tr>`}</tbody>
+                    </table></div>
+                </article>
+            </div>`;
+    }
+
+    function mixTable(title, firstCol, source, keys, labelOf) {
+        const t = T();
+        const ys = years();
+        const cy = currentYear();
+        const totals = {};
+        ys.forEach(y => { totals[y] = keys.reduce((s, k) => s + (source?.[y]?.[k]?.[1] || 0), 0); });
+        const rows = keys.filter(k => ys.some(y => source?.[y]?.[k]?.[1]));
+        return `
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(title)}</h3></div>
+                <div class="table-wrapper"><table class="hx-table">
+                    <thead>
+                        <tr><th rowspan="2">${esc(firstCol)}</th>${ys.map(y => `<th colspan="3" class="hx-yh">${y}</th>`).join("")}<th rowspan="2" class="n">${esc(t.change(cy, cy - 1))}</th></tr>
+                        <tr>${ys.map(() => `<th class="n">${esc(t.value)}</th><th class="n">%</th><th class="n">${esc(t.avg)}</th>`).join("")}</tr>
+                    </thead>
+                    <tbody>${rows.map(k => {
+                        const g = growth(source?.[cy]?.[k]?.[1] || 0, source?.[cy - 1]?.[k]?.[1] || 0);
+                        return `<tr><td>${esc(labelOf(k))}</td>${ys.map(y => {
+                            const e = source?.[y]?.[k] || [0, 0];
+                            return `<td class="n${y === cy ? " hx-cur" : ""}">${short(e[1])}</td><td class="n hx-muted">${totals[y] ? n1((e[1] / totals[y]) * 100) : "—"}</td><td class="n hx-muted">${e[0] > 0 ? n0(e[1] / e[0]) : "—"}</td>`;
+                        }).join("")}<td class="n ${cls(g)}">${signed(g)}</td></tr>`;
+                    }).join("")}</tbody>
+                </table></div>
+            </article>`;
+    }
+
+    function productsHTML(scope) {
+        const t = T();
+        const ys = years();
+        const cy = currentYear();
+        const brandKeys = [...new Set(ys.flatMap(y => Object.keys(scope.brands?.[y] || {})))]
+            .sort((a, b) => (scope.brands?.[cy]?.[b]?.[1] || 0) - (scope.brands?.[cy]?.[a]?.[1] || 0));
+        const items = scope.topItems || [];
+
+        // أثر الكمية والسعر (إطارات فقط)
+        const now = scope.ytd?.[cy];
+        const prev = scope.ytd?.[cy - 1];
+        let pv = "";
+        if (now && prev && prev.tyreQty > 0 && now.tyreQty > 0) {
+            const pPrev = prev.tyreNet / prev.tyreQty;
+            const pNow = now.tyreNet / now.tyreQty;
+            const volume = (now.tyreQty - prev.tyreQty) * pPrev;
+            const price = (pNow - pPrev) * now.tyreQty;
+            const total = now.tyreNet - prev.tyreNet;
+            pv = `
+                <article class="content-card hx-block">
+                    <div class="hx-head"><h3>${esc(t.priceVolume)}</h3><small class="hx-muted">${esc(t.pvNote)} • ${cy} ${lang() === "ar" ? "مقابل" : "vs"} ${cy - 1}</small></div>
+                    <div class="hx-pv">
+                        <div><span>${esc(lang() === "ar" ? "التغير في مبيعات الإطارات" : "Change in tyre sales")}</span><strong class="${cls(total)}">${total >= 0 ? "+" : ""}${n0(total)}</strong></div>
+                        <div><span>${esc(t.pvQty)}</span><strong class="${cls(volume)}">${volume >= 0 ? "+" : ""}${n0(volume)}</strong><small>${n0(prev.tyreQty)} → ${n0(now.tyreQty)} ${lang() === "ar" ? "إطار" : "tyres"}</small></div>
+                        <div><span>${esc(t.pvPrice)}</span><strong class="${cls(price)}">${price >= 0 ? "+" : ""}${n0(price)}</strong><small>${n0(pPrev)} → ${n0(pNow)} ${lang() === "ar" ? "للإطار" : "per tyre"}</small></div>
+                    </div>
+                </article>`;
+        }
+
+        const cityKeys = [...new Set(ys.flatMap(y => (scope.cities?.[y] || []).map(c => c[0])))];
+        const cityVal = (y, c) => ((scope.cities?.[y] || []).find(e => e[0] === c) || [c, 0])[1];
+        cityKeys.sort((a, b) => cityVal(cy, b) - cityVal(cy, a));
+
+        return `
+            ${pv}
+            ${mixTable(t.mix, t.group, scope.mix, ["TBR", "PCR", "OTR", "ACC", "OTHERS"], k => t.groups[k] || k)}
+            ${mixTable(t.brands, t.brand, scope.brands, brandKeys, k => k)}
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(t.items)}</h3></div>
+                <div class="table-wrapper"><table class="hx-table">
+                    <thead>
+                        <tr><th rowspan="2">${esc(t.item)}</th>${ys.map(y => `<th colspan="2" class="hx-yh">${y}</th>`).join("")}<th rowspan="2" class="n">${esc(t.change(cy, cy - 1))}</th></tr>
+                        <tr>${ys.map(() => `<th class="n">${esc(t.qty)}</th><th class="n">${esc(t.value)}</th>`).join("")}</tr>
+                    </thead>
+                    <tbody>${items.map(item => {
+                        const g = growth(item.y[cy]?.[1] || 0, item.y[cy - 1]?.[1] || 0);
+                        return `<tr><td dir="ltr" class="hx-item">${esc(item.d)}</td>${ys.map(y => `<td class="n">${item.y[y] ? n0(item.y[y][0]) : "—"}</td><td class="n${y === cy ? " hx-cur" : ""}">${item.y[y] ? short(item.y[y][1]) : "—"}</td>`).join("")}<td class="n ${cls(g)}">${signed(g)}</td></tr>`;
+                    }).join("")}</tbody>
+                </table></div>
+            </article>
+            ${cityKeys.length > 1 ? `
+            <article class="content-card hx-block">
+                <div class="hx-head"><h3>${esc(t.cities)}</h3></div>
+                <div class="table-wrapper"><table class="hx-table">
+                    <thead><tr><th>${esc(t.city)}</th>${ys.map(y => `<th class="n">${y}</th>`).join("")}<th class="n">${esc(t.change(cy, cy - 1))}</th></tr></thead>
+                    <tbody>${cityKeys.slice(0, 10).map(c => {
+                        const g = growth(cityVal(cy, c), cityVal(cy - 1, c));
+                        return `<tr><td>${esc(c)}</td>${ys.map(y => `<td class="n${y === cy ? " hx-cur" : ""}">${cityVal(y, c) ? short(cityVal(y, c)) : "—"}</td>`).join("")}<td class="n ${cls(g)}">${signed(g)}</td></tr>`;
+                    }).join("")}</tbody>
+                </table></div>
+            </article>` : ""}`;
+    }
+
+    /* ---------- التصدير ---------- */
+
+    function exportExcel() {
+        if (!window.XLSX) return;
+        const t = T();
+        const ys = years();
+        const cy = currentYear();
+        const book = window.XLSX.utils.book_new();
+        const add = (name, rows) => {
+            if (!rows.length) return;
+            window.XLSX.utils.book_append_sheet(book, window.XLSX.utils.json_to_sheet(rows), name.slice(0, 31));
+        };
+        const period = state.period;
+
+        add("Scopes", scopes().map(s => {
+            const row = { Type: s.type, Code: s.type === "code" ? s.code : s.label, Name: s.name || "", Branch: s.branch || "" };
+            ys.forEach(y => { row[`Net ${y}`] = Math.round(metricsOf(s, y, period)?.net || 0); });
+            ys.forEach(y => { row[`Customers ${y}`] = metricsOf(s, y, period)?.cust || 0; });
+            ys.forEach(y => { row[`Tyres ${y}`] = metricsOf(s, y, period)?.tyreQty || 0; });
+            row[`Growth ${cy} %`] = Math.round((growth(metricsOf(s, cy, period)?.net || 0, metricsOf(s, cy - 1, period)?.net || 0) || 0) * 10) / 10;
+            return row;
+        }));
+
+        add("Monthly", scopes().flatMap(s => ys.map(y => {
+            const row = { Scope: s.type === "code" ? s.code : s.label, Year: y };
+            t.months.forEach((m, i) => { row[m] = Math.round(s.months?.[y]?.[i]?.net || 0); });
+            return row;
+        })));
+
+        add("Customers", scopes().flatMap(s => ys.map(y => ({ Scope: s.type === "code" ? s.code : s.label, Year: y, ...(s.cust?.[y] || {}) }))));
+
+        add("Lost customers", scopes().filter(s => s.type === "code").flatMap(s => (s.lostCustomers || []).map(c => ({ Code: s.code, Customer: c.n, City: c.city, [`Same period ${cy - 1}`]: c.prev, [`Full ${cy - 1}`]: c.prevFull, "Last purchase": c.last }))));
+
+        add("Product groups", scopes().flatMap(s => ys.flatMap(y => Object.entries(s.mix?.[y] || {}).map(([k, v]) => ({ Scope: s.type === "code" ? s.code : s.label, Year: y, Group: k, Qty: v[0], Value: v[1] })))));
+
+        add("Brands", scopes().flatMap(s => ys.flatMap(y => Object.entries(s.brands?.[y] || {}).map(([k, v]) => ({ Scope: s.type === "code" ? s.code : s.label, Year: y, Brand: k, Qty: v[0], Value: v[1] })))));
+
+        add("Insights", scopes().map(s => {
+            const { items, actions } = buildInsights(s);
+            const clean = text => String(text).replace(/[\u2066-\u2069\u200E]/g, "");
+            return { Scope: scopeLabel(s), Insights: items.map(i => `• ${clean(i.text)}`).join("\n"), Actions: actions.map(clean).join("\n") };
+        }));
+
+        window.XLSX.writeFile(book, `Sales_History_Comparison_${meta().asOf || ""}.xlsx`);
+    }
+
+    /*
+     * طباعة: مستند منفصل بخلفية بيضاء (حتى لو الوضع الليلي شغال)،
+     * الرسومات بتتحول لصور، والجداول الطويلة بتتقسم على الصفحات مع تكرار العناوين.
+     */
+    const PRINT_CSS = `
+        @page { size: A4 landscape; margin: 10mm 9mm; }
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        html, body { background: #ffffff; color: #0f172a; margin: 0; }
+        body { font-family: var(--pf), "Segoe UI", Tahoma, Arial, sans-serif; font-size: 10.5px; line-height: 1.45; }
+        .pr-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; border-bottom: 2px solid #176b87; padding-bottom: 8px; margin-bottom: 12px; }
+        .pr-header h1 { margin: 0; font-size: 18px; color: #0f3d4f; }
+        .pr-header .pr-scope { font-size: 13px; font-weight: 700; color: #176b87; margin-top: 3px; }
+        .pr-header .pr-meta { text-align: end; color: #475569; font-size: 10px; line-height: 1.6; }
+        .hx-root { display: block; }
+        .content-card, .hx-block { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 12px; margin: 0 0 10px; box-shadow: none; }
+        .hx-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; break-after: avoid; page-break-after: avoid; }
+        .hx-head h3 { margin: 0; font-size: 13px; color: #0f3d4f; }
+        .hx-hint { display: none !important; }
+        .hx-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; break-inside: avoid; }
+        .hx-card { margin: 0; padding: 8px 10px; display: grid; gap: 2px; }
+        .hx-card span { color: #64748b; font-size: 10px; }
+        .hx-card strong { font-size: 17px; }
+        .hx-card small { font-size: 9.5px; color: #64748b; }
+        .hx-up { color: #15803d !important; }
+        .hx-down { color: #b91c1c !important; }
+        .hx-muted { color: #94a3b8; }
+        table.hx-table { width: 100%; border-collapse: collapse; font-size: 9.5px; }
+        .hx-table thead { display: table-header-group; }
+        .hx-table tr { break-inside: avoid; page-break-inside: avoid; }
+        .hx-table th, .hx-table td { padding: 3px 5px; border-bottom: 1px solid #e2e8f0; text-align: start; white-space: nowrap; vertical-align: middle; }
+        .hx-table th { background: #f1f5f9; color: #334155; font-weight: 700; }
+        .hx-table td.n, .hx-table th.n { text-align: end; font-variant-numeric: tabular-nums; }
+        .hx-table th.hx-yh { text-align: center; }
+        .hx-table td.hx-cur { font-weight: 700; background: #eef6f9; }
+        .hx-table td.hx-wrap { white-space: normal; }
+        .hx-table tr.hx-total td { font-weight: 700; border-top: 2px solid #94a3b8; }
+        .hx-table tr.hx-sep td { background: #e6f1f5; color: #0f3d4f; font-weight: 700; }
+        .hx-rank tr.hx-branch-row td { font-weight: 700; }
+        .hx-badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 9px; background: #f1f5f9; color: #475569; }
+        .hx-badge.up { background: #dcfce7; color: #15803d; }
+        .hx-badge.down { background: #fee2e2; color: #b91c1c; }
+        .hx-item { font-size: 9px; }
+        .hx-grid-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 10px; align-items: start; }
+        .hx-grid-eq { grid-template-columns: 1fr 1fr; }
+        .hx-grid-2 > .hx-block { margin: 0; }
+        .pr-pair { margin-bottom: 10px; }
+        .hx-chart, .hx-chart-sm { height: auto; break-inside: avoid; }
+        .hx-chart img, .hx-chart-sm img { width: 100%; height: auto; display: block; }
+        .hx-chart img { max-height: 70mm; object-fit: contain; }
+        .hx-insights ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 3px; }
+        .hx-insights li { display: flex; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f8fafc; break-inside: avoid; border-inline-start: 3px solid #cbd5e1; }
+        .hx-insights li.hx-good { border-inline-start-color: #16a34a; }
+        .hx-insights li.hx-bad { border-inline-start-color: #dc2626; }
+        .hx-insights li.hx-info { border-inline-start-color: #2563eb; }
+        .hx-insights li i { display: none; }
+        .hx-insights h4 { margin: 8px 0 4px; font-size: 11px; color: #0f3d4f; }
+        .hx-insights ol { margin: 0; padding-inline-start: 18px; display: grid; gap: 2px; }
+        .hx-pv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .hx-pv div { display: grid; gap: 2px; padding: 6px 8px; border-radius: 4px; background: #f8fafc; }
+        .hx-pv span, .hx-pv small { font-size: 9.5px; color: #64748b; }
+        .hx-pv strong { font-size: 14px; }
+        .hx-note { font-size: 9px; color: #64748b; margin: 4px 0 0; }
+        .pr-section { break-before: page; page-break-before: always; }
+        .pr-report + .pr-report { break-before: page; page-break-before: always; }
+        .hx-chart svg, .hx-chart-sm svg { width: 100%; height: auto; display: block; }
+        .hx-chart svg { max-height: 72mm; }
+        @media screen {
+            body { background: #e2e8f0; padding: 16px; }
+            .pr-report { background: #fff; max-width: 1100px; margin: 0 auto 16px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+            .pr-section { margin-top: 14px; }
+        }
+    `;
+
+    /* رسومات SVG للتقرير (مش محتاجة Chart.js وبتطبع واضحة) */
+    function svgYears(scope) {
+        const ys = years();
+        const cy = currentYear();
+        const vals = ys.map(y => metricsOf(scope, y)?.net || 0);
+        const max = Math.max(1, ...vals);
+        const W = 360, H = 190, base = 160, top0 = 22, bw = Math.min(56, (W - 40) / ys.length - 18);
+        const step = (W - 40) / ys.length;
+        return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-size="10" direction="ltr">
+            <line x1="20" x2="${W - 20}" y1="${base}" y2="${base}" stroke="#94a3b8"/>
+            ${ys.map((y, i) => {
+                const h = (vals[i] / max) * (base - top0);
+                const x = 20 + i * step + (step - bw) / 2;
+                return `<rect x="${x}" y="${base - h}" width="${bw}" height="${h}" rx="2" fill="${y === cy ? "#176b87" : "#b6ccd6"}"/>
+                    <text x="${x + bw / 2}" y="${base - h - 5}" text-anchor="middle" fill="#0f172a" font-weight="${y === cy ? 700 : 400}">${short(vals[i])}</text>
+                    <text x="${x + bw / 2}" y="${base + 14}" text-anchor="middle" fill="#475569">${y}</text>`;
+            }).join("")}
+        </svg>`;
+    }
+
+    function svgMonthly(scope) {
+        const ys = years();
+        const cy = currentYear();
+        const lastMonth = meta().asOfMonth;
+        const t = T();
+        const series = ys.map(y => (scope.months[y] || []).map((mm, i) => (y === cy && i > lastMonth - 1 ? null : mm.net || 0)));
+        const max = Math.max(1, ...series.flat().filter(v => v != null));
+        const W = 760, H = 230, left = 46, right = 16, y0 = 14, base = 196;
+        const x = i => left + (i * (W - left - right)) / 11;
+        const y = v => base - (v / max) * (base - y0);
+        const colors = ["#cbd5e1", "#94a3b8", "#f59e0b", "#176b87", "#16a34a"];
+        const color = i => colors[colors.length - ys.length + i] || "#64748b";
+        const ticks = [0, 0.25, 0.5, 0.75, 1].map(f => max * f);
+        return `<svg viewBox="0 0 ${W} ${H + 18}" xmlns="http://www.w3.org/2000/svg" font-size="10" direction="ltr">
+            ${ticks.map(v => `<line x1="${left}" x2="${W - right}" y1="${y(v)}" y2="${y(v)}" stroke="#e2e8f0"/><text x="${left - 6}" y="${y(v) + 3}" text-anchor="end" fill="#94a3b8">${short(v)}</text>`).join("")}
+            ${t.months.map((mn, i) => `<text x="${x(i)}" y="${base + 14}" text-anchor="middle" fill="#475569">${esc(mn)}</text>`).join("")}
+            ${series.map((vals, si) => {
+                const pts = vals.map((v, i) => (v == null ? null : `${x(i)},${y(v)}`)).filter(Boolean).join(" ");
+                const isCur = ys[si] === cy;
+                return `<polyline points="${pts}" fill="none" stroke="${color(si)}" stroke-width="${isCur ? 2.6 : 1.6}"/>${vals.map((v, i) => (v == null ? "" : `<circle cx="${x(i)}" cy="${y(v)}" r="${isCur ? 2.6 : 1.8}" fill="${color(si)}"/>`)).join("")}`;
+            }).join("")}
+            ${ys.map((yr, si) => `<g transform="translate(${left + si * 90}, ${H + 10})"><rect width="14" height="4" y="-4" fill="${color(si)}"/><text x="18" y="0" fill="#334155">${yr}${yr === cy ? " *" : ""}</text></g>`).join("")}
+        </svg>`;
+    }
+
+    function scopeReportHTML(scope) {
+        const t = T();
+        const ar = lang() === "ar";
+        const m = meta();
+        const periodLabel = state.period === "ytd"
+            ? t.ytd(m.asOfDay, m.asOfMonth)
+            : state.period === "mtd" ? t.mtd(m.asOfDay, m.asOfMonth) : t.full;
+        const printedAt = new Intl.DateTimeFormat(ar ? "ar-EG-u-ca-gregory-nu-latn" : "en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date());
+        const charts = html => html
+            .replace(/<canvas id="historyMonthlyChart"><\/canvas>/g, svgMonthly(scope))
+            .replace(/<canvas id="historyYearChart"><\/canvas>/g, svgYears(scope));
+
+        return fixBidi(`<section class="pr-report">
+            <header class="pr-header">
+                <div>
+                    <h1>${esc(ar ? "تقرير المقارنات التاريخية — مبيعات الإطارات" : "Historical comparison report — Tyre sales")}</h1>
+                    <div class="pr-scope">${esc(scopeLabel(scope))}</div>
+                </div>
+                <div class="pr-meta">
+                    <div>${esc(t.period)}: ${esc(periodLabel)}</div>
+                    <div>${esc(t.dataRange(dateText(m.from), dateText(m.asOf), n0(m.rows)))}</div>
+                    <div>${esc(ar ? "تاريخ الطباعة" : "Printed")}: ${esc(printedAt)}</div>
+                </div>
+            </header>
+            ${charts(cardsHTML(scope))}
+            ${charts(insightsHTML(scope))}
+            <div class="pr-section">${charts(yearTableHTML(scope))}</div>
+            ${charts(rankingHTML(scope))}
+            <div class="pr-section">${charts(monthlyHTML(scope))}</div>
+            <div class="pr-section">${charts(customersHTML(scope))}</div>
+            <div class="pr-section">${charts(productsHTML(scope))}</div>
+        </section>`);
+    }
+
+    function buildReportDocument(ids) {
+        const ar = lang() === "ar";
+        const list = ids.map(findScope).filter(Boolean);
+        const font = (getComputedStyle(document.body).fontFamily || "").replace(/[<>]/g, "");
+        const title = list.length === 1 ? scopeLabel(list[0]) : (ar ? "كل الفروع" : "All branches");
+        return `<!doctype html>
+<html lang="${ar ? "ar" : "en"}" dir="${ar ? "rtl" : "ltr"}">
+<head><meta charset="utf-8"><title>${esc(`${ar ? "المقارنات التاريخية" : "Historical comparisons"} - ${title}`)}</title>
+<style>:root{--pf:${font};}${PRINT_CSS}</style></head>
+<body>${list.map(scopeReportHTML).join("")}</body></html>`;
+    }
+
+    function printHTML(html) {
+        const old = document.getElementById("historyPrintFrame");
+        if (old) old.remove();
+        const frame = document.createElement("iframe");
+        frame.id = "historyPrintFrame";
+        frame.setAttribute("aria-hidden", "true");
+        frame.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;";
+        document.body.appendChild(frame);
+        const doc = frame.contentWindow.document;
+        doc.open();
+        doc.write(html);
+        doc.close();
+        const run = () => {
+            try { frame.contentWindow.focus(); frame.contentWindow.print(); } catch (error) { window.print(); }
+        };
+        const ready = doc.fonts && doc.fonts.ready ? doc.fonts.ready : Promise.resolve();
+        ready.then(() => setTimeout(run, 250)).catch(() => setTimeout(run, 250));
+    }
+
+    function printPage() {
+        if (!findScope(state.scopeId)) return;
+        printHTML(buildReportDocument([state.scopeId]));
+    }
+
+    /* ---------- تقرير من صفحة التقارير: المجمع / فرع / كل الفروع ---------- */
+
+    function reportChoices() {
+        const ar = lang() === "ar";
+        const list = scopes();
+        const choices = [];
+        const company = list.find(s => s.type === "company");
+        const branches = list.filter(s => s.type === "branch");
+        if (company) choices.push({ value: "company", label: T().company, ids: ["company"] });
+        branches.forEach(b => choices.push({ value: b.id, label: scopeLabel(b), ids: [b.id] }));
+        if (branches.length > 1) {
+            choices.push({
+                value: "__all",
+                label: ar ? "الكل في ملف واحد (المجمع + كل فرع)" : "All in one file (consolidated + each branch)",
+                ids: (company ? ["company"] : []).concat(branches.map(b => b.id))
+            });
+        }
+        if (!choices.length) {
+            list.filter(s => s.type === "code").forEach(c => choices.push({ value: c.id, label: scopeLabel(c), ids: [c.id] }));
+        }
+        return choices;
+    }
+
+    function closeReport() {
+        utils.byId("historyReportModal")?.remove();
+    }
+
+    async function openReport() {
+        const ar = lang() === "ar";
+        bind();
+        if (!state.data) {
+            utils.showToast?.(T().loading, "info");
+            await load(false);
+        }
+        if (!state.data || state.data.missingSheet || !scopes().length) {
+            utils.showToast?.(state.error || T().empty, "warning");
+            return;
+        }
+        closeReport();
+        const choices = reportChoices();
+        let selected = choices[0];
+
+        const modal = document.createElement("div");
+        modal.id = "historyReportModal";
+        modal.className = "report-preview-overlay";
+        modal.innerHTML = `
+            <section class="report-preview-card branch-report-card">
+                <header class="report-preview-header">
+                    <div>
+                        <h2>${esc(ar ? "تقرير المقارنات التاريخية" : "Historical comparison report")}</h2>
+                        <p>${esc(ar ? "مقارنة 2023 لحد النهارده بنفس الفترة من كل سنة — مجمع أو لكل فرع" : "2023 to date, same period each year — consolidated or per branch")}</p>
+                    </div>
+                    <button type="button" class="icon-button" data-hr="close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                </header>
+                <div class="report-preview-actions branch-report-actions">
+                    <label class="branch-report-select">
+                        <span>${esc(ar ? "التقرير" : "Report")}</span>
+                        <select id="historyReportSelect">${choices.map(c => `<option value="${esc(c.value)}">${esc(c.label)}</option>`).join("")}</select>
+                    </label>
+                    <label class="branch-report-select">
+                        <span>${esc(T().period)}</span>
+                        <select id="historyReportPeriod">
+                            <option value="ytd" ${state.period === "ytd" ? "selected" : ""}>${esc(T().ytd(meta().asOfDay, meta().asOfMonth))}</option>
+                            <option value="mtd" ${state.period === "mtd" ? "selected" : ""}>${esc(T().mtd(meta().asOfDay, meta().asOfMonth))}</option>
+                            <option value="full" ${state.period === "full" ? "selected" : ""}>${esc(T().full)}</option>
+                        </select>
+                    </label>
+                    <span style="flex:1"></span>
+                    <button class="secondary-button" type="button" data-hr="excel"><i class="fa-solid fa-file-excel"></i><span>${esc(T().excel)}</span></button>
+                    <button class="primary-button" type="button" data-hr="print"><i class="fa-solid fa-print"></i><span>${esc(T().print)}</span></button>
+                </div>
+                <iframe id="historyReportFrame" class="branch-report-frame" title="report"></iframe>
+            </section>`;
+        document.body.appendChild(modal);
+
+        const render = () => {
+            const frame = utils.byId("historyReportFrame");
+            if (frame) frame.srcdoc = buildReportDocument(selected.ids);
+        };
+        modal.addEventListener("click", event => {
+            if (event.target === modal) { closeReport(); return; }
+            const action = event.target.closest("[data-hr]")?.dataset.hr;
+            if (action === "close") closeReport();
+            if (action === "excel") exportExcel();
+            if (action === "print") {
+                const view = utils.byId("historyReportFrame")?.contentWindow;
+                if (!view) return;
+                const run = () => { try { view.focus(); view.print(); } catch (error) { printHTML(buildReportDocument(selected.ids)); } };
+                const ready = view.document?.fonts?.ready;
+                if (ready) ready.then(run).catch(run); else run();
+            }
+        });
+        utils.byId("historyReportSelect")?.addEventListener("change", event => {
+            selected = choices.find(c => c.value === event.target.value) || choices[0];
+            render();
+        });
+        utils.byId("historyReportPeriod")?.addEventListener("change", event => {
+            state.period = event.target.value;
+            render();
+        });
+        document.addEventListener("keydown", function onKey(event) {
+            if (event.key === "Escape") { closeReport(); document.removeEventListener("keydown", onKey); }
+        });
+        render();
+    }
+
+    /* ---------- الرسم الرئيسي ---------- */
+
+    function render() {
+        const root = utils.byId("historyRoot");
+        if (!root) return;
+        const t = T();
+
+        if (state.loading) {
+            destroyCharts();
+            root.innerHTML = `<article class="content-card hx-block hx-center"><i class="fa-solid fa-spinner fa-spin"></i> ${esc(t.loading)}</article>`;
+            return;
+        }
+        if (state.error) {
+            destroyCharts();
+            root.innerHTML = `<article class="content-card hx-block hx-center"><p>${esc(t.error)}: ${esc(state.error)}</p><button type="button" class="primary-button" data-hx="retry">${esc(t.retry)}</button></article>`;
+            return;
+        }
+        if (!state.data) {
+            root.innerHTML = "";
+            return;
+        }
+        if (state.data.missingSheet) {
+            root.innerHTML = `<article class="content-card hx-block hx-center"><p>${esc(t.missing(state.data.sheetName || "Sales History"))}</p><button type="button" class="primary-button" data-hx="retry">${esc(t.refresh)}</button></article>`;
+            return;
+        }
+        const scope = findScope(state.scopeId);
+        if (!scope) {
+            root.innerHTML = `<article class="content-card hx-block hx-center">${esc(t.empty)}</article>`;
+            return;
+        }
+
+        root.innerHTML = fixBidi(`
+            <article class="content-card hx-block hx-top">
+                ${controlsHTML(scope)}
+                <h2 class="hx-title">${esc(t.show)}: ${esc(scopeLabel(scope))}</h2>
+            </article>
+            ${cardsHTML(scope)}
+            ${insightsHTML(scope)}
+            ${yearTableHTML(scope)}
+            ${rankingHTML(scope)}
+            ${monthlyHTML(scope)}
+            ${customersHTML(scope)}
+            ${productsHTML(scope)}
+        `);
+        drawCharts(scope);
+    }
+
+    function bind() {
+        const root = utils.byId("historyRoot");
+        if (!root || root.dataset.bound) return;
+        root.dataset.bound = "1";
+        root.addEventListener("change", event => {
+            if (event.target.id === "historyScopeSelect") {
+                state.scopeId = event.target.value;
+                render();
+                root.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            if (event.target.id === "historyPeriodSelect") {
+                state.period = event.target.value;
+                render();
+            }
+        });
+        root.addEventListener("click", event => {
+            const action = event.target.closest("[data-hx]")?.dataset.hx;
+            if (action === "retry") load(true);
+            if (action === "refresh") load(true);
+            if (action === "excel") exportExcel();
+            if (action === "print") printPage();
+
+            const sortKey = event.target.closest("[data-sort]")?.dataset.sort;
+            if (sortKey) {
+                state.sort = state.sort.key === sortKey ? { key: sortKey, dir: -state.sort.dir } : { key: sortKey, dir: -1 };
+                render();
+                return;
+            }
+            const row = event.target.closest("tr[data-scope]");
+            if (row && findScope(row.dataset.scope)) {
+                state.scopeId = row.dataset.scope;
+                render();
+                root.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+    }
+
+    function show() {
+        bind();
+        load(false);
+    }
+
+    function reset() {
+        destroyCharts();
+        state.data = null;
+        state.scopeId = "";
+    }
+
+    return Object.freeze({ show, render, load, reset, openReport, buildInsights: scope => buildInsights(scope), _state: state });
+})();
+
+
+
+/* =========================================================
+   عملاء كرديت / كاش (من الفواتير في الفترة المختارة)
+   كرديت = عنده فاتورة كرديت • كاش = عنده فاتورة كاش
+   الاتنين = عنده الاتنين (محسوب في الكرديت وفي الكاش)
+========================================================= */
+window.DashboardCustomerType = (() => {
+    const utils = window.DashboardUtils;
+    let flags = new Map();
+    const key = value => {
+        const text = String(value == null ? "" : value).trim();
+        if (!text) return "";
+        const code = utils?.normalizeCode ? utils.normalizeCode(text) : text;
+        return String(code).replace(/^0+(?=\d)/, "").toUpperCase();
+    };
+    const rowKey = row => key(row?.customerCode || row?.["Customer Code"] || "") || (row?.customerName ? "N:" + String(row.customerName).trim().toUpperCase() : "");
+    const isCashInvoice = row => /cash|نقد|كاش/i.test(String(row?.invoiceType || row?.["Invoice Type"] || ""));
+
+    function flagsFrom(rows) {
+        const map = new Map();
+        (Array.isArray(rows) ? rows : []).forEach(row => {
+            const k = rowKey(row);
+            if (!k) return;
+            const f = map.get(k) || { credit: false, cash: false };
+            if (isCashInvoice(row)) f.cash = true; else f.credit = true;
+            map.set(k, f);
+        });
+        return map;
+    }
+
+    function summarize(map) {
+        let credit = 0, cash = 0, both = 0;
+        map.forEach(f => {
+            if (f.credit) credit += 1;
+            if (f.cash) cash += 1;
+            if (f.credit && f.cash) both += 1;
+        });
+        return { total: map.size, credit, cash, both, creditOnly: credit - both, cashOnly: cash - both };
+    }
+
+    /* الفواتير بعد الفلاتر (تتنادى من distributeData) */
+    function setData(info, invoices = []) {
+        flags = flagsFrom(invoices);
+    }
+
+    function splitRows(rows) {
+        return summarize(flagsFrom(rows));
+    }
+
+    /* مجموعة أكواد عملاء: نوع كل عميل من فواتير الفترة */
+    function splitKeys(values) {
+        const map = new Map();
+        Array.from(values || []).forEach(value => {
+            const k = key(value) || String(value || "");
+            if (!k || map.has(k)) return;
+            map.set(k, flags.get(k) || flags.get("N:" + String(value || "").trim().toUpperCase()) || { credit: false, cash: false });
+        });
+        return summarize(map);
+    }
+
+    /* تتبع داخل تجميعة (فرع / شركة) عشان العدد يبقى من فواتير التجميعة نفسها */
+    function track(aggregate, row) {
+        if (!aggregate) return;
+        if (!aggregate.__ctRows) aggregate.__ctRows = [];
+        aggregate.__ctRows.push(row);
+    }
+
+    function splitTracked(aggregate) {
+        return splitRows(aggregate && aggregate.__ctRows ? aggregate.__ctRows : []);
+    }
+
+    function typeOf(value, name) {
+        const f = flags.get(key(value)) || (name ? flags.get("N:" + String(name).trim().toUpperCase()) : null) || flags.get("N:" + String(value || "").trim().toUpperCase());
+        if (!f) return "";
+        return f.credit && f.cash ? "both" : f.credit ? "credit" : "cash";
+    }
+
+    const isAr = () => (utils?.getLanguage?.() || "ar") !== "en";
+    const fmt = n => (utils?.formatNumber ? utils.formatNumber(n || 0, 0) : new Intl.NumberFormat("en-US").format(n || 0));
+
+    function text(split, ar = isAr(), format = fmt) {
+        if (!split) return "";
+        return ar
+            ? `كرديت ${format(split.credit)} • كاش ${format(split.cash)} • الاتنين ${format(split.both)}`
+            : `Credit ${format(split.credit)} • Cash ${format(split.cash)} • Both ${format(split.both)}`;
+    }
+
+    function label(value, ar = isAr(), name) {
+        const t = typeOf(value, name);
+        if (t === "both") return ar ? "كرديت + كاش" : "Credit + Cash";
+        if (t === "credit") return ar ? "كرديت" : "Credit";
+        if (t === "cash") return ar ? "كاش" : "Cash";
+        return "";
+    }
+
+    function badge(value, name) {
+        const t = typeOf(value, name);
+        return t ? `<span class="ct-badge ct-${t}">${label(value, isAr(), name)}</span>` : "";
+    }
+
+    return Object.freeze({ setData, splitRows, splitKeys, track, splitTracked, typeOf, text, label, badge });
+})();
 
 window.DashboardApp = (() => {
     const config = window.DashboardConfig;
@@ -37665,6 +39485,10 @@ window.DashboardApp = (() => {
             );
 
         translateInterface();
+
+        if (state.currentPage === "history") {
+            window.DashboardHistory?.render?.();
+        }
 
         utils.setText(
             "languageButtonText",
@@ -38448,6 +40272,11 @@ window.DashboardApp = (() => {
     ===================================================== */
 
     function distributeData(data) {
+        window.DashboardCustomerType?.setData(
+            data.customerInfo || [],
+            data.invoices || []
+        );
+
         /*
          * dashboard.js لا يحتوي على setData.
          * يجب إرسال البيانات مباشرة إلى render.
@@ -39233,6 +41062,14 @@ window.DashboardApp = (() => {
     ===================================================== */
 
     const pageTranslations = {
+        history: {
+            title:
+                "history.title",
+
+            subtitle:
+                "history.subtitle"
+        },
+
         training: {
             title:
                 "training.title",
@@ -39447,6 +41284,12 @@ window.DashboardApp = (() => {
                 window.DashboardProducts,
                 "render"
             );
+        }
+
+        utils.byId("globalFilters")?.classList.toggle("hx-hidden", selectedPage === "history");
+
+        if (selectedPage === "history") {
+            callModule(window.DashboardHistory, "show");
         }
 
         if (
